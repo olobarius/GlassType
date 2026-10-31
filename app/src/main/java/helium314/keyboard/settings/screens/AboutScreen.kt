@@ -71,6 +71,8 @@ fun AboutScreen(
         SettingsWithoutKey.HIDDEN_FEATURES,
         SettingsWithoutKey.GITHUB_FEATURES,
         SettingsWithoutKey.GITHUB,
+        SettingsWithoutKey.CREDITS,
+        SettingsWithoutKey.UPSTREAM,
         SettingsWithoutKey.SAVE_LOG,
     )
     SearchSettingsScreen(
@@ -81,7 +83,7 @@ fun AboutScreen(
 }
 
 fun createAboutSettings(context: Context) = listOf(
-    Setting(context, SettingsWithoutKey.APP, R.string.english_ime_name, R.string.app_slogan) {
+    Setting(context, SettingsWithoutKey.APP, R.string.english_ime_name, R.string.glasstype_slogan) {
         Preference(
             name = it.title,
             description = it.description,
@@ -93,7 +95,7 @@ fun createAboutSettings(context: Context) = listOf(
         var count by rememberSaveable { mutableIntStateOf(0) }
         val ctx = LocalContext.current
         val prefs = ctx.prefs()
-        val versionDescription = stringResource(R.string.version_text, BuildConfig.VERSION_NAME)
+        val versionDescription = stringResource(R.string.version_text_glasstype, BuildConfig.VERSION_NAME, BuildConfig.UPSTREAM_VERSION)
         Preference(
             name = it.title,
             description = versionDescription,
@@ -143,7 +145,7 @@ fun createAboutSettings(context: Context) = listOf(
                 }
             ) {
                 Text(
-                    text = "LeanType is licensed under GNU GPL v3.0.\n\nThird-Party Speech Components:\n• whisper.cpp — MIT License (github.com/ggerganov/whisper.cpp)\n• Vosk Speech Recognition — Apache 2.0 (alphacephei.com/vosk)",
+                    text = stringResource(R.string.about_license_text),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -188,7 +190,7 @@ fun createAboutSettings(context: Context) = listOf(
             icon = R.drawable.ic_settings_about_wiki
         )
     },
-    Setting(context, SettingsWithoutKey.GITHUB, R.string.about_github_link) {
+    Setting(context, SettingsWithoutKey.GITHUB, R.string.about_github_link, R.string.about_github_glasstype_summary) {
         val ctx = LocalContext.current
         Preference(
             name = it.title,
@@ -199,6 +201,64 @@ fun createAboutSettings(context: Context) = listOf(
                 intent.action = Intent.ACTION_VIEW
                 ctx.startActivity(intent)
             },
+            icon = R.drawable.ic_settings_about_github
+        )
+    },
+    Setting(context, SettingsWithoutKey.CREDITS, R.string.about_credits_title, R.string.about_credits_summary) {
+        val ctx = LocalContext.current
+        var showDialog by rememberSaveable { mutableStateOf(false) }
+        Preference(
+            name = it.title,
+            description = it.description,
+            onClick = { showDialog = true },
+            icon = R.drawable.ic_settings_about
+        )
+        if (showDialog) {
+            helium314.keyboard.settings.dialogs.PreferenceDialog(
+                onDismissRequest = { showDialog = false },
+                title = stringResource(R.string.about_credits_title),
+                showCloseButton = true,
+                buttons = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                showDialog = false
+                                ctx.startActivity(Intent(Intent.ACTION_VIEW, Links.UPSTREAM_GITHUB.toUri()))
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.about_open_leantype))
+                        }
+                        OutlinedButton(
+                            onClick = {
+                                showDialog = false
+                                ctx.startActivity(Intent(Intent.ACTION_VIEW, Links.ORIGINAL_GITHUB.toUri()))
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.about_open_heliboard))
+                        }
+                    }
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.about_credits_text),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    },
+    Setting(context, SettingsWithoutKey.UPSTREAM, R.string.about_upstream_title, R.string.about_upstream_summary) {
+        val ctx = LocalContext.current
+        Preference(
+            name = it.title,
+            description = it.description,
+            onClick = { ctx.startActivity(Intent(Intent.ACTION_VIEW, Links.UPSTREAM_GITHUB.toUri())) },
             icon = R.drawable.ic_settings_about_github
         )
     },

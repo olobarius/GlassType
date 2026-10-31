@@ -10,21 +10,25 @@ object Links {
     const val DICTIONARY_NORMAL_SUFFIX = "dictionaries/"
     const val DICTIONARY_EXPERIMENTAL_SUFFIX = "dictionaries_experimental/"
     const val DICTIONARY_EMOJI_CLDR_SUFFIX = "emoji_cldr_signal_dictionaries/"
-    // LeanBitBoard fork repo
-    const val GITHUB = "https://github.com/LeanBitLab/HeliboardL"
+    // GlassType repo
+    const val GITHUB = "https://github.com/olobarius/GlassType"
     const val LICENSE = "$GITHUB/blob/main/LICENSE"
-    const val SPONSOR = "https://github.com/sponsors/LeanBitLab"
-    const val OPEN_COLLECTIVE = "https://opencollective.com/leanbitlab-org"
-    const val GITHUB_RELEASES_API = "https://api.github.com/repos/LeanBitLab/HeliboardL/releases/latest"
-    const val GITHUB_RELEASES_PAGE = "https://github.com/LeanBitLab/HeliboardL/releases"
+    // all GlassType releases are pre-releases, which /releases/latest does not return
+    const val GITHUB_RELEASES_API = "https://api.github.com/repos/olobarius/GlassType/releases?per_page=1"
+    const val GITHUB_RELEASES_PAGE = "$GITHUB/releases"
     const val FEATURES_URL = "$GITHUB/blob/main/docs/FEATURES.md"
     const val KEYCODES_URL = "$FEATURES_URL#30-comprehensive-keycodes--actions-reference"
+    // LeanType, the project GlassType is forked from
+    const val UPSTREAM_GITHUB = "https://github.com/LeanBitLab/LeanType"
+    const val SPONSOR = "https://github.com/sponsors/LeanBitLab"
+    const val OPEN_COLLECTIVE = "https://opencollective.com/leanbitlab-org"
     // Original HeliBoard wiki and community links
     const val ORIGINAL_GITHUB = "https://github.com/Helium314/HeliBoard"
+    const val OPENBOARD_GITHUB = "https://github.com/openboard-team/openboard"
     const val LAYOUT_WIKI_URL = "$ORIGINAL_GITHUB/wiki/2.-Layouts"
     const val WIKI_URL = "$ORIGINAL_GITHUB/wiki"
-    const val CUSTOM_LAYOUTS = "$GITHUB/discussions/categories/custom-layout"
-    const val CUSTOM_COLORS = "$GITHUB/discussions/categories/custom-colors"
+    const val CUSTOM_LAYOUTS = "$UPSTREAM_GITHUB/discussions/categories/custom-layout"
+    const val CUSTOM_COLORS = "$UPSTREAM_GITHUB/discussions/categories/custom-colors"
     // Voice Plugin Links
     const val VOICE_PLUGIN_REPO = "https://github.com/LeanBitLab/LeanType-Voice-Plugin"
     const val VOICE_PLUGIN_RELEASES_API = "https://api.github.com/repos/LeanBitLab/LeanType-Voice-Plugin/releases/latest"

@@ -23,9 +23,10 @@ android {
         applicationId = "de.glasstype.keyboard"
         minSdk = 21
         targetSdk = 35
-        // ponytail: release version 4.3.0
-        versionCode = 4300
-        versionName = "4.3.0"
+        // GlassType has its own version; versionCode stays close to the LeanType base so upstream migrations keep working
+        versionCode = 4301
+        versionName = "0.5.0"
+        buildConfigField("String", "UPSTREAM_VERSION", "\"4.3.0\"")
 
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         

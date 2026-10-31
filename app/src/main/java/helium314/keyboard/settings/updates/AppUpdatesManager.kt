@@ -22,6 +22,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
@@ -218,8 +219,8 @@ object AppUpdatesManager {
     suspend fun checkAllUpdates(context: Context): Pair<Boolean, List<PluginUpdateStatus>> {
         if (BuildConfig.FLAVOR != "standard") return Pair(false, emptyList())
         return withContext(Dispatchers.IO) {
-            // GlassType is a separate app: LeanType releases are not updates for it
-            val appUpdateDeferred = async { null as String? }
+            // GlassType releases (not LeanType: that is a separate app with its own versioning)
+            val appUpdateDeferred = async { fetchLatestTag(Links.GITHUB_RELEASES_API) }
 
             val installedPlugins = PLUGINS.mapNotNull { plugin ->
                 val installedVer = plugin.getInstalledVersion(context)
@@ -288,12 +289,13 @@ object AppUpdatesManager {
             val conn = url.openConnection() as HttpURLConnection
             conn.connectTimeout = 6000
             conn.readTimeout = 6000
-            conn.setRequestProperty("User-Agent", "LeanType-Android")
+            conn.setRequestProperty("User-Agent", "GlassType-Android")
             conn.connect()
             if (conn.responseCode == 200) {
-                val response = conn.inputStream.bufferedReader().use { it.readText() }
-                val json = JSONObject(response)
-                json.optString("tag_name", "").trim().ifEmpty { null }
+                val response = conn.inputStream.bufferedReader().use { it.readText() }.trim()
+                // "/releases?per_page=1" returns a list, "/releases/latest" a single release
+                val json = if (response.startsWith("[")) JSONArray(response).optJSONObject(0) else JSONObject(response)
+                json?.optString("tag_name", "")?.trim()?.ifEmpty { null }
             } else null
         } catch (e: Exception) {
             Log.w(TAG, "Failed to check update from $apiUrl: ${e.message}")

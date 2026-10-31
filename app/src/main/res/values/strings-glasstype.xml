@@ -27,5 +27,29 @@
     <string name="voice_system_not_available">No speech recognition service found. Install or enable \"Speech Recognition and Synthesis from Google\" or Samsung voice input.</string>
     <string name="voice_system_busy">Speech recognition is busy, please try again</string>
     <string name="voice_system_error">Speech recognition error (%d)</string>
+    <!-- About / Updates -->
+    <string name="glasstype_slogan">Transparent keyboard with voice input and swipe typing</string>
+    <string name="version_text_glasstype">Version %1$s · based on LeanType %2$s</string>
+    <string name="about_github_glasstype_summary">GlassType source code, test versions and bug reports</string>
+    <string name="about_upstream_title">LeanType</string>
+    <string name="about_upstream_summary">GlassType is based on LeanType by LeanBitLab. Open the original project on GitHub</string>
+    <string name="about_credits_title">Credits</string>
+    <string name="about_credits_summary">The projects GlassType is built on</string>
+    <string name="about_credits_text">GlassType by olobarius\nTransparent mode, built-in voice input, peek button and keyboard-over-app mode.\n\nBased on:\n• LeanType by LeanBitLab, the project GlassType is forked from\n• HeliBoard by Helium314\n• OpenBoard\n• AOSP LatinIME (Android Open Source Project)\n\nDictionaries: Helium314/aosp-dictionaries\nSwipe typing: gesture library from Google LatinIME\n\nMany thanks to everyone who contributed to these projects.</string>
+    <string name="about_open_leantype">LeanType on GitHub</string>
+    <string name="about_open_heliboard">HeliBoard on GitHub</string>
+    <string name="about_license_text">GlassType, like LeanType and HeliBoard, is licensed under the GNU GPL v3.0.\n\nThird-party speech components (optional plugins from LeanType):\n• whisper.cpp: MIT License (github.com/ggerganov/whisper.cpp)\n• Vosk Speech Recognition: Apache 2.0 (alphacephei.com/vosk)</string>
+    <string name="updates_support_leantype_title">Support LeanType</string>
+    <string name="updates_support_leantype_summary">GlassType is based on LeanType. Support the LeanType developers, whose work makes GlassType possible.</string>
+    <string name="updates_community_leantype_title">LeanType community</string>
+    <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
+    <string-array name="glasstype_changelog">
+        <item>• Own version number and update check for GlassType releases</item>
+        <item>• About: GitHub link to GlassType, credits and link to LeanType</item>
+        <item>• Number row shown by default</item>
+        <item>• German: QWERTZ+ with umlaut keys by default, unsplit keyboard on unfolded foldables</item>
+        <item>• Gesture library download is verified by checksum</item>
+        <item>• Transparent mode, peek button, keyboard over app, built-in voice input</item>
+    </string-array>
     <string name="gesture_lib_checksum_mismatch">the downloaded file does not match the known gesture library (checksum) and was deleted</string>
 </resources>

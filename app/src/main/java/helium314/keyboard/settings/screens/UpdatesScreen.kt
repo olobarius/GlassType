@@ -46,6 +46,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,20 +63,6 @@ import helium314.keyboard.settings.preferences.PreferenceCategory
 import helium314.keyboard.settings.preferences.SwitchPreference
 import helium314.keyboard.settings.updates.AppUpdatesManager
 import kotlinx.coroutines.launch
-
-private val currentChangelogItems = listOf(
-    "• Exact Visual Line Delete Swipe: Integrated platform-native requestTextBoundsInfo for accurate multi-line delete swipes on Android 14+ (#731)",
-    "• Foldable & Large Display Ergonomics: Added display fine-tuning controls and automatic screen profile detection (#400)",
-    "• Progressive Disclosure Settings: Clean settings architecture with expandable fine-tuning drawers across all categories",
-    "• Chinese Punctuation & CJK Symbols: Direct input of full-width punctuation marks and dedicated CJK symbols layout",
-    "• Offline AI Long Text Scaling: Dynamically scaled tokens and expanded context limit to 3,072 tokens for long paragraphs",
-    "• Blocked Words Import & Export: Added standalone blacklist text file import and export with duplicate filtering (#687)",
-    "• Tamil V4 Standard Layout: Standardized modern Tamil V4 layout option across Tamil locales",
-    "• Fast-Typing Shift & Chording Fix: Resolved multi-touch shift state reset and inadvertent capitalization (#743, #598)",
-    "• Chromium & Web Editor Reliability: Restored word suggestions on backspace (#692) and enabled soft input on TYPE_NULL fields",
-    "• Zero-Delay Keyboard Launch: Eliminated opening flashes with transparent platform theme and instant key previews",
-    "• 100% Global Translations: Complete translation coverage across 30 supported languages and regional variants"
-)
 
 @Composable
 fun UpdatesScreen(
@@ -398,14 +385,14 @@ fun UpdatesScreen(
                     Column(modifier = Modifier.padding(vertical = 4.dp)) {
                         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                             Text(
-                                text = stringResource(R.string.updates_support_title),
+                                text = stringResource(R.string.updates_support_leantype_title),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = stringResource(R.string.updates_support_summary),
+                                text = stringResource(R.string.updates_support_leantype_summary),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -489,7 +476,7 @@ fun UpdatesScreen(
 
                         AnimatedVisibility(visible = isChangelogExpanded) {
                             Column(modifier = Modifier.padding(top = 10.dp)) {
-                                for (item in currentChangelogItems) {
+                                for (item in stringArrayResource(R.array.glasstype_changelog)) {
                                     Text(
                                         text = item,
                                         style = MaterialTheme.typography.bodySmall,
@@ -514,14 +501,14 @@ fun UpdatesScreen(
                 ) {
                     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                         Text(
-                            text = stringResource(R.string.updates_community_title),
+                            text = stringResource(R.string.updates_community_leantype_title),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = stringResource(R.string.updates_community_summary),
+                            text = stringResource(R.string.updates_community_leantype_summary),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

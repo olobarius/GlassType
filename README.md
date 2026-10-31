@@ -24,6 +24,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 - [Schwebende Tastatur](#schwebende-tastatur)
 - [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe)
 - [Symbolleiste: die neuen Knöpfe](#symbolleiste-die-neuen-knöpfe)
+- [Version, Updates und „Über“](#version-updates-und-über)
 - [Bekannte Einschränkungen](#bekannte-einschränkungen)
 - [Selbst bauen](#selbst-bauen)
 - [Lizenz und Danksagung](#lizenz-und-danksagung)
@@ -62,6 +63,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Deutsch mit Umlauttasten** | Eigene Tasten für Ü, Ö, Ä und ß; auf dem aufgeklappten Fold ungeteilt über die ganze Breite. | Standard |
 | **Zahlenzeile** | Eigene Reihe mit 1 bis 0 über den Buchstaben. | Standard; abschaltbar unter *Optionen → Zusätzliche Tasten* |
 | **Geprüfte Wischeingabe-Bibliothek** | Die heruntergeladene Gesten-Bibliothek wird nur mit der bekannten Prüfsumme übernommen. | *Gesten-Tippen → Bibliothek laden* |
+| **Eigene Version und Update-Prüfung** | Eigene Versionsnummer, Update-Prüfung gegen die GlassType-Releases, „Über“ mit Credits und Link zu LeanType. | *Einstellungen → Updates* bzw. *Über* |
 
 ---
 
@@ -119,6 +121,15 @@ Normalerweise schiebt eine angedockte Tastatur die App nach oben bzw. verkleiner
 - Dauerhaft einstellbar unter *Aussehen → Transparenz → Tastatur liegt über der App*.
 - **Tipp:** Zusammen mit **Echte Durchsicht** und niedriger Hintergrund-Deckkraft sieht man den App-Inhalt durch die Tastatur.
 - Gilt nur für die angedockte Tastatur. Die schwebende Tastatur liegt ohnehin immer über der App.
+
+So sieht der Unterschied aus (getestet in Samsung Notes auf dem Fold 3):
+
+| Ebenen-Symbol | Verhalten |
+|---|---|
+| **aus** (Standard) | Die App wird hochgeschoben. Die Zeile mit dem Cursor und die Formatierungsleiste der App stehen direkt über der Tastatur. |
+| **an** (hervorgehoben) | Die App behält die volle Höhe, ihre untere Leiste liegt hinter der Tastatur. Neu getippte Zeilen unten verschwinden hinter der Tastatur, bis man wieder umschaltet. |
+
+Das Umschalten wirkt sofort, auch mitten im Tippen. Schaltet man zurück, rutscht die App wieder hoch und zeigt den Cursor.
 
 > Achtung: Die App scrollt das Eingabefeld dann nicht mehr automatisch über die Tastatur. Liegt das Feld darunter, hilft das [Auge](#unter-die-tastatur-schauen-auge) oder der Schalter.
 
@@ -220,6 +231,21 @@ Anpassen unter *Einstellungen → Symbolleiste → Angeheftete Tasten der Symbol
 
 ---
 
+## Version, Updates und „Über“
+
+- GlassType hat ab **0.5.0** eine eigene Versionsnummer. Unter *Einstellungen → Über* steht z. B. **„Version 0.5.0 · basiert auf LeanType 4.3.0“**, also die eigene Version und die LeanType-Version, auf der sie aufbaut.
+- **Updates:** *Einstellungen → Updates → Nach Updates suchen* prüft die [GlassType-Releases](https://github.com/olobarius/GlassType/releases), nicht mehr LeanType. Ist eine neuere Version da, führt der Hinweis zur Release-Seite. Die automatische Prüfung (Schalter und Prüfhäufigkeit) bleibt wie in LeanType.
+- „Was ist neu“ zeigt die Änderungen von GlassType. Die Bereiche zum Unterstützen und zur Community sind als **LeanType** gekennzeichnet und führen zu LeanBitLab, den Entwicklern der Basis.
+- **Über:**
+  - **Auf GitHub ansehen** öffnet dieses Repository.
+  - **Credits** listet die Projekte, auf denen GlassType aufbaut (LeanType, HeliBoard, OpenBoard, AOSP), mit Knöpfen zu LeanType und HeliBoard auf GitHub.
+  - **LeanType** öffnet direkt das Originalprojekt.
+- Die Plugin-Updates (Offline-Sprache, OCR, Übersetzung …) kommen weiterhin von LeanBitLab.
+
+> Für Android ist eine Version neuer, wenn ihr interner Versionscode höher ist. GlassType zählt diesen Code von LeanType aus weiter (0.5.0 = 4301). So bleiben die Einstellungs-Übernahmen aus LeanType gültig und ein Update über ältere Testversionen funktioniert.
+
+---
+
 ## Bekannte Einschränkungen
 
 - **Live-Hintergründe** (animiert) gibt Android nicht an Apps heraus. Dann bitte ein Standbild über „Hintergrundbild festlegen“ wählen.
@@ -255,6 +281,7 @@ Die wichtigsten Änderungen gegenüber LeanType im Code:
 | `app/src/main/java/helium314/keyboard/latin/voice/VoiceInputManager.kt` | Integrierte Spracheingabe (Android `SpeechRecognizer`) |
 | `app/src/main/java/helium314/keyboard/latin/LatinIME.kt` | Insets für Auge und „Tastatur über der App“, transparente Navigationsleiste |
 | `app/src/main/java/helium314/keyboard/latin/FloatingKeyboardManager.kt` | Transparenz und Auge in der schwebenden Tastatur |
+| `app/src/main/java/helium314/keyboard/settings/screens/AboutScreen.kt`, `UpdatesScreen.kt`, `settings/updates/AppUpdatesManager.kt` | Eigene Version, Credits, Update-Prüfung gegen GlassType-Releases |
 
 ---
 

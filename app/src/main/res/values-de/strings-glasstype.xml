@@ -26,5 +26,29 @@
     <string name="voice_system_not_available">Kein Spracherkennungsdienst gefunden. Installiere oder aktiviere „Spracherkennung und -synthese von Google“ oder die Samsung-Spracheingabe.</string>
     <string name="voice_system_busy">Spracherkennung ist beschäftigt, bitte erneut versuchen</string>
     <string name="voice_system_error">Fehler bei der Spracherkennung (%d)</string>
+    <!-- Über / Updates -->
+    <string name="glasstype_slogan">Transparente Tastatur mit Spracheingabe und Wischeingabe</string>
+    <string name="version_text_glasstype">Version %1$s · basiert auf LeanType %2$s</string>
+    <string name="about_github_glasstype_summary">Quellcode, Testversionen und Fehlermeldungen von GlassType</string>
+    <string name="about_upstream_title">LeanType</string>
+    <string name="about_upstream_summary">GlassType basiert auf LeanType von LeanBitLab. Das Originalprojekt auf GitHub öffnen</string>
+    <string name="about_credits_title">Credits</string>
+    <string name="about_credits_summary">Die Projekte, auf denen GlassType aufbaut</string>
+    <string name="about_credits_text">GlassType von olobarius\nTransparenz-Modus, integrierte Spracheingabe, Auge und „Tastatur über der App“.\n\nBasiert auf:\n• LeanType von LeanBitLab – das Projekt, von dem GlassType abstammt\n• HeliBoard von Helium314\n• OpenBoard\n• AOSP LatinIME (Android Open Source Project)\n\nWörterbücher: Helium314/aosp-dictionaries\nWischeingabe: Gesten-Bibliothek aus Google LatinIME\n\nVielen Dank an alle, die an diesen Projekten mitgewirkt haben.</string>
+    <string name="about_open_leantype">LeanType auf GitHub</string>
+    <string name="about_open_heliboard">HeliBoard auf GitHub</string>
+    <string name="about_license_text">GlassType steht wie LeanType und HeliBoard unter der GNU GPL v3.0.\n\nSprachkomponenten von Drittanbietern (optionale Plugins aus LeanType):\n• whisper.cpp: MIT-Lizenz (github.com/ggerganov/whisper.cpp)\n• Vosk Speech Recognition: Apache 2.0 (alphacephei.com/vosk)</string>
+    <string name="updates_support_leantype_title">LeanType unterstützen</string>
+    <string name="updates_support_leantype_summary">GlassType basiert auf LeanType. Unterstütze die LeanType-Entwickler, deren Arbeit GlassType erst möglich macht.</string>
+    <string name="updates_community_leantype_title">LeanType-Community</string>
+    <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
+    <string-array name="glasstype_changelog">
+        <item>• Eigene Versionsnummer und Update-Prüfung für GlassType-Releases</item>
+        <item>• Über: GitHub-Link zu GlassType, Credits und Link zu LeanType</item>
+        <item>• Zahlenzeile standardmäßig eingeschaltet</item>
+        <item>• Deutsch: QWERTZ+ mit Umlauttasten als Standard, ungeteilte Tastatur auf aufgeklappten Foldables</item>
+        <item>• Download der Gesten-Bibliothek wird per Prüfsumme kontrolliert</item>
+        <item>• Transparenz-Modus, Auge, Tastatur über der App, integrierte Spracheingabe</item>
+    </string-array>
     <string name="gesture_lib_checksum_mismatch">die heruntergeladene Datei stimmt nicht mit der bekannten Gesten-Bibliothek überein (Prüfsumme) und wurde gelöscht</string>
 </resources>
