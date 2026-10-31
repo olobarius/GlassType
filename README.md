@@ -1,5 +1,7 @@
 # GlassType
 
+<img src="art/glasstype_icon/icon_preview.png" alt="GlassType-Symbol" width="96" align="right">
+
 **Android-Tastatur mit einstellbarer Transparenz, integrierter Spracheingabe und „Blick unter die Tastatur“.**
 Basiert auf [LeanType](https://github.com/LeanBitLab/LeanType) (Fork von [HeliBoard](https://github.com/Helium314/HeliBoard) / OpenBoard / AOSP LatinIME) und übernimmt dessen kompletten Funktionsumfang, inklusive Wischeingabe, schwebender Tastatur, Split-Layout für Foldables, Zwischenablage und Emoji-Suche.
 
@@ -293,3 +295,4 @@ GlassType steht wie LeanType und HeliBoard unter der **GNU General Public Licens
 - [HeliBoard](https://github.com/Helium314/HeliBoard) von Helium314
 - [OpenBoard](https://github.com/openboard-team/openboard) und [AOSP LatinIME](https://android.googlesource.com/platform/packages/inputmethods/LatinIME/)
 - Icons: [Material Icons](https://fonts.google.com/icons) (Apache-2.0)
+- App-Symbol: eigenes GlassType-Design (Glasscheibe mit Tastatur vor einem farbigen Hintergrund). Quelle und Generator liegen unter [`art/glasstype_icon/`](art/glasstype_icon/). `python make_icon.py <ordner> --png --android app/src/main/res` erzeugt die Vektor-Ressourcen und die PNGs neu.

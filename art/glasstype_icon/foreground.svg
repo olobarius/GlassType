@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#12C2E9"/>
+    <stop offset="0.55" stop-color="#5B6CF9"/>
+    <stop offset="1" stop-color="#B24BF3"/>
+  </linearGradient>
+  <radialGradient id="blobWarm" cx="372" cy="150" r="170" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#FFC371" stop-opacity="0.95"/>
+    <stop offset="1" stop-color="#FFC371" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="blobMint" cx="140" cy="380" r="180" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#3DF5C6" stop-opacity="0.85"/>
+    <stop offset="1" stop-color="#3DF5C6" stop-opacity="0"/>
+  </radialGradient>
+
+  <linearGradient id="glass" x1="116" y1="151" x2="396" y2="361" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.42"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.12"/>
+  </linearGradient>
+</defs><g transform="translate(256 256) scale(0.9) translate(-256 -256)"><path d="M160,163 h192 a40,40 0 0 1 40,40 v130 a40,40 0 0 1 -40,40 h-192 a40,40 0 0 1 -40,-40 v-130 a40,40 0 0 1 40,-40 z" fill="#1B1464" fill-opacity="0.18"/><path d="M156,151 h200 a40,40 0 0 1 40,40 v130 a40,40 0 0 1 -40,40 h-200 a40,40 0 0 1 -40,-40 v-130 a40,40 0 0 1 40,-40 z" fill="url(#glass)"/><clipPath id="cardClip"><path d="M156,151 h200 a40,40 0 0 1 40,40 v130 a40,40 0 0 1 -40,40 h-200 a40,40 0 0 1 -40,-40 v-130 a40,40 0 0 1 40,-40 z"/></clipPath><path d="M116,151 L262,151 L170,361 L116,361 z" fill="#FFFFFF" fill-opacity="0.16" clip-path="url(#cardClip)"/><path d="M156,151 h200 a40,40 0 0 1 40,40 v130 a40,40 0 0 1 -40,40 h-200 a40,40 0 0 1 -40,-40 v-130 a40,40 0 0 1 40,-40 z" fill="none" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="5"/><path d="M156,185 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M215,185 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M274,185 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M333,185 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M156,237 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M215,237 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M274,237 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M333,237 h23 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-23 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/><path d="M196,289 h120 a10,10 0 0 1 10,10 v16 a10,10 0 0 1 -10,10 h-120 a10,10 0 0 1 -10,-10 v-16 a10,10 0 0 1 10,-10 z" fill="#FFFFFF" fill-opacity="0.93"/></g></svg>
