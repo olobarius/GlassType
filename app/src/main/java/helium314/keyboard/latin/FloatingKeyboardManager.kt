@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -172,10 +173,12 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
         KeyboardLayoutSet.clearKeyboardCache()
 
         val colors = Settings.getValues().mColors
+        val transparent = Settings.getValues().mTransparencyActive
         val bgColor = colors.get(ColorType.MAIN_BACKGROUND)
         val textColor = colors.get(ColorType.KEY_TEXT)
         val cornerRadius = CORNER_RADIUS_DP * density
         val bottomBarHeight = (BOTTOM_BAR_HEIGHT_DP * density).toInt()
+        endPeek()
 
         // Configure or create bottom bar inside main_keyboard_frame
         val bottomContainer = frame.findViewById<FrameLayout>(R.id.floating_bottom_bar)
@@ -187,7 +190,9 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
             bottomContainer.layoutParams = bottomLp
             bottomContainer.setPadding(0, 0, 0, 0)
             bottomContainer.removeAllViews()
-            bottomBar = createBottomBar(bottomBarHeight, bgColor, textColor, density, cornerRadius)
+            // in transparent mode the frame background (wallpaper / translucent color) also covers the bar
+            val barColor = if (transparent) Color.TRANSPARENT else bgColor
+            bottomBar = createBottomBar(bottomBarHeight, barColor, textColor, density, cornerRadius)
             bottomContainer.addView(bottomBar)
             bottomContainer.visibility = View.VISIBLE
         }
@@ -215,20 +220,30 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
         frame.translationY = posY.toFloat()
 
         // Background styling: rounded corners and elevation
-        val bgDrawable = GradientDrawable().apply {
-            setColor(bgColor)
-            cornerRadii = floatArrayOf(
-                cornerRadius, cornerRadius,
-                cornerRadius, cornerRadius,
-                cornerRadius, cornerRadius,
-                cornerRadius, cornerRadius
-            )
-        }
-        frame.background = bgDrawable
-        frame.clipToOutline = true
-        frame.outlineProvider = ViewOutlineProvider.BACKGROUND
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            frame.elevation = 8f * density
+        if (transparent) {
+            // wallpaper aligned to the floating position, or translucent theme color
+            frame.background = null
+            colors.setBackground(frame, ColorType.MAIN_BACKGROUND)
+            frame.outlineProvider = roundedOutline(cornerRadius)
+            frame.clipToOutline = true
+            // a shadow would shine through the translucent background
+            frame.elevation = 0f
+        } else {
+            val bgDrawable = GradientDrawable().apply {
+                setColor(bgColor)
+                cornerRadii = floatArrayOf(
+                    cornerRadius, cornerRadius,
+                    cornerRadius, cornerRadius,
+                    cornerRadius, cornerRadius,
+                    cornerRadius, cornerRadius
+                )
+            }
+            frame.background = bgDrawable
+            frame.clipToOutline = true
+            frame.outlineProvider = ViewOutlineProvider.BACKGROUND
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                frame.elevation = 8f * density
+            }
         }
 
         KeyboardSwitcher.getInstance().reloadKeyboard()
@@ -256,6 +271,7 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
 
     fun hide(showDockedKeyboard: Boolean = true) {
         if (!isFloating) return
+        endPeek()
 
         if (showDockedKeyboard) {
             prefs.edit().putBoolean(PREF_IS_ACTIVE, false).apply()
@@ -371,6 +387,7 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
     }
 
     fun destroy() {
+        endPeek()
         resetDragAndResizeState()
         if (isFloating) {
             val frame = getKeyboardFrame()
@@ -387,6 +404,23 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
             ResourceUtils.setFloatingKeyboardScale(0.0f)
             isFloating = false
             isAutoLandscapeFloating = false
+        }
+    }
+
+    // ── Peek: hold the eye button to hide everything except the button ──
+
+    private var peekButton: View? = null
+
+    private fun startPeek() {
+        val keep = peekButton ?: return
+        if (isFloating) latinIME.keyboardPeek.start(keep)
+    }
+
+    private fun endPeek() = latinIME.keyboardPeek.end()
+
+    private fun roundedOutline(radius: Float) = object : ViewOutlineProvider() {
+        override fun getOutline(view: View, outline: Outline) {
+            outline.setRoundRect(0, 0, view.width, view.height, radius)
         }
     }
 
@@ -459,6 +493,40 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
             setOnClickListener { hide(showDockedKeyboard = true) }
         }
         bottomBar.addView(dockBtn)
+
+        // Peek button: hold to hide the keyboard except this button, release to show it again
+        val peekBtn = ImageButton(context).apply {
+            layoutParams = FrameLayout.LayoutParams(btnSize, btnSize).apply {
+                gravity = Gravity.CENTER_VERTICAL or Gravity.START
+                marginStart = (8 * density).toInt() + btnSize + (8 * density).toInt()
+            }
+            setPadding(dockPadding, dockPadding, dockPadding, dockPadding)
+            setImageResource(R.drawable.ic_floating_peek)
+            setColorFilter(textColor)
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                this.cornerRadius = 6 * density
+                setColor((textColor and 0x00FFFFFF) or 0x1A000000.toInt())
+            }
+            contentDescription = context.getString(R.string.floating_keyboard_peek)
+            scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+            setOnTouchListener { v, event ->
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        v.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
+                        startPeek()
+                        true
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        endPeek()
+                        true
+                    }
+                    else -> true
+                }
+            }
+        }
+        peekButton = peekBtn
+        bottomBar.addView(peekBtn)
 
         // Corner Resize Handle (Bottom-Right / End)
         val defaultBgColor = (textColor and 0x00FFFFFF) or 0x1A000000.toInt()
@@ -641,6 +709,8 @@ class FloatingKeyboardManager(private val context: Context, private val latinIME
 
                         frame.translationX = newX
                         frame.translationY = newY
+                        // wallpaper is aligned to the screen, so it has to be redrawn at the new position
+                        if (Settings.getValues().mTransparencyActive) frame.invalidate()
                     }
                     true
                 }

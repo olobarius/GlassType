@@ -58,6 +58,24 @@ object KeyboardTransparency {
         return WallpaperFetcher.getSystemWallpaper(context) != null
     }
 
+    /** quick toggle: off <-> last used transparent mode (home screen by default) */
+    fun toggle(context: Context) {
+        val prefs = context.prefs()
+        val current = mode(prefs)
+        val next = if (current == MODE_OFF) {
+            prefs.getString(Settings.PREF_TRANSPARENCY_LAST_MODE, MODE_DESKTOP) ?: MODE_DESKTOP
+        } else MODE_OFF
+        val editor = prefs.edit().putString(Settings.PREF_TRANSPARENCY_MODE, next)
+        if (current != MODE_OFF) editor.putString(Settings.PREF_TRANSPARENCY_LAST_MODE, current)
+        editor.apply()
+        Settings.clearCachedBackgroundImages(context)
+    }
+
+    /** remember the mode chosen in settings for the quick toggle */
+    fun rememberMode(prefs: SharedPreferences, mode: String) {
+        if (mode != MODE_OFF) prefs.edit().putString(Settings.PREF_TRANSPARENCY_LAST_MODE, mode).apply()
+    }
+
     fun clearCache() {
         cachedBitmap = null
         cachedKey = null

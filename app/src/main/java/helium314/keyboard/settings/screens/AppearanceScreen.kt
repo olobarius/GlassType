@@ -95,6 +95,7 @@ fun AppearanceScreen(
             if (transparencyOn) Settings.PREF_KEY_OPACITY else null,
             if (desktopMode) Settings.PREF_BACKGROUND_BLUR_AMOUNT else null,
             if (desktopMode) SettingsWithoutKey.BACKGROUND_IMAGE else null,
+            Settings.PREF_KEYBOARD_OVERLAY,
 
             // Theme
             R.string.settings_screen_theme,
@@ -186,6 +187,7 @@ fun createAppearanceSettings(context: Context) = listOf(
             stringResource(R.string.transparency_mode_see_through) to KeyboardTransparency.MODE_SEE_THROUGH,
         )
         ListPreference(setting, items, Defaults.PREF_TRANSPARENCY_MODE) { mode ->
+            KeyboardTransparency.rememberMode(ctx.prefs(), mode)
             if (mode == KeyboardTransparency.MODE_DESKTOP && !KeyboardTransparency.canReadSystemWallpaper(ctx))
                 showAccessDialog = true
             Settings.clearCachedBackgroundImages(ctx)
@@ -211,6 +213,9 @@ fun createAppearanceSettings(context: Context) = listOf(
                 cancelButtonText = stringResource(android.R.string.cancel),
             )
         }
+    },
+    Setting(context, Settings.PREF_KEYBOARD_OVERLAY, R.string.keyboard_overlay, R.string.keyboard_overlay_summary) {
+        SwitchPreference(it, Defaults.PREF_KEYBOARD_OVERLAY)
     },
     Setting(context, Settings.PREF_BACKGROUND_OPACITY, R.string.background_opacity) { setting ->
         SliderPreference(

@@ -674,6 +674,20 @@ class LatinIME : InputMethodService(),
         }
     }
 
+    val keyboardPeek = KeyboardPeek(this)
+
+    fun onPeekChanged(peeking: Boolean) {
+        val win = window?.window
+        if (peeking) {
+            win?.navigationBarColor = Color.TRANSPARENT
+            updateNavigationBarFrameVisibility(true)
+        } else {
+            updateNavigationBarFrameVisibility(FloatingKeyboardManager.isFloatingMode(displayContext ?: this))
+            setNavigationBarColor()
+        }
+        requestInsetsUpdate()
+    }
+
     fun updateNavigationBarFrameVisibility(isFloating: Boolean) {
         val decor = window?.window?.decorView as? ViewGroup ?: return
         for (i in 0 until decor.childCount) {
@@ -735,6 +749,7 @@ class LatinIME : InputMethodService(),
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
+        keyboardPeek.end()
         isExplicitShowRequested = false
         StatsUtils.onFinishInputView()
         handler.onFinishInputView(finishingInput)
@@ -1197,6 +1212,21 @@ class LatinIME : InputMethodService(),
         super.onComputeInsets(outInsets)
         val view = inputView ?: return
 
+        if (keyboardPeek.isPeeking) {
+            // keyboard reports zero height so the app shows the content hidden behind it,
+            // only the held peek button stays touchable
+            val decorHeight = window?.window?.decorView?.height ?: 0
+            val fullHeight = maxOf(decorHeight, view.height)
+            outInsets.contentTopInsets = fullHeight
+            outInsets.visibleTopInsets = fullHeight
+            outInsets.touchableInsets = InputMethodService.Insets.TOUCHABLE_INSETS_REGION
+            outInsets.touchableRegion.setEmpty()
+            if (keyboardPeek.getTouchableRect(mFloatingTouchableRect))
+                outInsets.touchableRegion.set(mFloatingTouchableRect)
+            insetsUpdater?.setInsets(outInsets)
+            return
+        }
+
         val fkm = floatingKeyboardManager
         val isFloating = FloatingKeyboardManager.isFloatingMode(displayContext ?: this)
         if (fkm != null && isFloating && !isFullscreenMode) {
@@ -1281,8 +1311,16 @@ class LatinIME : InputMethodService(),
             outInsets.touchableRegion.set(touchLeft, touchTop, touchRight, touchBottom)
         }
         
-        outInsets.contentTopInsets = visibleTopY
-        outInsets.visibleTopInsets = visibleTopY
+        if (prefs().getBoolean(Settings.PREF_KEYBOARD_OVERLAY, Defaults.PREF_KEYBOARD_OVERLAY) && !isFullscreenMode) {
+            // keyboard lies over the app: report zero height so the app is not pushed up / resized,
+            // the keyboard area itself stays touchable (region set above)
+            val fullHeight = maxOf(window?.window?.decorView?.height ?: 0, inputHeight)
+            outInsets.contentTopInsets = fullHeight
+            outInsets.visibleTopInsets = fullHeight
+        } else {
+            outInsets.contentTopInsets = visibleTopY
+            outInsets.visibleTopInsets = visibleTopY
+        }
         insetsUpdater?.setInsets(outInsets)
     }
 

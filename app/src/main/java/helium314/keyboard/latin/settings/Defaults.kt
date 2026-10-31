@@ -75,6 +75,7 @@ object Defaults {
     const val PREF_TRANSPARENCY_MODE = "off"
     const val PREF_BACKGROUND_OPACITY = 35
     const val PREF_KEY_OPACITY = 55
+    const val PREF_KEYBOARD_OVERLAY = false
     const val PREF_CUSTOM_ICON_NAMES = ""
     const val PREF_TOOLBAR_CUSTOM_KEY_CODES = ""
     const val PREF_AUTO_CAP = true

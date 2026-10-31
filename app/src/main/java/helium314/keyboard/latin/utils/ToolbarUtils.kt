@@ -210,6 +210,8 @@ fun setToolbarButtonActivatedState(button: ImageButton) {
         AUTO_CAP -> Settings.getValues().mAutoCap
         FORCE_AUTO_CAPS -> Settings.getValues().mAutoCap && Settings.getValues().mForceAutoCaps
         SELECT_MODE -> helium314.keyboard.keyboard.KeyboardActionListenerImpl.sPersistentSelectionModeActive
+        TRANSPARENCY -> KeyboardTransparency.isActive(button.context.prefs())
+        OVERLAY -> button.context.prefs().getBoolean(Settings.PREF_KEYBOARD_OVERLAY, Defaults.PREF_KEYBOARD_OVERLAY)
         else -> true
     }
     button.isActivated = activated
@@ -226,7 +228,7 @@ fun setToolbarButtonActivatedState(button: ImageButton) {
         ViewCompat.setStateDescription(button, button.context.getString(state))
     }
     val colors = Settings.getValues().mColors
-    if (activated && button.tag in listOf(INCOGNITO, ONE_HANDED, SPLIT, AUTOCORRECT, AUTO_CAP, FORCE_AUTO_CAPS, SELECT_MODE)) {
+    if (activated && button.tag in listOf(INCOGNITO, ONE_HANDED, SPLIT, AUTOCORRECT, AUTO_CAP, FORCE_AUTO_CAPS, SELECT_MODE, TRANSPARENCY, OVERLAY)) {
         colors.setColor(button.background, ColorType.TOOL_BAR_KEY_ENABLED_BACKGROUND)
         if (button.drawable != null) {
             button.clearColorFilter()
@@ -244,6 +246,8 @@ fun setToolbarButtonActivatedState(button: ImageButton) {
 
 fun getCodeForToolbarKey(key: ToolbarKey) = Settings.getInstance().getCustomToolbarKeyCode(key) ?: when (key) {
     VOICE -> KeyCode.VOICE_INPUT
+    PEEK -> KeyCode.UNSPECIFIED // handled by touch listener (press and hold)
+    TRANSPARENCY, OVERLAY -> KeyCode.UNSPECIFIED // handled by click listener in SuggestionStripView
     CLIPBOARD -> KeyCode.CLIPBOARD
     CLIPBOARD_SEARCH -> KeyCode.CLIPBOARD_SEARCH
     NUMPAD -> KeyCode.NUMPAD
@@ -320,7 +324,7 @@ fun getCodeForToolbarKeyLongClick(key: ToolbarKey) = Settings.getInstance().getC
 
 // names need to be aligned with resources strings (using lowercase of key.name)
 enum class ToolbarKey {
-    VOICE, CLIPBOARD, CLIPBOARD_SEARCH, NUMPAD, HANDWRITING, UNDO, REDO, SETTINGS, SELECT_ALL, SELECT_WORD, COPY, CUT, PASTE, ONE_HANDED, SPLIT, FLOATING,
+    VOICE, PEEK, TRANSPARENCY, OVERLAY, CLIPBOARD, CLIPBOARD_SEARCH, NUMPAD, HANDWRITING, UNDO, REDO, SETTINGS, SELECT_ALL, SELECT_WORD, COPY, CUT, PASTE, ONE_HANDED, SPLIT, FLOATING,
     INCOGNITO, TOUCHPAD, TEXT_EDIT, AUTOCORRECT, AUTO_CAP, FORCE_AUTO_CAPS, CLEAR_CLIPBOARD, CLOSE_HISTORY, EMOJI, LEFT, RIGHT, UP, DOWN, WORD_LEFT, WORD_RIGHT,
     PAGE_UP, PAGE_DOWN, FULL_LEFT, FULL_RIGHT, PAGE_START, PAGE_END, PROOFREAD, TRANSLATE, OCR, SELECT_MODE, GIF,
     CUSTOM_AI_1, CUSTOM_AI_2, CUSTOM_AI_3, CUSTOM_AI_4, CUSTOM_AI_5,
@@ -361,7 +365,7 @@ private val excludedKeys by lazy {
 val defaultToolbarPref by lazy {
     val default = when (helium314.keyboard.latin.BuildConfig.FLAVOR) {
         "offline" -> listOf(SETTINGS, VOICE, CLIPBOARD, HANDWRITING, OCR, GIF, CUSTOM_AI_1, CUSTOM_AI_2, CUSTOM_AI_3, UNDO, INCOGNITO, COPY, PASTE, PROOFREAD, TRANSLATE, TEXT_EDIT, AUTOCORRECT)
-        else -> listOf(SETTINGS, VOICE, CLIPBOARD, HANDWRITING, OCR, GIF, CUSTOM_AI_1, CUSTOM_AI_2, CUSTOM_AI_3, UNDO, PROOFREAD, TRANSLATE, INCOGNITO, TOUCHPAD, TEXT_EDIT, AUTOCORRECT, FLOATING, NUMPAD, COPY, PASTE, SELECT_ALL, SELECT_MODE)
+        else -> listOf(SETTINGS, VOICE, PEEK, TRANSPARENCY, OVERLAY, CLIPBOARD, HANDWRITING, OCR, GIF, CUSTOM_AI_1, CUSTOM_AI_2, CUSTOM_AI_3, UNDO, PROOFREAD, TRANSLATE, INCOGNITO, TOUCHPAD, TEXT_EDIT, AUTOCORRECT, FLOATING, NUMPAD, COPY, PASTE, SELECT_ALL, SELECT_MODE)
     }
         
     val others = entries.filterNot { it in default || it in excludedKeys }
@@ -370,7 +374,9 @@ val defaultToolbarPref by lazy {
 }
 
 val defaultPinnedToolbarPref by lazy {
-    val pinnedDefault = listOf(CLIPBOARD, PROOFREAD, TOUCHPAD, TEXT_EDIT, FLOATING)
+    // voice is pinned so the mic is always one tap away (docked and floating)
+    // proofread (needs an AI key) and touchpad (spacebar swipe) make room for the GlassType quick keys
+    val pinnedDefault = listOf(VOICE, PEEK, TRANSPARENCY, OVERLAY, CLIPBOARD, TEXT_EDIT, FLOATING)
 
     entries.filterNot { it in excludedKeys }.joinToString(Separators.ENTRY) {
         it.name + Separators.KV + (it in pinnedDefault)

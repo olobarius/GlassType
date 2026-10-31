@@ -163,6 +163,8 @@ open class SettingsValues(
     val mTransparencyActive: Boolean
     /** alpha 0..255 applied to key backgrounds of the main keyboard (transparent mode) */
     val mKeyBackgroundAlpha: Int
+    /** docked keyboard lies over the app instead of pushing it up */
+    val mKeyboardOverlay: Boolean
     val mKeyboardHeightScale: Float
     val mUrlDetectionEnabled: Boolean
     val mBottomPaddingScale: Float
@@ -481,6 +483,7 @@ open class SettingsValues(
         mCustomNavBarColor = prefs.getBoolean(Settings.PREF_NAVBAR_COLOR, Defaults.PREF_NAVBAR_COLOR)
         mTransparencyActive = helium314.keyboard.latin.utils.KeyboardTransparency.isActive(prefs)
         mKeyBackgroundAlpha = helium314.keyboard.latin.utils.KeyboardTransparency.keyAlpha(prefs)
+        mKeyboardOverlay = prefs.getBoolean(Settings.PREF_KEYBOARD_OVERLAY, Defaults.PREF_KEYBOARD_OVERLAY)
         mNarrowKeyGaps = prefs.getBoolean(Settings.PREF_NARROW_KEY_GAPS, Defaults.PREF_NARROW_KEY_GAPS)
         mNarrowKeyGapsLevel = prefs.getInt(Settings.PREF_NARROW_KEY_GAPS_LEVEL, Defaults.PREF_NARROW_KEY_GAPS_LEVEL)
         mThemeKeyBorders = prefs.getBoolean(Settings.PREF_THEME_KEY_BORDERS, Defaults.PREF_THEME_KEY_BORDERS)

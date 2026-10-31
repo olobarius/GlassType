@@ -13,6 +13,13 @@
     <string name="transparency_wallpaper_access_title">Zugriff auf Hintergrundbild erlauben</string>
     <string name="transparency_wallpaper_access_message">Seit Android 14 dürfen Apps das Hintergrundbild nur mit der Berechtigung „Zugriff auf alle Dateien“ lesen. Erteile sie GlassType, damit das Hintergrundbild exakt durchscheint. Ohne Berechtigung wähle dein Hintergrundbild manuell über „Hintergrundbild festlegen“ – es wird genauso am Bildschirm ausgerichtet.</string>
     <string name="transparency_wallpaper_access_grant">Zugriff erlauben</string>
+    <!-- Schwebende Tastatur -->
+    <string name="floating_keyboard_peek">Gedrückt halten, um die Tastatur kurz auszublenden</string>
+    <string name="peek">Unter die Tastatur schauen (gedrückt halten)</string>
+    <string name="overlay">Tastatur über der App (nicht hochschieben)</string>
+    <string name="transparency">Transparenz an/aus</string>
+    <string name="keyboard_overlay">Tastatur liegt über der App</string>
+    <string name="keyboard_overlay_summary">Die angedockte Tastatur schiebt die App nicht hoch. Zusammen mit „Echte Durchsicht“ scheint der App-Inhalt durch die Tastatur. Schnellschalter in der Werkzeugleiste.</string>
     <!-- Sprache -->
     <string name="voice_provider_system">Integrierte Spracheingabe (Google / Samsung)</string>
     <string name="voice_provider_system_summary">Nutzt die Spracherkennung deines Handys direkt in der Tastatur. Live-Text beim Sprechen, kein Plugin nötig.</string>

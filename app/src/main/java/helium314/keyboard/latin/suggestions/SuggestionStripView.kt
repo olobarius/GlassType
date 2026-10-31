@@ -1573,7 +1573,40 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
 
     private fun setupKey(view: ImageButton, colors: Colors) {
         val tag = view.tag
-        if (tag is ToolbarKey && isRepeatableToolbarKey(tag)) {
+        if (tag == ToolbarKey.PEEK) {
+            // hold: hide the keyboard to see what is behind it, release: show it again
+            view.setOnTouchListener { v, event ->
+                val ime = KeyboardSwitcher.getInstance().latinIME
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, v, HapticEvent.KEY_PRESS)
+                        v.isPressed = true
+                        ime?.keyboardPeek?.start(v)
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        v.isPressed = false
+                        ime?.keyboardPeek?.end()
+                    }
+                }
+                true
+            }
+        } else if (tag == ToolbarKey.TRANSPARENCY || tag == ToolbarKey.OVERLAY) {
+            view.setOnClickListener { v ->
+                AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, v, HapticEvent.KEY_PRESS)
+                val prefs = context.prefs()
+                if (tag == ToolbarKey.TRANSPARENCY) {
+                    helium314.keyboard.latin.utils.KeyboardTransparency.toggle(context)
+                    // rebuilds the keyboard views with the new background
+                    v.post { KeyboardSwitcher.getInstance().setThemeNeedsReload() }
+                } else {
+                    val overlay = !prefs.getBoolean(Settings.PREF_KEYBOARD_OVERLAY, Defaults.PREF_KEYBOARD_OVERLAY)
+                    prefs.edit().putBoolean(Settings.PREF_KEYBOARD_OVERLAY, overlay).apply()
+                    KeyboardSwitcher.getInstance().latinIME?.requestInsetsUpdate()
+                }
+                setToolbarButtonActivatedState(v as ImageButton)
+            }
+            view.setOnLongClickListener(this)
+        } else if (tag is ToolbarKey && isRepeatableToolbarKey(tag)) {
             view.setOnTouchListener(RepeatableKeyTouchListener { repeatCount ->
                 if (repeatCount == 0 || repeatCount % 4 == 0) {
                     AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, view, HapticEvent.KEY_PRESS)
