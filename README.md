@@ -7,7 +7,7 @@ Basiert auf [LeanType](https://github.com/LeanBitLab/LeanType) (Fork von [HeliBo
 
 Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.0 und neuer).
 
-> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) getestet und funktionierend: Transparenz („Startbildschirm scheint durch“ und „Echte Durchsicht“), Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen) und integrierte Spracheingabe. Der schwebende Modus mit Transparenz ist noch nicht auf dem Gerät getestet. Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
+> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) getestet und funktionierend: Transparenz („Startbildschirm scheint durch“ und „Echte Durchsicht“), Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen), integrierte Spracheingabe sowie schwebende Tastatur mit Transparenz, Auge und Verschieben. Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
 
 ---
 
