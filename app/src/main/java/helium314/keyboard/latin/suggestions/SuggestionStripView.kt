@@ -1597,7 +1597,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 if (tag == ToolbarKey.TRANSPARENCY) {
                     helium314.keyboard.latin.utils.KeyboardTransparency.toggle(context)
                     // rebuilds the keyboard views with the new background
-                    v.post { KeyboardSwitcher.getInstance().setThemeNeedsReload() }
+                    v.post { KeyboardSwitcher.getInstance().reloadThemeInPlace() }
                 } else {
                     val overlay = !prefs.getBoolean(Settings.PREF_KEYBOARD_OVERLAY, Defaults.PREF_KEYBOARD_OVERLAY)
                     prefs.edit().putBoolean(Settings.PREF_KEYBOARD_OVERLAY, overlay).apply()

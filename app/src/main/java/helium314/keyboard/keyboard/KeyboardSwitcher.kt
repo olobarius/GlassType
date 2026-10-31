@@ -1361,6 +1361,20 @@ class KeyboardSwitcher private constructor() : KeyboardState.SwitchActions {
     val localeAndConfidenceInfo: String?
         get() = mLatinIME?.localeAndConfidenceInfo
 
+    /**
+     * Reloads the theme while the keyboard stays visible. Used from inside the keyboard (e.g. transparency
+     * quick toggle): hiding and re-showing the window like [setThemeNeedsReload] leaves the keyboard hidden
+     * on Android 15, because the system does not accept the IME re-showing itself.
+     */
+    fun reloadThemeInPlace() {
+        mThemeNeedsReload = true
+        val latinIme = mLatinIME ?: return
+        if (!latinIme.isInputViewShown) return
+        updateKeyboardTheme(mKeyboardView?.context ?: latinIme)
+        reloadKeyboard()
+        latinIme.onThemeReloadedInPlace()
+    }
+
     fun setThemeNeedsReload() {
         mThemeNeedsReload = true
         val latinIme = mLatinIME ?: return

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -181,6 +183,22 @@ fun createAppearanceSettings(context: Context) = listOf(
     Setting(context, Settings.PREF_TRANSPARENCY_MODE, R.string.transparency_mode, R.string.transparency_mode_summary) { setting ->
         val ctx = LocalContext.current
         var showAccessDialog by rememberSaveable { mutableStateOf(false) }
+        val openAllFilesAccess = {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                try {
+                    ctx.startActivity(Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                        Uri.parse("package:${ctx.packageName}")))
+                } catch (_: Exception) {
+                    ctx.startActivity(Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                }
+            }
+        }
+        // photos permission is enough on Samsung, otherwise fall back to "all files access"
+        val photosPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+            Settings.clearCachedBackgroundImages(ctx)
+            if (KeyboardTransparency.canReadSystemWallpaper(ctx)) KeyboardSwitcher.getInstance().setThemeNeedsReload()
+            else if (!KeyboardTransparency.hasAllFilesAccess()) openAllFilesAccess()
+        }
         val items = listOf(
             stringResource(R.string.transparency_mode_off) to KeyboardTransparency.MODE_OFF,
             stringResource(R.string.transparency_mode_desktop) to KeyboardTransparency.MODE_DESKTOP,
@@ -198,14 +216,10 @@ fun createAppearanceSettings(context: Context) = listOf(
                 onDismissRequest = { showAccessDialog = false },
                 onConfirmed = {
                     showAccessDialog = false
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        try {
-                            ctx.startActivity(Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                                Uri.parse("package:${ctx.packageName}")))
-                        } catch (_: Exception) {
-                            ctx.startActivity(Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-                        }
-                    }
+                    photosPermissionLauncher.launch(
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_IMAGES
+                        else android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
                 },
                 title = { Text(stringResource(R.string.transparency_wallpaper_access_title)) },
                 content = { Text(stringResource(R.string.transparency_wallpaper_access_message)) },

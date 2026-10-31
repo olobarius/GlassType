@@ -676,15 +676,14 @@ class LatinIME : InputMethodService(),
 
     val keyboardPeek = KeyboardPeek(this)
 
+    fun onThemeReloadedInPlace() {
+        setNavigationBarColor()
+        setNeutralSuggestionStrip()
+        requestInsetsUpdate()
+    }
+
     fun onPeekChanged(peeking: Boolean) {
-        val win = window?.window
-        if (peeking) {
-            win?.navigationBarColor = Color.TRANSPARENT
-            updateNavigationBarFrameVisibility(true)
-        } else {
-            updateNavigationBarFrameVisibility(FloatingKeyboardManager.isFloatingMode(displayContext ?: this))
-            setNavigationBarColor()
-        }
+        // the system navigation bar of the IME window stays as it is, only the insets change
         requestInsetsUpdate()
     }
 
@@ -2073,6 +2072,9 @@ class LatinIME : InputMethodService(),
             return
         }
         val settingsValues = settings.current
+        // transparent mode: let the keyboard background extend below the navigation bar,
+        // otherwise a strip of the app shows between keyboard and screen edge
+        WindowCompat.setDecorFitsSystemWindows(window, !settingsValues.mTransparencyActive)
         if (settingsValues.mTransparencyActive) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)

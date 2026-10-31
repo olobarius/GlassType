@@ -11,7 +11,7 @@
     <string name="key_opacity">Deckkraft Tasten</string>
     <string name="opacity_percent">%d %%</string>
     <string name="transparency_wallpaper_access_title">Zugriff auf Hintergrundbild erlauben</string>
-    <string name="transparency_wallpaper_access_message">Seit Android 14 dürfen Apps das Hintergrundbild nur mit der Berechtigung „Zugriff auf alle Dateien“ lesen. Erteile sie GlassType, damit das Hintergrundbild exakt durchscheint. Ohne Berechtigung wähle dein Hintergrundbild manuell über „Hintergrundbild festlegen“ – es wird genauso am Bildschirm ausgerichtet.</string>
+    <string name="transparency_wallpaper_access_message">Um dein Hintergrundbild lesen zu dürfen, braucht GlassType die Berechtigung „Fotos und Videos“ (bitte „Alle erlauben“ wählen). Auf Geräten, die das nicht genügt, folgt danach „Zugriff auf alle Dateien“. Ohne Berechtigung wähle dein Hintergrundbild manuell über „Hintergrundbild festlegen“ – es wird genauso am Bildschirm ausgerichtet.</string>
     <string name="transparency_wallpaper_access_grant">Zugriff erlauben</string>
     <!-- Schwebende Tastatur -->
     <string name="floating_keyboard_peek">Gedrückt halten, um die Tastatur kurz auszublenden</string>

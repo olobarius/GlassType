@@ -52,11 +52,15 @@ object KeyboardTransparency {
 
     private fun percentToAlpha(percent: Int) = (percent.coerceIn(0, 100) * 255 + 50) / 100
 
-    /** whether the real home screen wallpaper can be read (needs "all files access" since Android 14) */
-    fun canReadSystemWallpaper(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) return true
-        return WallpaperFetcher.getSystemWallpaper(context) != null
-    }
+    /**
+     * whether the real home screen wallpaper can be read. Samsung (Android 15) checks the photos permission
+     * READ_MEDIA_IMAGES, stock Android 14+ requires "all files access".
+     */
+    fun canReadSystemWallpaper(context: Context): Boolean =
+        WallpaperFetcher.getSystemWallpaper(context) != null
+
+    fun hasAllFilesAccess(): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()
 
     /** quick toggle: off <-> last used transparent mode (home screen by default) */
     fun toggle(context: Context) {
