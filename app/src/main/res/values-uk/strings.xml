@@ -89,7 +89,7 @@
     <string name="user_dict_settings_edit_dialog_title">Редагувати слово</string>
     <string name="user_dict_settings_all_languages">Для всіх мов</string>
     <string name="user_dict_settings_more_languages">"Інші мови…"</string>
-    <string name="ime_settings">Налаштування LeanType</string>
+    <string name="ime_settings">Налаштування GlassType</string>
     <string name="day_night_mode_summary">Вигляд наслідує системні налаштування</string>
     <string name="autospace_after_punctuation_summary">Автоматично вставляти пробіл після знаків пунктуації під час введення нового слова</string>
     <string name="theme_style">Стиль теми</string>
@@ -143,7 +143,7 @@
     <string name="show_hints">Показувати підказки клавіш</string>
     <string name="prefs_long_press_keyboard_to_change_lang">Змінювати метод введення клавішею пробіл</string>
     <string name="prefs_long_press_keyboard_to_change_lang_summary">Довге натискання клавіші пробіл виводить меню вибору способу введення</string>
-    <string name="spell_checker_service_name">Перевірка правопису LeanType</string>
+    <string name="spell_checker_service_name">Перевірка правопису GlassType</string>
     <string name="prefs_narrow_key_gaps">Збільшені клавіші</string>
     <string name="delete_swipe">Видаляти ковзанням</string>
     <string name="delete_swipe_summary">Проведіть пальцем по клавіші видалення, щоб виділити і вилучити більші фрагменти тексту за раз</string>
@@ -429,7 +429,7 @@
     <string name="custom_subtype">Власний макет</string>
     <string name="landscape">Горизонтальна</string>
     <string name="clipboard_history_pinned_first">Показувати прикріплені об\'єкти вгорі</string>
-<string name="ime_name">LeanType</string>
+<string name="ime_name">GlassType</string>
     <string name="inline_emoji_search">Вбудований пошук емодзі</string>
     <string name="inline_emoji_search_summary">Пропонувати лише емодзі, коли перед словом стоїть двокрапка</string>
     <string name="emoji_dictionary_required">Для роботи цієї функції потрібен словник емодзі. Словники у форматі .dict можна завантажити %s.</string>

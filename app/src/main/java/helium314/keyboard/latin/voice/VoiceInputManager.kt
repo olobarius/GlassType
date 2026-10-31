@@ -3,14 +3,19 @@ package helium314.keyboard.latin.voice
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
@@ -138,7 +143,8 @@ class VoiceInputManager(
         val provider = RichInputMethodManager.getInstance().currentVoiceProvider
         val offlineEnabled = provider == VoiceConstants.VOICE_PROVIDER_OFFLINE
         val onlineEnabled = provider == VoiceConstants.VOICE_PROVIDER_ONLINE
-        if (!offlineEnabled && !onlineEnabled) {
+        val systemEnabled = provider == VoiceConstants.VOICE_PROVIDER_SYSTEM
+        if (!offlineEnabled && !onlineEnabled && !systemEnabled) {
             Log.w(TAG, "canStartVoice: Voice input not enabled in preferences")
             return false
         }
@@ -175,6 +181,11 @@ class VoiceInputManager(
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to requestShowSelf", e)
             }
+        }
+
+        if (RichInputMethodManager.getInstance().currentVoiceProvider == VoiceConstants.VOICE_PROVIDER_SYSTEM) {
+            startSystemVoice()
+            return
         }
 
         val onlineEnabled = RichInputMethodManager.getInstance().currentVoiceProvider == VoiceConstants.VOICE_PROVIDER_ONLINE
@@ -264,6 +275,177 @@ class VoiceInputManager(
             cleanupSession()
             updateState(VoiceState.ERROR)
         }
+    }
+
+    private fun currentLanguageTag(): String {
+        val prefLang = ims.prefs().getString(VoiceConstants.PREF_VOICE_LANGUAGE, VoiceConstants.VOICE_LANG_FOLLOW_KEYBOARD)
+            ?: VoiceConstants.VOICE_LANG_FOLLOW_KEYBOARD
+        return when (prefLang) {
+            VoiceConstants.VOICE_LANG_AUTO -> "auto"
+            VoiceConstants.VOICE_LANG_FOLLOW_KEYBOARD, "" -> {
+                try {
+                    RichInputMethodManager.getInstance().currentSubtypeLocale.toLanguageTag()
+                } catch (_: Exception) {
+                    java.util.Locale.getDefault().toLanguageTag()
+                }
+            }
+            else -> prefLang
+        }
+    }
+
+    // ---------- System speech recognizer (Google / Samsung engine) ----------
+
+    private var systemRecognizer: SpeechRecognizer? = null
+    private var systemStopRequested = false
+    private var systemSessionHadText = false
+    private var systemNeedsLeadingSpace = false
+
+    private fun startSystemVoice() {
+        if (!SpeechRecognizer.isRecognitionAvailable(ims)) {
+            notifyError(ims.getString(R.string.voice_system_not_available))
+            updateState(VoiceState.ERROR)
+            return
+        }
+        val sessionId = UUID.randomUUID().toString()
+        activeSessionId = sessionId
+        isCurrentSessionOnline = false
+        sessionEmittedText = ""
+        systemStopRequested = false
+        systemSessionHadText = false
+
+        ims.currentInputConnection?.finishComposingText()
+        val before = ims.currentInputConnection?.getTextBeforeCursor(3, 0)?.toString().orEmpty()
+        val trimmedBefore = before.trimEnd()
+        needsCapitalStart = trimmedBefore.isEmpty() || trimmedBefore.last() in ".!?\n"
+        systemNeedsLeadingSpace = before.isNotEmpty() && !before.last().isWhitespace()
+
+        val recognizer = try {
+            SpeechRecognizer.createSpeechRecognizer(ims)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to create SpeechRecognizer", e)
+            null
+        }
+        if (recognizer == null) {
+            notifyError(ims.getString(R.string.voice_system_not_available))
+            updateState(VoiceState.ERROR)
+            return
+        }
+        systemRecognizer = recognizer
+        recognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(params: Bundle?) {
+                if (activeSessionId == sessionId) updateState(VoiceState.RECORDING)
+            }
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {
+                currentAudioLevel = ((rmsdB + 2f) / 12f).coerceIn(0f, 1f)
+            }
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {
+                currentAudioLevel = 0f
+            }
+            override fun onPartialResults(partialResults: Bundle?) {
+                if (activeSessionId != sessionId) return
+                val text = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull().orEmpty()
+                emitSystemText(text, isFinal = false)
+            }
+            override fun onResults(results: Bundle?) {
+                if (activeSessionId != sessionId) return
+                val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull().orEmpty()
+                emitSystemText(text, isFinal = true)
+                if (!systemStopRequested) {
+                    // continuous dictation like Gboard: keep listening until user stops or silence
+                    listenSystem()
+                } else {
+                    finishSystemSession()
+                }
+            }
+            override fun onError(error: Int) {
+                if (activeSessionId != sessionId) return
+                Log.w(TAG, "SpeechRecognizer error $error")
+                val benign = error == SpeechRecognizer.ERROR_NO_MATCH || error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT
+                        || (systemStopRequested && error == SpeechRecognizer.ERROR_CLIENT)
+                if (benign) {
+                    // keep emitted text, end session quietly
+                    if (sessionEmittedText.isNotEmpty()) emitSystemText(sessionEmittedText, isFinal = true)
+                    finishSystemSession()
+                    return
+                }
+                val msg = when (error) {
+                    SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> ims.getString(R.string.mic_permission_prompt)
+                    SpeechRecognizer.ERROR_NETWORK, SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> ims.getString(R.string.voice_no_internet_warning)
+                    SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> ims.getString(R.string.voice_system_busy)
+                    else -> ims.getString(R.string.voice_system_error, error)
+                }
+                notifyError(msg)
+                destroySystemRecognizer()
+                cleanupSession()
+                updateState(VoiceState.ERROR)
+            }
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+        updateState(VoiceState.STARTING_SESSION)
+        isRecording.set(true)
+        listenSystem()
+    }
+
+    private fun listenSystem() {
+        val recognizer = systemRecognizer ?: return
+        val languageTag = currentLanguageTag()
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
+            putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, ims.packageName)
+            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+            if (languageTag != "auto") {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, languageTag)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, languageTag)
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                putExtra(RecognizerIntent.EXTRA_ENABLE_FORMATTING, RecognizerIntent.FORMATTING_OPTIMIZE_QUALITY)
+            }
+        }
+        try {
+            recognizer.startListening(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "startListening failed", e)
+            notifyError(ims.getString(R.string.voice_system_not_available))
+            destroySystemRecognizer()
+            cleanupSession()
+            updateState(VoiceState.ERROR)
+        }
+    }
+
+    private fun emitSystemText(text: String, isFinal: Boolean) {
+        if (text.isBlank()) return
+        if (systemNeedsLeadingSpace) {
+            ims.currentInputConnection?.commitText(" ", 1)
+            systemNeedsLeadingSpace = false
+        }
+        systemSessionHadText = true
+        syncRecognizedText(text, isFinal)
+    }
+
+    private fun stopSystemVoice() {
+        systemStopRequested = true
+        updateState(VoiceState.PROCESSING_FINAL)
+        try {
+            systemRecognizer?.stopListening()
+        } catch (e: Exception) {
+            finishSystemSession()
+        }
+    }
+
+    private fun finishSystemSession() {
+        destroySystemRecognizer()
+        cleanupSession()
+        updateState(VoiceState.IDLE)
+    }
+
+    private fun destroySystemRecognizer() {
+        val r = systemRecognizer ?: return
+        systemRecognizer = null
+        try { r.cancel() } catch (_: Exception) {}
+        try { r.destroy() } catch (_: Exception) {}
     }
 
     private fun initiateSessionHandshake(sessionId: String) {
@@ -620,6 +802,10 @@ class VoiceInputManager(
 
     fun stopVoice() {
         Log.i(TAG, "stopVoice() called, state=$state, isOnline=$isCurrentSessionOnline")
+        if (systemRecognizer != null) {
+            stopSystemVoice()
+            return
+        }
         if (state == VoiceState.RECORDING || state == VoiceState.STARTING_SESSION || state == VoiceState.CONNECTING_PLUGIN) {
             updateState(VoiceState.PROCESSING_FINAL)
             stopAudioLoop()
@@ -750,6 +936,7 @@ class VoiceInputManager(
 
     fun cancelVoice() {
         Log.i(TAG, "cancelVoice() called, state=$state, isOnline=$isCurrentSessionOnline")
+        destroySystemRecognizer()
         if (state != VoiceState.IDLE) {
             cleanupSession()
             pluginManager.cancelSession()

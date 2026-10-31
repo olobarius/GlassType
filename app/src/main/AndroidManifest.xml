@@ -19,6 +19,8 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- only way to read the home screen wallpaper since Android 14 (transparent mode), optional -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
@@ -26,6 +28,9 @@ SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
         <package android:name="com.leanbitlab.leantype.voice.offline" />
         <package android:name="com.leanbitlab.leantype.gif" />
         <package android:name="com.leanbitlab.leantype.cjk.plugin" />
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
         <intent>
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="sms" />

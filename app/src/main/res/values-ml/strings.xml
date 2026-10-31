@@ -101,8 +101,8 @@
     <string name="show_emoji_key">ഇമോജി കീ</string>
     <string name="prefs_force_incognito_mode_summary">പുതിയ വാക്കുകൾ പഠിക്കുന്നത് അപ്രാപ്തമാക്കുക</string>
     <string name="settings_category_suggestions">നിർദ്ദേശങ്ങൾ</string>
-    <string name="spell_checker_service_name">LeanType സ്പെൽ ചെക്കർ</string>
-    <string name="ime_settings">LeanType ക്രമീകരണങ്ങൾ</string>
+    <string name="spell_checker_service_name">GlassType സ്പെൽ ചെക്കർ</string>
+    <string name="ime_settings">GlassType ക്രമീകരണങ്ങൾ</string>
     <string name="settings_category_clipboard_history">ക്ലിപ്പ്ബോർഡ് ഹിസ്റ്ററി</string>
     <string name="enable_clipboard_history_summary">പ്രവർത്തനരഹിതമാക്കിയാൽ, ക്ലിപ്പ്ബോർഡ് ഉള്ളടക്കം എന്തെങ്കിലും ഉണ്ടെങ്കിൽ ക്ലിപ്പ്ബോർഡ് കീ പേസ്റ്റ് ചെയ്യും</string>
     <string name="enable_clipboard_history">ക്ലിപ്പ്ബോർഡ് ചരിത്രം എനേബിൾ ചെയ്യുക</string>
@@ -136,7 +136,7 @@
     <string name="label_pause_key">"താൽക്കാലികമായി നിർത്തുക"</string>
     <string name="label_wait_key">"കാത്തിരിക്കുക"</string>
 
-    <string name="ime_name">LeanType</string>
+    <string name="ime_name">GlassType</string>
     <string name="vibrate_in_dnd_mode">ശല്യം ചെയ്യാതിരിക്കുക മോഡിൽ വൈബ്രേറ്റ് ചെയ്യുക</string>
     <string name="suggest_emojis">ഇമോജികൾ നിർദ്ദേശിക്കുക</string>
     <string name="suggest_emojis_summary">സാധാരണ നിർദ്ദേശങ്ങളിൽ ഇമോജി നിഘണ്ടു ഉപയോഗിക്കുക</string>

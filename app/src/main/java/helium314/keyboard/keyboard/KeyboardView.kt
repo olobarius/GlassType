@@ -335,6 +335,11 @@ open class KeyboardView @JvmOverloads constructor(
         canvas.translate(-keyDrawX.toFloat(), -keyDrawY.toFloat())
     }
 
+    /** popups and suggestion panels stay opaque for readability */
+    private fun keyBackgroundAlpha(): Int =
+        if (this is PopupKeysKeyboardView || this is MoreSuggestionsView) 255
+        else Settings.getValues().mKeyBackgroundAlpha
+
     protected open fun onDrawKeyBackground(key: Key, canvas: Canvas, background: Drawable) {
         val isHex = keyboard?.isHexagonal == true
         val isWideSpacebar = (key.code == Constants.CODE_SPACE || key.backgroundType == Key.BACKGROUND_TYPE_SPACEBAR) && key.drawWidth > key.height * 1.4f
@@ -361,7 +366,8 @@ open class KeyboardView @JvmOverloads constructor(
                 else -> baseBg
             }
 
-            mPaint.color = bgColor
+            val keyAlpha = keyBackgroundAlpha()
+            mPaint.color = if (keyAlpha < 255) ColorUtils.setAlphaComponent(bgColor, Color.alpha(bgColor) * keyAlpha / 255) else bgColor
             mPaint.style = Paint.Style.FILL
             canvas.drawPath(hexPath, mPaint)
 
@@ -449,9 +455,12 @@ open class KeyboardView @JvmOverloads constructor(
             hasCustomTint = true
         }
         if (isSelected) drawBackground.setColorFilter(Color.argb(0x80, 0, 0, 0), PorterDuff.Mode.SRC_ATOP)
-        
+
+        val keyAlpha = keyBackgroundAlpha()
+        if (keyAlpha < 255) drawBackground.alpha = keyAlpha
         drawBackground.draw(canvas)
-        
+        if (keyAlpha < 255) drawBackground.alpha = 255
+
         if (isSelected) drawBackground.clearColorFilter()
         if (hasCustomTint) {
             if (drawBackground === background) {

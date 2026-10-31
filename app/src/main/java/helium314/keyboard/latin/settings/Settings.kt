@@ -310,6 +310,9 @@ class Settings private constructor() : SharedPreferences.OnSharedPreferenceChang
         const val PREF_THEME_DAY_NIGHT = "theme_auto_day_night"
         const val PREF_BACKGROUND_BLUR_AMOUNT = "background_blur_amount"
         const val PREF_USE_SYSTEM_WALLPAPER = "use_system_wallpaper"
+        const val PREF_TRANSPARENCY_MODE = "transparency_mode"
+        const val PREF_BACKGROUND_OPACITY = "transparency_background_opacity"
+        const val PREF_KEY_OPACITY = "transparency_key_opacity"
         const val PREF_USER_COLORS_PREFIX = "user_colors_"
         const val PREF_USER_ALL_COLORS_PREFIX = "user_all_colors_"
         const val PREF_USER_MORE_COLORS_PREFIX = "user_more_colors_"
@@ -907,6 +910,7 @@ class Settings private constructor() : SharedPreferences.OnSharedPreferenceChang
 
         fun clearCachedBackgroundImages(context: Context? = null) {
             sCachedBackgroundImages.fill(null)
+            helium314.keyboard.latin.utils.KeyboardTransparency.clearCache()
             val ctx = context ?: sInstance.mContext
             if (ctx != null) {
                 try {

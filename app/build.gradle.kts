@@ -20,7 +20,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.leanbitlab.leantype"
+        applicationId = "de.glasstype.keyboard"
         minSdk = 21
         targetSdk = 35
         // ponytail: release version 4.3.0
@@ -112,7 +112,7 @@ android {
         if (number.isNotEmpty()) {
             outputs.all {
                 val output = this as? com.android.build.gradle.api.ApkVariantOutput
-                output?.outputFileName = "$number-LeanType_${defaultConfig.versionName}-${flavor}-${buildType.name}.apk"
+                output?.outputFileName = "$number-GlassType_${defaultConfig.versionName}-${flavor}-${buildType.name}.apk"
             }
         }
     }

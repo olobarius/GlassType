@@ -10,6 +10,7 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.provider.Settings as AndroidSettings
+import android.speech.SpeechRecognizer
 import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodSubtype
@@ -73,12 +74,13 @@ class RichInputMethodManager private constructor() {
 
     val currentVoiceProvider: String
         get() {
-            if (!this::context.isInitialized) return VoiceConstants.VOICE_PROVIDER_THIRD_PARTY
+            if (!this::context.isInitialized) return VoiceConstants.VOICE_PROVIDER_SYSTEM
             val p = context.prefs()
             val provider = p.getString(VoiceConstants.PREF_VOICE_PROVIDER, null)
             val raw = provider ?: when {
                 p.getBoolean(VoiceConstants.PREF_VOICE_OFFLINE_ENABLED, false) -> VoiceConstants.VOICE_PROVIDER_OFFLINE
                 isOnlineFlavor && p.getBoolean(VoiceConstants.PREF_VOICE_ONLINE_ENABLED, false) -> VoiceConstants.VOICE_PROVIDER_ONLINE
+                SpeechRecognizer.isRecognitionAvailable(context) -> VoiceConstants.VOICE_PROVIDER_SYSTEM
                 else -> VoiceConstants.VOICE_PROVIDER_THIRD_PARTY
             }
             return if (!isOnlineFlavor && raw == VoiceConstants.VOICE_PROVIDER_ONLINE) {
@@ -113,7 +115,8 @@ class RichInputMethodManager private constructor() {
     val isShortcutImeReady: Boolean
         get() {
             return when (currentVoiceProvider) {
-                VoiceConstants.VOICE_PROVIDER_OFFLINE, VoiceConstants.VOICE_PROVIDER_ONLINE -> true
+                VoiceConstants.VOICE_PROVIDER_OFFLINE, VoiceConstants.VOICE_PROVIDER_ONLINE,
+                VoiceConstants.VOICE_PROVIDER_SYSTEM -> true
                 VoiceConstants.VOICE_PROVIDER_THIRD_PARTY -> shortcuts.isNotEmpty() || hasInstalledVoiceImis()
                 VoiceConstants.VOICE_PROVIDER_NONE -> false
                 else -> shortcuts.isNotEmpty()

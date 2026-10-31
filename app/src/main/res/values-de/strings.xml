@@ -93,11 +93,11 @@
     <string name="settings_category_correction">Korrekturen</string>
     <string name="settings_category_suggestions">Vorschläge</string>
     <string name="android_spell_checker_settings">LeanType-Rechtschreibprüfungs-Einstellungen</string>
-    <string name="ime_settings">LeanType-Einstellungen</string>
+    <string name="ime_settings">GlassType-Einstellungen</string>
     <string name="settings_category_experimental">Experimentell</string>
     <string name="settings_no_limit">Keine Begrenzung</string>
     <string name="abbreviation_unit_minutes">%s Min.</string>
-    <string name="spell_checker_service_name">LeanType-Rechtschreibprüfung</string>
+    <string name="spell_checker_service_name">GlassType-Rechtschreibprüfung</string>
     <string name="show_emoji_key">Emoji-Taste</string>
     <string name="settings_category_input">Eingabe</string>
     <string name="settings_category_additional_keys">Zusätzliche Tasten</string>
@@ -442,7 +442,7 @@
     <string name="subtype_khipro_bn">%s (Khipro)</string>
     <string name="layout_functional_keys_khipro" tools:keep="@string/layout_functional_keys">Funktionale Tasten (Khipro)</string>
 
-    <string name="ime_name">LeanType</string>
+    <string name="ime_name">GlassType</string>
     <string name="settings_category_configuration">Konfiguration</string>
     <string name="settings_category_visuals">Optik &amp; Vorschau</string>
     <string name="settings_category_behavior">Verhalten</string>

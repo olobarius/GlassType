@@ -101,7 +101,7 @@
     <string name="label_search_key">Caută</string>
     <string name="label_pause_key">"Pauză"</string>
     <string name="label_wait_key">Așteaptă</string>
-    <string name="ime_settings">Setări LeanType</string>
+    <string name="ime_settings">Setări GlassType</string>
     <string name="settings_category_additional_keys">Chei suplimentare</string>
     <string name="settings_category_correction">Corectări</string>
     <string name="settings_category_suggestions">Sugestii</string>
@@ -119,7 +119,7 @@
     <string name="auto_correction_confidence">Încrederea în corecție automată</string>
     <string name="clipboard_history_retention_time">Timpul de păstrare a istoricului</string>
     <string name="settings_category_input">Introducere</string>
-    <string name="spell_checker_service_name">Verificator ortografic LeanType</string>
+    <string name="spell_checker_service_name">Verificator ortografic GlassType</string>
     <string name="android_spell_checker_settings">Setări pentru verificarea ortografică LeanType</string>
     <string name="settings_category_clipboard_history">Istoric clipboard</string>
     <string name="enable_clipboard_history">Activează istoricul clipboardului</string>
@@ -423,7 +423,7 @@
     <string name="toolbar_hiding_global">Ascunde și barele de instrumente pentru clipboard și emoji-uri</string>
     <string name="landscape">Peisaj</string>
     <string name="label_zwnj_key" tools:keep="@string/label_zwnj_key">Separare fără spațiu</string>
-<string name="ime_name">LeanType</string>
+<string name="ime_name">GlassType</string>
     <string name="inline_emoji_search">Căutare emoji inline</string>
     <string name="inline_emoji_search_summary">Sugerează doar emoji-uri atunci când un cuvânt este precedat de două puncte</string>
     <string name="emoji_dictionary_required">Este necesar un dicționar de emoji-uri pentru ca această funcție să funcționeze. Dicționarele în format .dict pot fi descărcate %s.</string>

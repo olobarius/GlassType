@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Transparency -->
+    <string name="settings_category_transparency">Transparency</string>
+    <string name="transparency_mode">Transparent mode</string>
+    <string name="transparency_mode_summary">Let the home screen or the app behind shine through the keyboard</string>
+    <string name="transparency_mode_off">Off</string>
+    <string name="transparency_mode_desktop">Home screen shines through (wallpaper, pixel-aligned)</string>
+    <string name="transparency_mode_see_through">Real see-through (app behind the keyboard)</string>
+    <string name="background_opacity">Background opacity</string>
+    <string name="key_opacity">Key opacity</string>
+    <string name="opacity_percent">%d %%</string>
+    <string name="transparency_wallpaper_access_title">Allow wallpaper access</string>
+    <string name="transparency_wallpaper_access_message">Since Android 14 apps may only read the home screen wallpaper with the permission \"All files access\". Grant it to GlassType so the wallpaper can shine through exactly. Without it, choose your wallpaper image manually via \"Set background image\" – it will be aligned to the screen the same way.</string>
+    <string name="transparency_wallpaper_access_grant">Grant access</string>
+    <!-- Voice -->
+    <string name="voice_provider_system">Built-in voice typing (Google / Samsung)</string>
+    <string name="voice_provider_system_summary">Uses the speech recognition of your phone directly in the keyboard. Live text while speaking, no plugin needed.</string>
+    <string name="voice_system_not_available">No speech recognition service found. Install or enable \"Speech Recognition and Synthesis from Google\" or Samsung voice input.</string>
+    <string name="voice_system_busy">Speech recognition is busy, please try again</string>
+    <string name="voice_system_error">Speech recognition error (%d)</string>
+</resources>

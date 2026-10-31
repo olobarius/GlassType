@@ -100,8 +100,8 @@
     <string name="label_search_key">"Meklēt"</string>
     <string name="label_pause_key">"Pauze"</string>
     <string name="label_wait_key">"Gaidīt"</string>
-    <string name="spell_checker_service_name">LeanType pareizrakstības pārbaudītājs</string>
-    <string name="ime_settings">LeanType iestatījumi</string>
+    <string name="spell_checker_service_name">GlassType pareizrakstības pārbaudītājs</string>
+    <string name="ime_settings">GlassType iestatījumi</string>
     <string name="android_spell_checker_settings">LeanType pareizrakstības pārbaudītāja iestatījumi</string>
     <string name="settings_category_suggestions">Ieteikumi</string>
     <string name="settings_category_input">Ievade</string>

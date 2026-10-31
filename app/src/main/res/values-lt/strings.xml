@@ -102,8 +102,8 @@
     <string name="label_search_key">"Paieška"</string>
     <string name="label_pause_key">Pristabdyti</string>
     <string name="label_wait_key">"Lauk."</string>
-    <string name="spell_checker_service_name">LeanType rašybos tikrinimas</string>
-    <string name="ime_settings">LeanType nustatymai</string>
+    <string name="spell_checker_service_name">GlassType rašybos tikrinimas</string>
+    <string name="ime_settings">GlassType nustatymai</string>
     <string name="android_spell_checker_settings">LeanType rašybos tikrinimo nustatymai</string>
     <string name="vibrate_in_dnd_mode">Vibruoti netrukdymo režime</string>
     <string name="suggest_emojis">Siūlyti jaustukus</string>
@@ -432,7 +432,7 @@
     <string name="delete_confirmation">Tikrai pašalinti %s?</string>
     <string name="name_invalid">Netinkamas vardas</string>
     <string name="custom_subtype">Pasirinktinis tipas</string>
-<string name="ime_name">LeanType</string>
+<string name="ime_name">GlassType</string>
     <string name="settings_screen_suggestions">Pasiūlymai</string>
     <string name="settings_category_prediction">Prognozavimas ir mokymasis</string>
     <string name="settings_category_smart_suggestions">Išmanūs pasiūlymai ir įrankiai</string>

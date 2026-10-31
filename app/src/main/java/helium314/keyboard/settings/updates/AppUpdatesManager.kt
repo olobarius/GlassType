@@ -218,9 +218,8 @@ object AppUpdatesManager {
     suspend fun checkAllUpdates(context: Context): Pair<Boolean, List<PluginUpdateStatus>> {
         if (BuildConfig.FLAVOR != "standard") return Pair(false, emptyList())
         return withContext(Dispatchers.IO) {
-            val appUpdateDeferred = async {
-                fetchLatestTag(Links.GITHUB_RELEASES_API)
-            }
+            // GlassType is a separate app: LeanType releases are not updates for it
+            val appUpdateDeferred = async { null as String? }
 
             val installedPlugins = PLUGINS.mapNotNull { plugin ->
                 val installedVer = plugin.getInstalledVersion(context)

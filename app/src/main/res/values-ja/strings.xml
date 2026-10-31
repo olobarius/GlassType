@@ -100,9 +100,9 @@
     <string name="label_search_key">"検索"</string>
     <string name="label_pause_key">"停止"</string>
     <string name="label_wait_key">"待機"</string>
-    <string name="ime_settings">LeanTypeの設定</string>
+    <string name="ime_settings">GlassTypeの設定</string>
     <string name="settings_no_limit">遅延無し</string>
-    <string name="spell_checker_service_name">LeanTypeスペルチェッカ</string>
+    <string name="spell_checker_service_name">GlassTypeスペルチェッカ</string>
     <string name="settings_category_input">入力</string>
     <string name="abbreviation_unit_minutes">%s 分</string>
     <string name="backup_restore_title">退避とレストア</string>

@@ -96,7 +96,7 @@
     <string name="settings_no_limit">Korlátlan</string>
     <string name="enable_clipboard_history">Vágólap előzményeinek engedélyezése</string>
     <string name="key_borders">Betűhatárok</string>
-    <string name="ime_settings">LeanType beállítások</string>
+    <string name="ime_settings">GlassType beállítások</string>
     <string name="android_spell_checker_settings">LeanType helyesírás-ellenőrző beállításai</string>
     <string name="settings_category_additional_keys">További billentyűk</string>
     <string name="delete_swipe_summary">A törlés billentyűről való csúsztatással nagyobb szövegrészleteket jelölhet ki és távolíthat el</string>
@@ -109,7 +109,7 @@
     <string name="prefs_long_press_keyboard_to_change_lang_summary">A szóközbillentyű nyomva tartásával a beviteli mód kiválasztási menüje jelenik meg</string>
     <string name="prefs_long_press_keyboard_to_change_lang">Beviteli mód megváltoztatása a szóközzel</string>
     <string name="day_night_mode">Automatikus nappali/éjszakai mód</string>
-    <string name="spell_checker_service_name">LeanType helyesírás-ellenőrző</string>
+    <string name="spell_checker_service_name">GlassType helyesírás-ellenőrző</string>
     <string name="delete_swipe">Törlés csúsztatással</string>
     <string name="show_emoji_key">Emodzsibillentyű</string>
     <string name="incognito">Inkognitómód kényszerítése</string>
@@ -437,7 +437,7 @@
     <string name="number_row_in_symbols">Számsor megjelenítése a szimbólumnézetben</string>
     <string name="custom_emoji_font">Egyéni emodzsi-betűtípus beállítása fájlból</string>
     <string name="layout_functional_keys_khipro" tools:keep="@string/layout_functional_keys">Funkcióbillentyűk (Khipro)</string>
-<string name="ime_name">LeanType</string>
+<string name="ime_name">GlassType</string>
     <string name="settings_screen_suggestions">Javaslatok</string>
     <string name="settings_category_prediction">Előrejelzés &amp; tanulás</string>
     <string name="settings_category_smart_suggestions">Intelligens javaslatok &amp; eszközök</string>

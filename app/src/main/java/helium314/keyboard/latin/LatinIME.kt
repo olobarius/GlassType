@@ -240,6 +240,13 @@ class LatinIME : InputMethodService(),
 
         loadSettings()
         settings.startListener()
+        try {
+            @Suppress("DEPRECATION")
+            ContextCompat.registerReceiver(this, wallpaperChangedReceiver,
+                android.content.IntentFilter(android.content.Intent.ACTION_WALLPAPER_CHANGED), ContextCompat.RECEIVER_EXPORTED)
+        } catch (e: Exception) {
+            Log.w(TAG, "could not register wallpaper receiver: ${e.message}")
+        }
         clipboardHistoryManager.onCreate()
         handler.onCreate()
 
@@ -393,7 +400,17 @@ class LatinIME : InputMethodService(),
 
     val localeAndConfidenceInfo: String? get() = dictionaryFacilitator.localesAndConfidences()
 
+    private val wallpaperChangedReceiver = object : android.content.BroadcastReceiver() {
+        override fun onReceive(context: android.content.Context, intent: android.content.Intent) {
+            helium314.keyboard.latin.utils.KeyboardTransparency.onWallpaperChanged(this@LatinIME)
+            if (helium314.keyboard.latin.utils.KeyboardTransparency.isActive(prefs())) {
+                KeyboardSwitcher.getInstance().setThemeNeedsReload()
+            }
+        }
+    }
+
     override fun onDestroy() {
+        try { unregisterReceiver(wallpaperChangedReceiver) } catch (_: Exception) { }
         if (sInstance === this) sInstance = null
         updateVoiceKeepScreenOn(VoiceInputManager.VoiceState.IDLE)
         if (isShowingOptionDialog()) {
@@ -1529,7 +1546,8 @@ class LatinIME : InputMethodService(),
         if (event.keyCode == KeyCode.SWITCH_TO_USER_IME) { switchToUserIme(); return }
         if (event.keyCode == KeyCode.VOICE_INPUT) {
             when (richImm.currentVoiceProvider) {
-                VoiceConstants.VOICE_PROVIDER_OFFLINE, VoiceConstants.VOICE_PROVIDER_ONLINE -> {
+                VoiceConstants.VOICE_PROVIDER_OFFLINE, VoiceConstants.VOICE_PROVIDER_ONLINE,
+                VoiceConstants.VOICE_PROVIDER_SYSTEM -> {
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
                         voiceInputManager?.let { vim ->
                             if (vim.isRecording()) vim.stopVoice() else vim.startVoice()
@@ -2017,6 +2035,17 @@ class LatinIME : InputMethodService(),
             return
         }
         val settingsValues = settings.current
+        if (settingsValues.mTransparencyActive) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.navigationBarColor = Color.TRANSPARENT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                window.isNavigationBarContrastEnforced = false
+            }
+            WindowCompat.getInsetsController(window, window.decorView)?.isAppearanceLightNavigationBars =
+                isBrightColor(settingsValues.mColors.get(ColorType.MAIN_BACKGROUND))
+            return
+        }
         if (!settingsValues.mCustomNavBarColor) {
             clearNavigationBarColor()
             return

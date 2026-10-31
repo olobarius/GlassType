@@ -96,6 +96,7 @@ fun VoiceSettingsScreen(
     val isOfflineVoiceEnabled = currentProvider == VoiceConstants.VOICE_PROVIDER_OFFLINE
     val isOnlineVoiceEnabled = isOnlineFlavor && currentProvider == VoiceConstants.VOICE_PROVIDER_ONLINE
     val isThirdPartyVoiceEnabled = currentProvider == VoiceConstants.VOICE_PROVIDER_THIRD_PARTY
+    val isSystemVoiceEnabled = currentProvider == VoiceConstants.VOICE_PROVIDER_SYSTEM
     val isVoiceDisabled = currentProvider == VoiceConstants.VOICE_PROVIDER_NONE
 
     var isMicPermissionGranted by remember {
@@ -259,6 +260,7 @@ fun VoiceSettingsScreen(
 
     val providerItems = remember(isOnlineFlavor) {
         val list = mutableListOf<Pair<String, String>>()
+        list.add(context.getString(R.string.voice_provider_system) to VoiceConstants.VOICE_PROVIDER_SYSTEM)
         list.add(context.getString(R.string.voice_provider_offline) to VoiceConstants.VOICE_PROVIDER_OFFLINE)
         if (isOnlineFlavor) {
             list.add(context.getString(R.string.voice_provider_online) to VoiceConstants.VOICE_PROVIDER_ONLINE)
@@ -602,6 +604,15 @@ fun VoiceSettingsScreen(
 
                         providerSetting.Preference()
 
+                        if (isSystemVoiceEnabled) {
+                            Preference(
+                                name = stringResource(R.string.voice_provider_system),
+                                description = stringResource(R.string.voice_provider_system_summary),
+                                icon = R.drawable.sym_keyboard_voice_holo,
+                                onClick = {}
+                            )
+                        }
+
                         if (isOfflineVoiceEnabled) {
                             val voicePluginSummary = remember(isPluginInstalled, isPluginConnected, pluginVersion, updateAvailable, remoteVersion) {
                                 when {
@@ -684,7 +695,7 @@ fun VoiceSettingsScreen(
                     }
                 }
 
-                if (isOfflineVoiceEnabled || isOnlineVoiceEnabled) {
+                if (isOfflineVoiceEnabled || isOnlineVoiceEnabled || isSystemVoiceEnabled) {
                     // Card 2: Permissions
                     Card(
                         modifier = Modifier
@@ -763,7 +774,9 @@ fun VoiceSettingsScreen(
                             voiceLanguageSetting.Preference()
                         }
                     }
+                }
 
+                if (isOfflineVoiceEnabled || isOnlineVoiceEnabled) {
                     // Card 4: Dictation & Behavior
                     Card(
                         modifier = Modifier
@@ -868,6 +881,7 @@ fun createVoiceSettings(context: Context): List<Setting> = listOf(
         val currentProvider = richImm.currentVoiceProvider
         val isOnlineFlavor = BuildConfig.FLAVOR == "standard" || BuildConfig.FLAVOR == "standardfull"
         val providerItems = buildList<Pair<String, String>> {
+            add(context.getString(R.string.voice_provider_system) to VoiceConstants.VOICE_PROVIDER_SYSTEM)
             if (isOnlineFlavor) {
                 add(context.getString(R.string.voice_provider_online) to VoiceConstants.VOICE_PROVIDER_ONLINE)
             }

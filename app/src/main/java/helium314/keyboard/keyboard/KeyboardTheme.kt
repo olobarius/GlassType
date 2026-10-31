@@ -22,6 +22,7 @@ import helium314.keyboard.latin.common.DefaultColors
 import helium314.keyboard.latin.common.DynamicColors
 import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
+import helium314.keyboard.latin.utils.KeyboardTransparency
 import helium314.keyboard.latin.utils.ResourceUtils
 import helium314.keyboard.latin.utils.brightenOrDarken
 import helium314.keyboard.latin.utils.isBrightColor
@@ -152,12 +153,19 @@ private constructor(val themeId: Int, val mStyleId: Int) {
         }
 
         fun getThemeColors(themeName: String, themeStyle: String, context: Context, prefs: SharedPreferences, isNight: Boolean): Colors {
+            val transparentBackground = KeyboardTransparency.createBackground(context, prefs, isNight)
+            val backgroundImage = transparentBackground ?: Settings.readUserBackgroundImage(context, isNight)
+            val colors = createThemeColors(themeName, themeStyle, context, prefs, isNight, backgroundImage)
+            transparentBackground?.setOverlay(colors.get(ColorType.MAIN_BACKGROUND), KeyboardTransparency.backgroundAlpha(prefs))
+            return colors
+        }
+
+        private fun createThemeColors(themeName: String, themeStyle: String, context: Context, prefs: SharedPreferences, isNight: Boolean, backgroundImage: Drawable?): Colors {
             val hasBorders = prefs.getBoolean(Settings.PREF_THEME_KEY_BORDERS, Defaults.PREF_THEME_KEY_BORDERS)
-            val backgroundImage = Settings.readUserBackgroundImage(context, isNight)
             return when (themeName) {
                 THEME_DYNAMIC -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) DynamicColors(context, themeStyle, hasBorders, backgroundImage)
-                    else getThemeColors(THEME_LIGHT, themeStyle, context, prefs, isNight)
+                    else createThemeColors(THEME_LIGHT, themeStyle, context, prefs, isNight, backgroundImage)
                 }
                 THEME_LEANBITLAB_LIGHT -> DefaultColors(
                     themeStyle,

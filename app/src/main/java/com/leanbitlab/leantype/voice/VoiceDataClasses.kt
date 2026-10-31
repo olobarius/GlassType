@@ -77,6 +77,8 @@ object VoiceConstants {
     const val VOICE_PROVIDER_OFFLINE = "offline"
     const val VOICE_PROVIDER_ONLINE = "online"
     const val VOICE_PROVIDER_THIRD_PARTY = "third_party"
+    /** Built-in Android SpeechRecognizer (Google / Samsung engine), no plugin or keyboard switch needed */
+    const val VOICE_PROVIDER_SYSTEM = "system"
     const val VOICE_PROVIDER_NONE = "none"
 
     const val PREF_VOICE_THIRD_PARTY_APP = "voice_third_party_app"

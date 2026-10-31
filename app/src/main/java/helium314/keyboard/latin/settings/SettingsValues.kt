@@ -160,6 +160,9 @@ open class SettingsValues(
     val mEnableSmsOtpReceiver: Boolean
     val mEnableAppSyncListener: Boolean
     val mCustomNavBarColor: Boolean
+    val mTransparencyActive: Boolean
+    /** alpha 0..255 applied to key backgrounds of the main keyboard (transparent mode) */
+    val mKeyBackgroundAlpha: Int
     val mKeyboardHeightScale: Float
     val mUrlDetectionEnabled: Boolean
     val mBottomPaddingScale: Float
@@ -476,6 +479,8 @@ open class SettingsValues(
         mAddToPersonalDictThreshold = if (rawThreshold in 3..10) rawThreshold else Defaults.PREF_ADD_TO_PERSONAL_DICT_THRESHOLD
         mUseAppsDictionary = prefs.getBoolean(Settings.PREF_USE_APPS, Defaults.PREF_USE_APPS)
         mCustomNavBarColor = prefs.getBoolean(Settings.PREF_NAVBAR_COLOR, Defaults.PREF_NAVBAR_COLOR)
+        mTransparencyActive = helium314.keyboard.latin.utils.KeyboardTransparency.isActive(prefs)
+        mKeyBackgroundAlpha = helium314.keyboard.latin.utils.KeyboardTransparency.keyAlpha(prefs)
         mNarrowKeyGaps = prefs.getBoolean(Settings.PREF_NARROW_KEY_GAPS, Defaults.PREF_NARROW_KEY_GAPS)
         mNarrowKeyGapsLevel = prefs.getInt(Settings.PREF_NARROW_KEY_GAPS_LEVEL, Defaults.PREF_NARROW_KEY_GAPS_LEVEL)
         mThemeKeyBorders = prefs.getBoolean(Settings.PREF_THEME_KEY_BORDERS, Defaults.PREF_THEME_KEY_BORDERS)

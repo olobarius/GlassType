@@ -98,7 +98,7 @@
     <string name="delete_swipe">Kadırarak silme</string>
     <string name="key_borders">Tuş kenarlıkları</string>
     <string name="day_night_mode">Otomatik gündüz/gece modu</string>
-    <string name="spell_checker_service_name">LeanType yazım denetleyicisi</string>
+    <string name="spell_checker_service_name">GlassType yazım denetleyicisi</string>
     <string name="abbreviation_unit_minutes">%sdak.</string>
     <string name="settings_category_suggestions">Öneriler</string>
     <string name="show_emoji_key">Emoji tuşu</string>
@@ -113,7 +113,7 @@
     <string name="subtype_akkhor_bn_BD">%s (Akkhor)</string>
     <string name="delete_swipe_summary">Bir kerede metnin daha büyük bölümlerini seçmek ve silmek için silme tuşundan hızlıca kaydırın</string>
     <string name="day_night_mode_summary">Görünüm sistem ayarlarını takip edecektir</string>
-    <string name="ime_settings">LeanType ayarları</string>
+    <string name="ime_settings">GlassType ayarları</string>
     <string name="settings_category_input">Giriş</string>
     <string name="settings_category_additional_keys">Ek tuşlar</string>
     <string name="autospace_after_punctuation">Noktalama işaretlerinden sonra otomatik boşluk</string>
@@ -447,7 +447,7 @@
     <string name="libraries_status_active">Aktif</string>
     <string name="libraries_status_not_installed">indirilmedi</string>
 
-    <string name="ime_name">LeanType</string>
+    <string name="ime_name">GlassType</string>
     <string name="settings_category_configuration">Yapılandırma</string>
     <string name="settings_category_visuals">Görseller ve Önizleme</string>
     <string name="settings_category_behavior">Davranış</string>

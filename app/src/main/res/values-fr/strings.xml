@@ -131,7 +131,7 @@ Nouveau dictionnaire:
     <string name="user_dict_settings_more_languages">"Plus de langues…"</string>
     <string name="user_dict_word_already_present">Ce mot est déjà présent dans le dictionnaire utilisateur %s. Veuillez en saisir un autre.</string>
     <string name="user_dict_add_word_button">Ajouter un mot</string>
-    <string name="spell_checker_service_name">Correcteur orthographique LeanType</string>
+    <string name="spell_checker_service_name">Correcteur orthographique GlassType</string>
     <string name="android_spell_checker_settings">Paramètres du correcteur orthographique LeanType</string>
     <string name="number_row">Ligne de chiffres</string>
     <string name="delete_swipe">Balayage sur la touche Effacer</string>
@@ -150,7 +150,7 @@ Nouveau dictionnaire:
     <string name="checksum_mismatch_message">Fichier de bibliothèque inconnu. Êtes-vous sûr qu\'il provient d\'une source fiable et que c\'est pour CPU \'%s\' ?</string>
     <string name="load_gesture_library_button_load">Charger bibliothèque</string>
     <string name="load_gesture_library_button_delete">Supprimer bibliothèque</string>
-    <string name="ime_settings">Paramètres d\'LeanType</string>
+    <string name="ime_settings">Paramètres d\'GlassType</string>
     <string name="settings_category_input">Saisie</string>
     <string name="settings_category_correction">Corrections</string>
     <string name="settings_category_suggestions">Suggestions</string>
@@ -444,7 +444,7 @@ Nouveau dictionnaire:
     <string name="custom_emoji_font">Définir une police d\'emoji personnalisée à partir d\'un fichier</string>
     <string name="layout_functional_keys_khipro" tools:keep="@string/layout_functional_keys">Touches fonctionnelles (Khipro)</string>
 
-    <string name="ime_name">LeanType</string>
+    <string name="ime_name">GlassType</string>
     <string name="settings_category_configuration">Configuration</string>
     <string name="settings_category_visuals">Visuels &amp; Aperçu</string>
     <string name="settings_category_behavior">Comportement</string>

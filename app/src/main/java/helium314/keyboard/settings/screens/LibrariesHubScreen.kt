@@ -150,6 +150,7 @@ fun LibrariesHubScreen(
                                 else stringResource(R.string.libraries_status_not_installed)
                             }
                             com.leanbitlab.leantype.voice.VoiceConstants.VOICE_PROVIDER_THIRD_PARTY -> stringResource(R.string.voice_provider_system_third_party)
+                            com.leanbitlab.leantype.voice.VoiceConstants.VOICE_PROVIDER_SYSTEM -> stringResource(R.string.voice_provider_system)
                             com.leanbitlab.leantype.voice.VoiceConstants.VOICE_PROVIDER_NONE -> stringResource(R.string.voice_provider_none)
                             else -> if (voiceInstalled) stringResource(R.string.installed) else stringResource(R.string.libraries_status_not_installed)
                         }
