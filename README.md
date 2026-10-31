@@ -7,7 +7,7 @@ Basiert auf [LeanType](https://github.com/LeanBitLab/LeanType) (Fork von [HeliBo
 
 Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.0 und neuer).
 
-> **Status:** Testversion. Die Funktionen sind gebaut und kompilieren, auf echten Geräten aber noch nicht ausführlich getestet. Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
+> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) getestet und funktionierend: Transparenz („Startbildschirm scheint durch“ und „Echte Durchsicht“), Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen) und integrierte Spracheingabe. Der schwebende Modus mit Transparenz ist noch nicht auf dem Gerät getestet. Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
 
 ---
 
@@ -84,11 +84,13 @@ Es gibt zwei Arten von Transparenz:
    - **Hintergrundunschärfe** (nur bei „Startbildschirm scheint durch“): weichgezeichneter Hintergrund, ruhigeres Schriftbild.
    - **Tastatur liegt über der App**: siehe unten.
 
-### Zugriff auf das Hintergrundbild (Android 14 und neuer)
+### Zugriff auf das Hintergrundbild
 
-Seit Android 14 dürfen Apps das Hintergrundbild nur noch mit der Berechtigung **„Zugriff auf alle Dateien“** lesen. Wählst du „Startbildschirm scheint durch“ und der Zugriff fehlt, zeigt GlassType einen Dialog:
+Um das Hintergrundbild lesen zu dürfen, braucht GlassType eine Berechtigung. Wählst du „Startbildschirm scheint durch“ und der Zugriff fehlt, zeigt GlassType einen Dialog:
 
-- **„Zugriff erlauben“** öffnet die Systemeinstellung. Dort GlassType den Zugriff erlauben. GlassType nutzt die Berechtigung ausschließlich, um das Hintergrundbild zu lesen.
+- **„Zugriff erlauben“** fragt zuerst nach **„Fotos und Videos“**. Bitte **„Alle erlauben“** wählen. Auf Samsung-Geräten (getestet: Galaxy Z Fold 3 mit Android 15) genügt das.
+- Reicht das auf einem Gerät nicht (z. B. reines Android 14+), öffnet GlassType danach die Einstellung **„Zugriff auf alle Dateien“**.
+- GlassType nutzt die Berechtigungen ausschließlich, um das Hintergrundbild zu lesen.
 - **Ohne Berechtigung:** Unter *Aussehen → Transparenz → Hintergrundbild festlegen* dasselbe Bild auswählen, das du als Hintergrund des Startbildschirms nutzt. Es wird genauso bildschirmgenau ausgerichtet.
 
 Wechselst du später dein Hintergrundbild, aktualisiert sich die Tastatur automatisch.
