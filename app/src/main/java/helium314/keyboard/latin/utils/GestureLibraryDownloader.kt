@@ -3,6 +3,7 @@ package helium314.keyboard.latin.utils
 
 import android.content.Context
 import android.os.Build
+import helium314.keyboard.latin.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -92,6 +93,14 @@ object GestureLibraryDownloader {
             }
             
             Log.i(TAG, "Download complete: ${tempFile.length()} bytes")
+
+            // the downloaded file is native code that gets loaded into the keyboard: only accept the known library
+            val checksum = ChecksumCalculator.checksum(tempFile)
+            if (checksum != JniUtils.expectedDefaultChecksum()) {
+                Log.e(TAG, "Checksum mismatch: got $checksum, expected ${JniUtils.expectedDefaultChecksum()}")
+                tempFile.delete()
+                return@withContext Result.failure(Exception(context.getString(R.string.gesture_lib_checksum_mismatch)))
+            }
             Result.success(tempFile)
             
         } catch (e: Exception) {

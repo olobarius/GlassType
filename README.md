@@ -7,7 +7,7 @@ Basiert auf [LeanType](https://github.com/LeanBitLab/LeanType) (Fork von [HeliBo
 
 Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.0 und neuer).
 
-> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) getestet und funktionierend: Transparenz („Startbildschirm scheint durch“ und „Echte Durchsicht“), Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen), integrierte Spracheingabe sowie schwebende Tastatur mit Transparenz, Auge und Verschieben. Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
+> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) getestet und funktionierend: Transparenz („Startbildschirm scheint durch“ und „Echte Durchsicht“), Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen), integrierte Spracheingabe, schwebende Tastatur mit Transparenz, Auge und Verschieben sowie Wischeingabe auf Deutsch (mit Umlauten, geteilt und ungeteilt). Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
 
 ---
 
@@ -22,6 +22,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 - [Unter die Tastatur schauen (Auge)](#unter-die-tastatur-schauen-auge)
 - [Integrierte Spracheingabe](#integrierte-spracheingabe)
 - [Schwebende Tastatur](#schwebende-tastatur)
+- [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe)
 - [Symbolleiste: die neuen Knöpfe](#symbolleiste-die-neuen-knöpfe)
 - [Bekannte Einschränkungen](#bekannte-einschränkungen)
 - [Selbst bauen](#selbst-bauen)
@@ -42,7 +43,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 1. **GlassType** öffnen und dem Einrichtungsassistenten folgen: Tastatur aktivieren und als Standard wählen.
    Bei Samsung alternativ: *Einstellungen → Allgemeine Verwaltung → Tastaturliste und Standard*.
 2. **Wörterbuch laden:** *Einstellungen → Sprachen & Layouts* → Deutsch (bzw. weitere Sprachen) und das Wörterbuch herunterladen. Ohne Wörterbuch gibt es keine Wortvorschläge und keine Wischeingabe.
-3. **Wischeingabe:** *Einstellungen → Gesten-Tippen → Gesten-Tippen aktivieren*. Die benötigte Bibliothek wird automatisch geladen (sonst „Gesten-Tippen-Bibliothek laden“).
+3. **Wischeingabe:** *Einstellungen → Gesten-Tippen → Gesten-Tippen-Bibliothek laden → Bibliothek herunterladen*. Die App startet danach einmal neu. Details unter [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe).
 4. **Mikrofon erlauben:** *Einstellungen → Spracheingabe → Mikrofonberechtigung* antippen und erlauben.
 5. **Transparenz einschalten:** siehe [Transparenz-Modus](#transparenz-modus).
 
@@ -58,6 +59,8 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Unter die Tastatur schauen** | Auge gedrückt halten: Tastatur verschwindet, darunter Verdecktes wird sichtbar. Loslassen und weitertippen. | Auge-Symbol in der Symbolleiste (und unten in der schwebenden Tastatur) |
 | **Integrierte Spracheingabe** | Spracherkennung von Google/Samsung direkt in der Tastatur, Live-Text beim Sprechen, kein Plugin nötig. | Mikrofon-Symbol; Standard-Anbieter |
 | **Transparente schwebende Tastatur** | Transparenz und Auge-Knopf funktionieren auch im schwebenden Modus. | Symbol „Schwebend“ in der Symbolleiste |
+| **Deutsch mit Umlauttasten** | Eigene Tasten für Ü, Ö, Ä und ß; auf dem aufgeklappten Fold ungeteilt über die ganze Breite. | Standard |
+| **Geprüfte Wischeingabe-Bibliothek** | Die heruntergeladene Gesten-Bibliothek wird nur mit der bekannten Prüfsumme übernommen. | *Gesten-Tippen → Bibliothek laden* |
 
 ---
 
@@ -158,6 +161,38 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist** (G
 - **Transparenz** funktioniert auch hier. Bei „Startbildschirm scheint durch“ bleibt das Hintergrundbild beim Verschieben an seiner Bildschirmposition, die Tastatur wirkt wie ein Fenster auf den Desktop.
 - Mikrofon, Auge und Transparenz-Schalter sind in der Symbolleiste genauso erreichbar wie angedockt.
 - Fold 3: Unter *Aussehen → Zusammenklappbares und großes Display* gibt es eigene Höhe, Split und Abstände für den aufgeklappten Zustand (aus LeanType).
+
+---
+
+## Deutsche Tastatur und Wischeingabe
+
+### Umlaute als eigene Tasten
+
+- Deutsch nutzt standardmäßig das Layout **QWERTZ+** mit eigenen Tasten für **Ü, Ö, Ä und ß** (rechts neben P, L und M).
+- Wer das schlankere Layout ohne Umlauttasten möchte (Umlaute per langem Druck auf U, O, A): *Einstellungen → Sprachen & Layouts → Deutsch* → Layout **QWERTZ**.
+- Bei einer Installation über eine **ältere Testversion** bleibt das bisher gewählte Layout erhalten. Dann einmal wie oben auf QWERTZ+ umstellen.
+
+### Ungeteilte Tastatur auf dem Fold
+
+- Aufgeklappt ist die Tastatur jetzt standardmäßig **ungeteilt** und geht über die ganze Breite. LeanType teilt sie dort automatisch.
+- Geteilt zum Tippen mit beiden Daumen: *Einstellungen → Aussehen → Zusammenklappbares und großes Display → Geteilte Tastatur im aufgeklappten Zustand*.
+
+### Wischeingabe einrichten
+
+1. *Einstellungen → Gesten-Tippen → Gesten-Tippen-Bibliothek laden* antippen.
+2. **„Bibliothek herunterladen“** wählen. GlassType lädt die Gesten-Bibliothek (die Google-Bibliothek, die auch HeliBoard empfiehlt) von einer fest hinterlegten Adresse.
+3. GlassType vergleicht die **Prüfsumme** der Datei mit dem bekannten Wert. Nur die unveränderte Originaldatei wird übernommen, eine abweichende Datei wird gelöscht und eine Fehlermeldung angezeigt.
+4. Die App startet einmal neu, danach steht bei der Bibliothek „Aktiv“.
+
+Ohne installiertes deutsches Wörterbuch erkennt die Wischeingabe keine Wörter (siehe [Ersteinrichtung](#ersteinrichtung)).
+
+### Wischeingabe benutzen
+
+- Finger auf den ersten Buchstaben setzen, ohne abzusetzen über die weiteren Buchstaben gleiten und am letzten loslassen.
+- Mehrere gewischte Wörter hintereinander bekommen **automatisch ein Leerzeichen**. Am Satzanfang und bei Namen (z. B. „Köln“) wird automatisch großgeschrieben.
+- Hat die Tastatur das falsche Wort gewählt, steht das richtige meist in der **Vorschlagsleiste**. Antippen ersetzt das Wort, und GlassType merkt sich die Wahl.
+- **⌫ direkt nach einem gewischten Wort** löscht das ganze Wort.
+- Nach jedem Wort schlägt die Leiste passende **Folgewörter** vor.
 
 ---
 

@@ -31,7 +31,7 @@
     da: Danish/qwerty+
     dag: Dagbani/dagbani # This is a preliminary keyboard layout.
     dru: Dargwa (Urakhi)/dargwa_urakhi
-    de: German/qwertz
+    de: German/qwertz+
     de_DE: German (Germany)/qwertz+
     de_CH: German (Switzerland)/qwertz+
     ee: Ewe/ewe # This is a preliminary keyboard layout.
@@ -392,7 +392,7 @@
         android:imeSubtypeLocale="de"
         android:languageTag="de"
         android:imeSubtypeMode="keyboard"
-        android:imeSubtypeExtraValue="KeyboardLayoutSet=MAIN:qwertz,AsciiCapable,SupportTouchPositionCorrection,EmojiCapable"
+        android:imeSubtypeExtraValue="KeyboardLayoutSet=MAIN:qwertz+,AsciiCapable,SupportTouchPositionCorrection,EmojiCapable"
         android:isAsciiCapable="true"
     />
     <subtype android:icon="@drawable/ic_ime_switcher"

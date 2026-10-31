@@ -26,4 +26,5 @@
     <string name="voice_system_not_available">Kein Spracherkennungsdienst gefunden. Installiere oder aktiviere „Spracherkennung und -synthese von Google“ oder die Samsung-Spracheingabe.</string>
     <string name="voice_system_busy">Spracherkennung ist beschäftigt, bitte erneut versuchen</string>
     <string name="voice_system_error">Fehler bei der Spracherkennung (%d)</string>
+    <string name="gesture_lib_checksum_mismatch">die heruntergeladene Datei stimmt nicht mit der bekannten Gesten-Bibliothek überein (Prüfsumme) und wurde gelöscht</string>
 </resources>

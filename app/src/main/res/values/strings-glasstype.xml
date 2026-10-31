@@ -27,4 +27,5 @@
     <string name="voice_system_not_available">No speech recognition service found. Install or enable \"Speech Recognition and Synthesis from Google\" or Samsung voice input.</string>
     <string name="voice_system_busy">Speech recognition is busy, please try again</string>
     <string name="voice_system_error">Speech recognition error (%d)</string>
+    <string name="gesture_lib_checksum_mismatch">the downloaded file does not match the known gesture library (checksum) and was deleted</string>
 </resources>
