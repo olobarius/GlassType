@@ -60,6 +60,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Integrierte Spracheingabe** | Spracherkennung von Google/Samsung direkt in der Tastatur, Live-Text beim Sprechen, kein Plugin nötig. | Mikrofon-Symbol; Standard-Anbieter |
 | **Transparente schwebende Tastatur** | Transparenz und Auge-Knopf funktionieren auch im schwebenden Modus. | Symbol „Schwebend“ in der Symbolleiste |
 | **Deutsch mit Umlauttasten** | Eigene Tasten für Ü, Ö, Ä und ß; auf dem aufgeklappten Fold ungeteilt über die ganze Breite. | Standard |
+| **Zahlenzeile** | Eigene Reihe mit 1 bis 0 über den Buchstaben. | Standard; abschaltbar unter *Optionen → Zusätzliche Tasten* |
 | **Geprüfte Wischeingabe-Bibliothek** | Die heruntergeladene Gesten-Bibliothek wird nur mit der bekannten Prüfsumme übernommen. | *Gesten-Tippen → Bibliothek laden* |
 
 ---
@@ -171,6 +172,12 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist** (G
 - Deutsch nutzt standardmäßig das Layout **QWERTZ+** mit eigenen Tasten für **Ü, Ö, Ä und ß** (rechts neben P, L und M).
 - Wer das schlankere Layout ohne Umlauttasten möchte (Umlaute per langem Druck auf U, O, A): *Einstellungen → Sprachen & Layouts → Deutsch* → Layout **QWERTZ**.
 - Bei einer Installation über eine **ältere Testversion** bleibt das bisher gewählte Layout erhalten. Dann einmal wie oben auf QWERTZ+ umstellen.
+
+### Zahlenzeile
+
+- Über den Buchstaben steht standardmäßig eine eigene **Zahlenzeile (1 bis 0)**. Zahlen tippst du damit direkt, ohne langen Druck oder Wechsel auf ?123.
+- Ausschalten: *Einstellungen → Optionen → Zusätzliche Tasten → Zahlenzeile*. Dann liegen die Zahlen wieder per langem Druck auf Q bis P.
+- Bei einer Installation über eine **ältere Testversion** bleibt die bisherige Einstellung erhalten. Dann die Zahlenzeile dort einmal einschalten.
 
 ### Ungeteilte Tastatur auf dem Fold
 
