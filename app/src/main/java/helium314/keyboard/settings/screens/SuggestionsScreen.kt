@@ -80,6 +80,7 @@ fun SuggestionsScreen(
                 Settings.PREF_ALWAYS_SHOW_SUGGESTIONS_EXCEPT_WEB_TEXT else null,
             if (suggestionsEnabled) Settings.PREF_SUGGESTIONS_COUNT_IN_STRIP else null,
             if (suggestionsEnabled) Settings.PREF_MIN_VISIBLE_SUGGESTIONS else null,
+            if (suggestionsEnabled) Settings.PREF_SUGGESTION_MIN_WIDTH else null,
             if (suggestionsEnabled) Settings.PREF_CENTER_SUGGESTION_TEXT_TO_ENTER else null,
             if (suggestionsEnabled) Settings.PREF_CENTER_TYPED_WORD else null,
             Settings.PREF_SUGGEST_PUNCTUATION,
@@ -172,6 +173,16 @@ fun createSuggestionsSettings(context: Context) = listOf(
                 }
             }
         )
+    },
+    Setting(context, Settings.PREF_SUGGESTION_MIN_WIDTH, R.string.suggestion_min_width) { setting ->
+        val items = listOf(
+            stringResource(R.string.suggestion_min_width_narrow) to 80,
+            stringResource(R.string.suggestion_min_width_medium) to 100,
+            stringResource(R.string.suggestion_min_width_wide) to 120,
+        )
+        ListPreference(setting, items, Defaults.PREF_SUGGESTION_MIN_WIDTH) {
+            KeyboardSwitcher.getInstance().setThemeNeedsReload()
+        }
     },
     Setting(context, Settings.PREF_KEY_USE_PERSONALIZED_DICTS,
         R.string.use_personalized_dicts, R.string.use_personalized_dicts_summary

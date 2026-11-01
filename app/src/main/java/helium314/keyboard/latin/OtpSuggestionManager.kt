@@ -67,6 +67,8 @@ class OtpSuggestionManager(private val latinIME: LatinIME) {
             latinIME.onTextInput(otp)
             AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, it, HapticEvent.KEY_PRESS)
             binding.root.isGone = true
+            // GlassType: give the strip back to suggestions and pinned keys
+            removeOtpSuggestion()
         }
         val closeButton = binding.otpSuggestionClose
         closeButton.setImageDrawable(latinIME.mKeyboardSwitcher.keyboard?.mIconsSet?.getIconDrawable(ToolbarKey.CLOSE_HISTORY.name.lowercase()))

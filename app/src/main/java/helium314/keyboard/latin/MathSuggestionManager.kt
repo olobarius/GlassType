@@ -55,6 +55,8 @@ class MathSuggestionManager(private val latinIME: LatinIME) {
             historyManager.addEntry(match.expression, match.resultFormatted)
             binding.root.isGone = true
             lastDismissedExpression = match.expression
+            // GlassType: give the strip back to suggestions and pinned keys
+            removeMathSuggestion()
         }
 
         val closeButton = binding.otpSuggestionClose

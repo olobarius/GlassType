@@ -96,6 +96,8 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
     private var mLoadedSuggestEmojis: Boolean = false
     private var mLoadedEmojiDictExists: Boolean = false
 
+    private val MAIN_DICTIONARY_ONLY = arrayOf(Dictionary.TYPE_MAIN)
+
     private val SPELLING_DICTIONARY_TYPES = arrayOf(
         Dictionary.TYPE_MAIN,
         Dictionary.TYPE_APPS,
@@ -956,6 +958,16 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
     // this is unused, so leave it for now (redirecting to isValidWord seems to defeat the purpose...)
     override fun isValidSuggestionWord(word: String): Boolean {
         return isValidWord(word, DictionaryFacilitator.ALL_DICTIONARY_TYPES, dictionaryGroups[0])
+    }
+
+    override fun isValidMainWordInOtherLanguage(word: String): Boolean {
+        if (word.isEmpty()) return false
+        val preferred = currentlyPreferredDictionaryGroup
+        return dictionaryGroups.any { group ->
+            group !== preferred && group.locale.language.isNotEmpty()
+                && (isValidWord(word, MAIN_DICTIONARY_ONLY, group)
+                    || isValidWord(word.lowercase(group.locale), MAIN_DICTIONARY_ONLY, group))
+        }
     }
 
     // todo: move into dictionaryGroup?

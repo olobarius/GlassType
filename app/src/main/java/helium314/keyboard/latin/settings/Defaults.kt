@@ -69,6 +69,8 @@ object Defaults {
     const val PREF_KEY_BORDER_RADIUS = 10f
     const val PREF_KEY_BORDER_RADIUS_FUNCTIONAL = 25f
     const val PREF_KEY_BORDER_RADIUS_ACTION = 25f
+    /** GlassType: "round" (LeanType shapes, radius sliders apply), "medium" or "gboard" */
+    const val PREF_KEY_CORNER_STYLE = "round"
     val PREF_THEME_DAY_NIGHT = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     const val PREF_BACKGROUND_BLUR_AMOUNT = 0
     const val PREF_USE_SYSTEM_WALLPAPER = false
@@ -79,6 +81,8 @@ object Defaults {
     const val PREF_TOOLBAR_KEY_SIZE = "auto"
     const val PREF_PINNED_KEYS_OVERFLOW_LOCK = "none"
     const val PREF_MIN_VISIBLE_SUGGESTIONS = 3
+    /** GlassType: minimum width of a suggestion next to the toolbar keys in dp: 80, 100 or 120 */
+    const val PREF_SUGGESTION_MIN_WIDTH = 100
     const val PREF_CUSTOM_ICON_NAMES = ""
     const val PREF_TOOLBAR_CUSTOM_KEY_CODES = ""
     const val PREF_AUTO_CAP = true
@@ -109,7 +113,8 @@ object Defaults {
     const val PREF_EXPAND_FINE_TUNE_ADVANCED = false
     const val PREF_AUTO_CORRECT_TRIGGER = "both"
     const val PREF_MORE_AUTO_CORRECTION = false
-    const val PREF_AUTO_CORRECT_THRESHOLD = 0.185f
+    // GlassType: "Ausgewogen" (balanced), which the aggressiveness setting labels as default; LeanType used 0.185 (modest)
+    const val PREF_AUTO_CORRECT_THRESHOLD = 0.067f
     const val PREF_AUTOCORRECT_SHORTCUTS = true
     const val PREF_BACKSPACE_REVERTS_AUTOCORRECT = true
     const val PREF_BACKSPACE_REPEAT_DELETES_WORDS = false
@@ -142,13 +147,13 @@ object Defaults {
     // ponytail: default value to disable multi-word suggestions is false
     const val PREF_DISABLE_MULTI_WORD_SUGGESTIONS = false
     val PREF_SPLIT_SPACER_SCALE = Array(2) { DEFAULT_SIZE_SCALE }
-    val PREF_KEYBOARD_HEIGHT_SCALE = arrayOf(0.77f, 0.45f)
+    val PREF_KEYBOARD_HEIGHT_SCALE = arrayOf(0.95f, 0.45f)
     val PREF_UNFOLDED_KEYBOARD_HEIGHT_SCALE = arrayOf(0.65f, 0.40f)
     val PREF_BOTTOM_PADDING_SCALE = arrayOf(1.05f, 0f)
     val PREF_UNFOLDED_BOTTOM_PADDING_SCALE = arrayOf(0.5f, 0f)
     const val PREF_ENABLE_SPLIT_KEYBOARD_UNFOLDED = false
     val PREF_SIDE_PADDING_SCALE = Array(4) { 0.15f }
-    const val PREF_FONT_SCALE = 0.85f
+    const val PREF_FONT_SCALE = 1.0f
     const val PREF_SECONDARY_FONT_SCALE = 1.0f
     const val PREF_CLIPBOARD_FONT_SCALE = 1.0f
     const val PREF_EMOJI_FONT_SCALE = DEFAULT_SIZE_SCALE
@@ -262,7 +267,7 @@ object Defaults {
     const val PREF_ADD_TO_PERSONAL_DICT_THRESHOLD = 6
     val PREF_NAVBAR_COLOR = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     const val PREF_NARROW_KEY_GAPS = true
-    const val PREF_NARROW_KEY_GAPS_LEVEL = 1
+    const val PREF_NARROW_KEY_GAPS_LEVEL = 4
     const val PREF_ENABLED_SUBTYPES = ""
     const val PREF_SELECTED_SUBTYPE = ""
     const val PREF_URL_DETECTION = false

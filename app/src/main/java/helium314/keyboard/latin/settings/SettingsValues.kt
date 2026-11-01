@@ -129,6 +129,7 @@ open class SettingsValues(
     val mKeyBorderRadius: Float
     val mKeyBorderRadiusFunctional: Float
     val mKeyBorderRadiusAction: Float
+    val mKeyCornerStyle: String
     val mShowMorePopupKeys: String
     val mPopupKeyTypes: List<String>
     val mPopupKeyLabelSources: List<String>
@@ -490,6 +491,7 @@ open class SettingsValues(
         mKeyBorderRadius = prefs.getFloat(Settings.PREF_KEY_BORDER_RADIUS, Defaults.PREF_KEY_BORDER_RADIUS)
         mKeyBorderRadiusFunctional = prefs.getFloat(Settings.PREF_KEY_BORDER_RADIUS_FUNCTIONAL, Defaults.PREF_KEY_BORDER_RADIUS_FUNCTIONAL)
         mKeyBorderRadiusAction = prefs.getFloat(Settings.PREF_KEY_BORDER_RADIUS_ACTION, Defaults.PREF_KEY_BORDER_RADIUS_ACTION)
+        mKeyCornerStyle = prefs.getString(Settings.PREF_KEY_CORNER_STYLE, Defaults.PREF_KEY_CORNER_STYLE) ?: Defaults.PREF_KEY_CORNER_STYLE
         mSettingsValuesForSuggestion = SettingsValuesForSuggestion(mBlockPotentiallyOffensive, prefs.getBoolean(Settings.PREF_GESTURE_SPACE_AWARE, Defaults.PREF_GESTURE_SPACE_AWARE), mGestureMethod)
         mSpacingAndPunctuations = SpacingAndPunctuations(res, mUrlDetectionEnabled, isSymbolComposingApp)
         mBottomPaddingScale = Settings.readBottomPaddingScale(prefs, isLandscape, mScreenProfile)

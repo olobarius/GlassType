@@ -76,11 +76,15 @@ fun AppearanceScreen(
     val fineTuneFoldableExpanded = prefs.getBoolean(Settings.PREF_EXPAND_FINE_TUNE_FOLDABLE, Defaults.PREF_EXPAND_FINE_TUNE_FOLDABLE)
 
     val transparencyOn = KeyboardTransparency.isActive(prefs)
+    val roundedStyle = prefs.getString(Settings.PREF_THEME_STYLE, Defaults.PREF_THEME_STYLE) == KeyboardTheme.STYLE_ROUNDED
+    val cornerStyle = prefs.getString(Settings.PREF_KEY_CORNER_STYLE, Defaults.PREF_KEY_CORNER_STYLE)
+    // the corner presets replace the radius sliders, those apply to the LeanType shapes only
+    val radiusSlidersApply = !roundedStyle || cornerStyle == Defaults.PREF_KEY_CORNER_STYLE
 
     val items = remember(
         dayNightMode, themeBordersEnabled, popupOnEnabled, showHintsEnabled, narrowGapsEnabled, splitEnabled,
         fineTuneThemeExpanded, fineTuneKeyPreviewsExpanded, fineTuneKeyboardLayoutExpanded, fineTuneFoldableExpanded,
-        transparencyOn, prefChanged.value
+        transparencyOn, roundedStyle, radiusSlidersApply, prefChanged.value
     ) {
         listOf(
             // Transparency
@@ -95,17 +99,18 @@ fun AppearanceScreen(
             Settings.PREF_THEME_STYLE,
             Settings.PREF_THEME_COLORS,
             Settings.PREF_THEME_KEY_BORDERS,
+            if (themeBordersEnabled && roundedStyle) Settings.PREF_KEY_CORNER_STYLE else null,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                 Settings.PREF_THEME_DAY_NIGHT else null,
             if (dayNightMode) Settings.PREF_THEME_COLORS_NIGHT else null,
             SettingsWithoutKey.BACKGROUND_IMAGE,
             Settings.PREF_USE_SYSTEM_WALLPAPER,
             Settings.PREF_EXPAND_FINE_TUNE_THEME,
-            if (fineTuneThemeExpanded && themeBordersEnabled)
+            if (fineTuneThemeExpanded && themeBordersEnabled && radiusSlidersApply)
                 Settings.PREF_KEY_BORDER_RADIUS else null,
-            if (fineTuneThemeExpanded && themeBordersEnabled)
+            if (fineTuneThemeExpanded && themeBordersEnabled && radiusSlidersApply)
                 Settings.PREF_KEY_BORDER_RADIUS_FUNCTIONAL else null,
-            if (fineTuneThemeExpanded && themeBordersEnabled)
+            if (fineTuneThemeExpanded && themeBordersEnabled && radiusSlidersApply)
                 Settings.PREF_KEY_BORDER_RADIUS_ACTION else null,
             if (fineTuneThemeExpanded) Settings.PREF_NAVBAR_COLOR else null,
             if (fineTuneThemeExpanded) SettingsWithoutKey.BACKGROUND_IMAGE_LANDSCAPE else null,
@@ -313,6 +318,16 @@ fun createAppearanceSettings(context: Context) = listOf(
     },
     Setting(context, Settings.PREF_THEME_KEY_BORDERS, R.string.key_borders) {
         SwitchPreference(it, Defaults.PREF_THEME_KEY_BORDERS) { KeyboardSwitcher.getInstance().setThemeNeedsReload() }
+    },
+    Setting(context, Settings.PREF_KEY_CORNER_STYLE, R.string.glasstype_key_corner_style) { setting ->
+        val items = listOf(
+            stringResource(R.string.glasstype_key_corner_round) to "round",
+            stringResource(R.string.glasstype_key_corner_medium) to "medium",
+            stringResource(R.string.glasstype_key_corner_gboard) to "gboard",
+        )
+        ListPreference(setting, items, Defaults.PREF_KEY_CORNER_STYLE) {
+            KeyboardSwitcher.getInstance().setThemeNeedsReload()
+        }
     },
     Setting(context, Settings.PREF_KEY_BORDER_RADIUS, R.string.key_border_radius) { setting ->
         SliderPreference(

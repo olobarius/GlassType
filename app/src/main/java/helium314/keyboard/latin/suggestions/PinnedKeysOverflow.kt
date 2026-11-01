@@ -185,8 +185,12 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
             val keyWidth = (keyDimension * factor).toInt().coerceAtLeast(1)
             val available = totalWidth - otherWidth(factor)
             val fitsNextToSuggestions = count * keyWidth <= available - minSuggestionsWidth
-            val fits = if (isExpanded) fitsNextToSuggestions || (count + 1) * keyWidth <= available
-                else fitsNextToSuggestions
+            val fits = when {
+                !isExpanded -> fitsNextToSuggestions
+                // no suggestions: the arrow is hidden when all keys fit
+                !hasSuggestions -> fitsNextToSuggestions || count * keyWidth <= available
+                else -> fitsNextToSuggestions || (count + 1) * keyWidth <= available
+            }
             if (fits) return factor
         }
         return ToolbarKeySize.AUTO_STEPS.last()
@@ -203,7 +207,16 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
         // expanded: as many as fit next to the arrow (on very narrow screens not even all keys fit)
         val fittingExpanded = if (availableWidth <= 0 || (count + 1) * keyWidth <= availableWidth) count
             else ((availableWidth - keyWidth) / keyWidth).coerceIn(fitting, count)
-        val visibleCount = if (!overflow) count else if (isExpanded) fittingExpanded else fitting
+        // without suggestions there is nothing to make room for: all keys show if they fit without the arrow
+        val allFitWithoutArrow = availableWidth <= 0 || count * keyWidth <= availableWidth
+        val visibleCount = when {
+            !overflow -> count
+            !isExpanded -> fitting
+            !hasSuggestions && allFitWithoutArrow -> count
+            else -> fittingExpanded
+        }
+        // the arrow only shows when keys are hidden, or when the user expanded the keys next to suggestions
+        val showArrow = overflow && (hasSuggestions || visibleCount < count)
 
         var changed = false
         candidates.forEachIndexed { index, view ->
@@ -213,8 +226,8 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
                 changed = true
             }
         }
-        if (button.isVisible != overflow) {
-            button.isVisible = overflow
+        if (button.isVisible != showArrow) {
+            button.isVisible = showArrow
             changed = true
         }
         val expanded = !overflow || isExpanded
@@ -234,11 +247,13 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
         const val LOCK_COLLAPSED = "collapsed"
 
         /** minimum width of a single suggestion when deciding how many pinned keys fit */
-        fun minSuggestionWidth(res: Resources): Int {
+        fun minSuggestionWidth(context: Context): Int {
+            val res = context.resources
             val defaultStripHeight = res.getDimensionPixelSize(R.dimen.config_suggestions_strip_height).toFloat()
             val stripHeight = ResourceUtils.getSuggestionsStripHeight(res).toFloat()
             val scale = if (defaultStripHeight > 0f) stripHeight / defaultStripHeight else 1f
-            return (80 * res.displayMetrics.density * scale).toInt()
+            val widthDp = context.prefs().getInt(Settings.PREF_SUGGESTION_MIN_WIDTH, Defaults.PREF_SUGGESTION_MIN_WIDTH)
+            return (widthDp * res.displayMetrics.density * scale).toInt()
         }
     }
 }

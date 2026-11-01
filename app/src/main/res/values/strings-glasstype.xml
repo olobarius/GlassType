@@ -20,6 +20,10 @@
     <string name="toolbar_key_size_auto">Automatic (by available space)</string>
     <string name="toolbar_key_size_normal">Normal</string>
     <string name="min_visible_suggestions">Minimum visible suggestions</string>
+    <string name="suggestion_min_width">Width of suggestions</string>
+    <string name="suggestion_min_width_narrow">Narrow: more icons, long words shortened</string>
+    <string name="suggestion_min_width_medium">Medium (default)</string>
+    <string name="suggestion_min_width_wide">Wide: long words in full, fewer icons</string>
     <string name="min_visible_suggestions_summary">This many suggestions always stay visible next to the toolbar icons (at most the number of suggestions in the strip). Icons that no longer fit move behind the arrow on the right.</string>
     <string name="toolbar_key_size_compact" formatted="false">Compact (85 %)</string>
     <string name="toolbar_key_size_small" formatted="false">Small (70 %)</string>
@@ -38,6 +42,11 @@
     <string name="voice_system_service_default">System default</string>
     <string name="voice_system_service_default_named">System default (%s)</string>
     <string name="voice_system_error">Speech recognition error (%d)</string>
+    <!-- Key corners -->
+    <string name="glasstype_key_corner_style">Key corners</string>
+    <string name="glasstype_key_corner_round">Round (default)</string>
+    <string name="glasstype_key_corner_medium">Medium</string>
+    <string name="glasstype_key_corner_gboard">Like Gboard</string>
     <!-- About / Updates -->
     <string name="glasstype_slogan">Transparent keyboard with voice input and swipe typing</string>
     <string name="version_text_glasstype">Version %1$s · based on LeanType %2$s</string>
@@ -55,6 +64,15 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Bigger keys: keyboard size 95 % instead of 77 %, font 100 % instead of 85 %, narrower key gaps (applies unless you changed these values yourself)</item>
+        <item>• New: Appearance → Key corners: Round, Medium or Like Gboard (only ?123 and Enter as capsules)</item>
+        <item>• The space bar shows "DE • EN" with a secondary language instead of the debug info</item>
+        <item>• Autocorrect: the default is now really "Balanced"; correctly spelled English words stay unchanged in German text (needs the English main dictionary)</item>
+        <item>• Downloaded or deleted dictionaries take effect right away, without a restart</item>
+        <item>• Toolbar: the arrow on the right only shows when keys are actually collapsed</item>
+        <item>• New: Suggestions → Width of suggestions (narrow / medium / wide), default medium: long words are shortened less often</item>
+        <item>• Clipboard, screenshot, code and calculation suggestions get as much room as their text needs, the toolbar keys collapse for it</item>
+        <item>• Crash fixed: with a secondary language (e.g. English) the keyboard could crash when two suggestion queries overlapped</item>
         <item>• Typing: the space before a punctuation mark is only removed the first time. If you put it back at the same place, it stays</item>
         <item>• Voice input: punctuation after a pause is no longer swallowed, the next word no longer sticks to the previous one</item>
         <item>• Voice input: continuous listening without a restart after every pause (Android 13+)</item>

@@ -151,6 +151,8 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     /** size of the keys next to the suggestions (expand key, pinned keys, arrow), chosen by space in automatic mode */
     private var stripKeySizeFactor = toolbarKeySizeFactor
     private val pinnedOverflow = PinnedKeysOverflow(context) { refreshPinnedOverflow(relayout = true) }
+    /** GlassType: width the visible external suggestion (clipboard, screenshot, code, …) wants, 0 if none */
+    private var externalSuggestionWidth = 0
     private var lastRtl = false
     private var toolbarRow: LinearLayout? = null
     private var missingDictPromptView: TextView? = null
@@ -564,6 +566,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         }
         clear()
         isExternalSuggestionVisible = false
+        externalSuggestionWidth = 0
         setRtl(isRtlLanguage)
         lastRtl = isRtlLanguage
         suggestedWords = suggestions
@@ -617,6 +620,9 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         if (view == null) {
             clear()
             isExternalSuggestionVisible = false
+            externalSuggestionWidth = 0
+            pinnedOverflow.hasSuggestions = false
+            refreshPinnedOverflow(relayout = false)
             updateSplitToolbarState()
             return
         }
@@ -627,10 +633,14 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         if (isShowingEmojiSuggestions) return
         clear()
         isExternalSuggestionVisible = true
+        // GlassType: pinned keys make room for the whole chip, as far as the strip allows
+        externalSuggestionWidth = desiredExternalSuggestionWidth(view, addCloseButton)
+        pinnedOverflow.hasSuggestions = true
+        refreshPinnedOverflow(relayout = false)
 
         val targetView = if (addCloseButton) {
             val wrapper = LinearLayout(context)
-            wrapper.layoutParams = LinearLayout.LayoutParams(suggestionsStrip.width - 30.dpToPx(resources), LayoutParams.MATCH_PARENT)
+            wrapper.layoutParams = LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
             wrapper.addView(view)
             suggestionsStrip.addView(wrapper)
 
@@ -664,6 +674,19 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
 
         if (Settings.getValues().mAutoHideToolbar) setToolbarVisibility(false, saveState = false)
         updateSplitToolbarState()
+    }
+
+    /** natural width of an external suggestion (clipboard, screenshot, code, …) including its close button */
+    private fun desiredExternalSuggestionWidth(view: View, addCloseButton: Boolean): Int {
+        val height = stripWrapper.height.takeIf { it > 0 } ?: ResourceUtils.getSuggestionsStripHeight(resources)
+        view.measure(
+            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+            MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+        )
+        // unknown width (e.g. autofill views that inflate later): take the whole strip
+        if (view.measuredWidth <= 0) return Int.MAX_VALUE
+        val margins = (view.layoutParams as? MarginLayoutParams)?.let { it.marginStart + it.marginEnd } ?: 0
+        return view.measuredWidth + margins + if (addCloseButton) keyDimension else 0
     }
 
     fun setMoreSuggestionsHeight(remainingHeight: Int) {
@@ -1345,8 +1368,11 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
             ?.let { it.marginStart + it.marginEnd } ?: 0
         fun expandKeyWidth(factor: Float) =
             if (toolbarExpandKey.isVisible) (keyDimension * factor).toInt().coerceAtLeast(1) + expandKeyMargins else 0
-        val minSuggestionsWidth = ToolbarKeySize.minVisibleSuggestions(context.prefs()) *
-                PinnedKeysOverflow.minSuggestionWidth(resources)
+        val minSuggestionsWidth = if (isExternalSuggestionVisible && externalSuggestionWidth > 0)
+                externalSuggestionWidth.coerceAtMost(totalWidth)
+            else layoutHelper.stripWidthForSuggestions(
+                ToolbarKeySize.minVisibleSuggestions(context.prefs()), PinnedKeysOverflow.minSuggestionWidth(context)
+            )
         var changed = false
         if (toolbarKeySizeAuto) {
             val factor = pinnedOverflow.chooseAutoFactor(pinnedKeys, totalWidth, keyDimension, minSuggestionsWidth, ::expandKeyWidth)
@@ -1384,7 +1410,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private fun adaptSuggestionsCount(stripWidth: Int) {
         if (stripWidth <= 0 || Settings.getValues().mSplitToolbar) return
         val count = Settings.getValues().mSuggestionsCountInStrip
-        val fitting = stripWidth / PinnedKeysOverflow.minSuggestionWidth(resources)
+        val fitting = stripWidth / PinnedKeysOverflow.minSuggestionWidth(context)
         layoutHelper.setSuggestionsCountInStrip(fitting.coerceIn(ToolbarKeySize.minVisibleSuggestions(context.prefs()), count))
     }
 

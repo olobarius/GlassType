@@ -472,16 +472,11 @@ class MainKeyboardView @JvmOverloads constructor(
         val secondaryLocales = Settings.getValues().mSecondaryLocales
         val secondaryLocalesToUse = withoutDuplicateLanguages(secondaryLocales, subtype.locale.language)
         if (secondaryLocalesToUse.isNotEmpty()) {
-            val sb = StringBuilder(subtype.middleDisplayName)
+            // GlassType: short language codes like Gboard ("DE • EN")
             val displayLocale = resources.configuration.locale()
-            for (locale in secondaryLocales) { sb.append(" - "); sb.append(locale.getDisplayLanguage(displayLocale)) }
-            val full = sb.toString()
-            if (fitsTextIntoWidth(width, full, paint)) return full
-            sb.setLength(0)
-            sb.append(subtype.locale.language.uppercase(displayLocale))
-            for (locale in secondaryLocales) { sb.append(" - "); sb.append(locale.language.uppercase(displayLocale)) }
-            val middle = sb.toString()
-            if (fitsTextIntoWidth(width, middle, paint)) return middle
+            val short = (listOf(subtype.locale) + secondaryLocalesToUse)
+                .joinToString(" • ") { it.language.uppercase(displayLocale) }
+            if (fitsTextIntoWidth(width, short, paint)) return short
         }
         if (mLanguageOnSpacebarFormatType == LanguageOnSpacebarUtils.FORMAT_TYPE_FULL_LOCALE) {
             val fullText = subtype.fullDisplayName
@@ -512,7 +507,7 @@ class MainKeyboardView @JvmOverloads constructor(
         paint.typeface = mTypeface ?: Typeface.DEFAULT
         paint.textSize = mLanguageOnSpacebarTextSize
         val customText = Settings.getValues().mSpaceBarText
-        val spaceText = if (customText.isNotEmpty()) customText else if (DebugFlags.DEBUG_ENABLED) (KeyboardSwitcher.getInstance().localeAndConfidenceInfo ?: layoutLanguageOnSpacebar(paint, kb.mId.mSubtype, width)) else layoutLanguageOnSpacebar(paint, kb.mId.mSubtype, width)
+        val spaceText = if (customText.isNotEmpty()) customText else if (DebugFlags.DEBUG_MODE_SET_BY_USER) (KeyboardSwitcher.getInstance().localeAndConfidenceInfo ?: layoutLanguageOnSpacebar(paint, kb.mId.mSubtype, width)) else layoutLanguageOnSpacebar(paint, kb.mId.mSubtype, width)
         
         val descent = paint.descent()
         val textHeight = -paint.ascent() + descent

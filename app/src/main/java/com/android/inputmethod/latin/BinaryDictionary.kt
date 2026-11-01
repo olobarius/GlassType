@@ -217,6 +217,21 @@ class BinaryDictionary : Dictionary {
     ): ArrayList<SuggestedWordInfo>? {
         if (!isValidDictionary) return null
         val session = getTraverseSession(sessionId)
+        // GlassType: the session buffers are shared. Queries for a secondary language run on a background
+        // thread and can overlap with the next query, which crashed in native code.
+        synchronized(session) {
+            return getSuggestionsLocked(
+                session, composedData, ngramContext, proximityInfoHandle,
+                settingsValuesForSuggestion, weightForLocale, inOutWeightOfLangModelVsSpatialModel
+            )
+        }
+    }
+
+    private fun getSuggestionsLocked(
+        session: DicTraverseSession, composedData: ComposedData, ngramContext: NgramContext,
+        proximityInfoHandle: Long, settingsValuesForSuggestion: SettingsValuesForSuggestion,
+        weightForLocale: Float, inOutWeightOfLangModelVsSpatialModel: FloatArray?
+    ): ArrayList<SuggestedWordInfo>? {
         session.mInputCodePoints.fill(Constants.NOT_A_CODE)
         ngramContext.outputToArray(session.mPrevWordCodePointArrays, session.mIsBeginningOfSentenceArray)
         val inputPointers = composedData.mInputPointers
@@ -238,7 +253,7 @@ class BinaryDictionary : Dictionary {
             ?: Dictionary.NOT_A_WEIGHT_OF_LANG_MODEL_VS_SPATIAL_MODEL
 
         getSuggestionsNative(
-            mNativeDict, proximityInfoHandle, getTraverseSession(sessionId).getSession(),
+            mNativeDict, proximityInfoHandle, session.getSession(),
             inputPointers.xCoordinates, inputPointers.yCoordinates, inputPointers.times,
             inputPointers.pointerIds, session.mInputCodePoints, inputSize,
             session.mNativeSuggestOptions.options, session.mPrevWordCodePointArrays,

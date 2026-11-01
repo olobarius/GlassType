@@ -23,6 +23,8 @@ import java.util.Locale
 
 object DebugFlags {
     var DEBUG_ENABLED = false
+    /** GlassType: debug mode was switched on by the user (DEBUG_ENABLED is always on in debug builds) */
+    var DEBUG_MODE_SET_BY_USER = false
 
     /**
      * Logs per-candidate raw/weighted/boosted scores from all dictionary
@@ -33,6 +35,7 @@ object DebugFlags {
 
     fun init(context: Context) {
         DEBUG_ENABLED = BuildConfig.DEBUG || context.prefs().getBoolean(DebugSettings.PREF_DEBUG_MODE, Defaults.PREF_DEBUG_MODE)
+        DEBUG_MODE_SET_BY_USER = context.prefs().getBoolean(DebugSettings.PREF_DEBUG_MODE, false)
         CrashReportExceptionHandler(context.applicationContext).install()
     }
 }

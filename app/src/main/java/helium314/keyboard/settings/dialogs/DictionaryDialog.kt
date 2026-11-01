@@ -201,6 +201,7 @@ private fun DictionaryDetails(dict: File, onDelete: () -> Unit) {
                         dict.parentFile?.name?.constructLocale()?.let { dictLocale ->
                             ctx.prefs().edit().remove("pref_dict_download_link_${type}_${dictLocale}").apply()
                         }
+                        ctx.sendBroadcast(Intent(helium314.keyboard.dictionarypack.DictionaryPackConstants.NEW_DICTIONARY_INTENT_ACTION))
                         onDelete()
                     },
                     colors = ButtonDefaults.buttonColors(

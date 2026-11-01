@@ -315,6 +315,16 @@ class Suggest(private val mDictionaryFacilitator: DictionaryFacilitator) {
                 }
             }
 
+            // GlassType: a correct word of another enabled language (e.g. English next to German) is intended. Its
+            // score is only low because the other language dominates the text, so it must not become a similar
+            // word of that language ("weather" -> "Werther", "good" -> "Gold").
+            // Its low weight can even keep it out of the suggestion results, so ask the dictionaries directly.
+            if (!firstSuggestion.mWord.equals(consideredWord, ignoreCase = true)
+                && mDictionaryFacilitator.isValidMainWordInOtherLanguage(consideredWord)
+            ) {
+                return true to false
+            }
+
             if (!AutoCorrectionUtils.suggestionExceedsThreshold(firstSuggestion, consideredWord, mAutoCorrectionThreshold)) {
                 // Score is too low for autocorrect — but for long words, the normalized score
                 // formula penalizes proportionally (weight = 1 - editDist/len), so a single typo

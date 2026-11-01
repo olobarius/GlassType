@@ -140,6 +140,17 @@ internal class SuggestionStripLayoutHelper(
         )
     }
 
+    /** GlassType: strip width needed so that each of [count] suggestions is at least [minWidth] wide */
+    fun stripWidthForSuggestions(count: Int, minWidth: Int): Int {
+        val narrowestWeight = when {
+            count <= 1 -> 1f
+            count == 2 -> 0.5f
+            count > 3 -> 1f / count
+            else -> minOf(mOriginalCenterSuggestionWeight, (1f - mOriginalCenterSuggestionWeight) / (count - 1))
+        }
+        return (minWidth / narrowestWeight).toInt()
+    }
+
     fun setSuggestionsCountInStrip(count: Int) {
         mSuggestionsCountInStrip = count.coerceAtLeast(1)
         if (mSuggestionsCountInStrip > 3) {

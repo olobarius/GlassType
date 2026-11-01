@@ -24,6 +24,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 - [Unter die Tastatur schauen (Auge)](#unter-die-tastatur-schauen-auge)
 - [Integrierte Spracheingabe](#integrierte-spracheingabe)
 - [Schwebende Tastatur](#schwebende-tastatur)
+- [Größe und Form der Tasten](#größe-und-form-der-tasten)
 - [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe)
 - [Symbolleiste: die neuen Knöpfe](#symbolleiste-die-neuen-knöpfe)
 - [Version, Updates und „Über“](#version-updates-und-über)
@@ -45,11 +46,12 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 
 1. **GlassType** öffnen und dem Einrichtungsassistenten folgen: Tastatur aktivieren und als Standard wählen.
    Bei Samsung alternativ: *Einstellungen → Allgemeine Verwaltung → Tastaturliste und Standard*.
-2. **Wörterbuch laden:** *Einstellungen → Sprachen & Layouts* → Deutsch (bzw. weitere Sprachen) und das Wörterbuch herunterladen. Ohne Wörterbuch gibt es keine Wortvorschläge und keine Wischeingabe.
+2. **Wörterbuch laden:** *Einstellungen → Sprachen & Layouts → Wörterbücher* → **Deutsch** antippen, im Fenster nach unten scrollen und bei **„Hauptwörterbuch: Deutsch“** auf *Herunterladen* tippen (für weitere Sprachen genauso). Die App enthält keine Wörterbücher, ohne sie gibt es keine Wortvorschläge, keine Autokorrektur und keine Wischeingabe. Ein neues Wörterbuch wirkt sofort, ohne Neustart.
 3. **Wischeingabe:** *Einstellungen → Gesten-Tippen → Gesten-Tippen-Bibliothek laden → Bibliothek herunterladen*. Die App startet danach einmal neu. Details unter [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe).
 4. **Mikrofon erlauben:** *Einstellungen → Spracheingabe → Mikrofonberechtigung* antippen und erlauben.
 5. **Transparenz einschalten:** siehe [Transparente Tastatur](#transparente-tastatur).
 6. **Vorschläge in allen Apps:** Manche Apps, vor allem Browser und Web-Apps, verbieten der Tastatur Wortvorschläge. Dann bleibt die Vorschlagsleiste beim Tippen leer. Abhilfe: *Einstellungen → Vorschläge → Immer Vorschläge anzeigen* einschalten und *Nicht immer Vorschläge für Web-Editierfelder anzeigen* ausschalten.
+7. **Autokorrektur (optional):** *Einstellungen → Textkorrektur → Autokorrektur* einschalten. Details unter [Autokorrektur](#autokorrektur).
 
 ---
 
@@ -63,9 +65,11 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Unter die Tastatur schauen** | Auge gedrückt halten: Tastatur verschwindet, darunter Verdecktes wird sichtbar. Loslassen und weitertippen. | Auge-Symbol in der Symbolleiste (und unten in der schwebenden Tastatur) |
 | **Integrierte Spracheingabe** | Spracherkennung des Handys direkt in der Tastatur, Live-Text beim Sprechen, durchgehendes Zuhören, kein Plugin nötig. Erkennungsdienst wählbar. | Mikrofon-Symbol; Standard-Anbieter |
 | **Deutsch und Englisch gemischt** | Englisch als Zusatzsprache der deutschen Tastatur: Vorschläge aus beiden Wörterbüchern, ohne Umschalten. Die Spracheingabe erkennt dann ebenfalls beide Sprachen (Android 14+). | *Sprachen & Layouts → Deutsch → Mehrsprachiges Tippen* |
+| **Autokorrektur für zwei Sprachen** | Standardstufe „Ausgewogen“. Richtig geschriebene englische Wörter bleiben im deutschen Text stehen. | *Einstellungen → Textkorrektur → Autokorrektur* |
 | **Transparente schwebende Tastatur** | Transparenz und Auge-Knopf funktionieren auch im schwebenden Modus. | Symbol „Schwebend“ in der Symbolleiste |
 | **Platz für Vorschläge** | Auf schmalen Bildschirmen bleiben neben den Vorschlägen nur so viele Symbole, dass die gewünschte Mindestzahl an Vorschlägen passt (Standard 3). Der Pfeil rechts klappt den Rest aus, langes Drücken rastet ein. | Automatisch; Anzahl unter *Einstellungen → Vorschläge → Mindestens sichtbare Vorschläge* |
 | **Größe der Symbole** | Automatisch (Standard): Die Symbole werden nur kleiner, wenn der Platz knapp ist. Alternativ fest Normal, Kompakt (85 %) oder Klein (70 %). | *Einstellungen → Symbolleiste → Größe der Symbole* |
+| **Tastenecken wie bei Gboard** | Tasten mit leicht abgerundeten Ecken statt rund. Nur ?123 und Enter bleiben Kapseln. Dazu größere Tasten, größere Schrift und engere Abstände als bei LeanType. | *Einstellungen → Aussehen → Design → Tastenecken* |
 | **Deutsch mit Umlauttasten** | Eigene Tasten für Ü, Ö, Ä und ß; auf dem aufgeklappten Fold ungeteilt über die ganze Breite. | Standard |
 | **Zahlenzeile** | Eigene Reihe mit 1 bis 0 über den Buchstaben. | Standard; abschaltbar unter *Optionen → Zusätzliche Tasten* |
 | **Geprüfte Wischeingabe-Bibliothek** | Die heruntergeladene Gesten-Bibliothek wird nur mit der bekannten Prüfsumme übernommen. | *Gesten-Tippen → Bibliothek laden* |
@@ -171,6 +175,24 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist**, d
 
 ---
 
+## Größe und Form der Tasten
+
+GlassType hat größere Tasten als LeanType, damit sie nicht zu klein und zu rund wirken:
+
+| Einstellung | GlassType | LeanType | Wo |
+|---|---|---|---|
+| Tastaturgröße | 95 % | 77 % | *Aussehen → Sonstiges → Tastaturgröße* |
+| Tastatur-Schriftgrad | 100 % | 85 % | *Aussehen → Tastaturgröße und Schriftarten* (aufklappen) |
+| Stärke der Tastenabstände | 4 (engere Lücken) | 1 | *Aussehen → Tastaturgröße und Schriftarten* (aufklappen); höher = enger |
+
+Die Werte gelten auch nach einem Update, solange du sie nicht selbst geändert hast. Aufgeklappt auf dem Fold gilt eine eigene Höhe: *Aussehen → Zusammenklappbares und großes Display*.
+
+**Tastenecken:** *Einstellungen → Aussehen → Design → Tastenecken*
+- **Rund (Standard):** wie in LeanType. Buchstaben mit 10 dp Eckenradius, Funktionstasten (Shift, ⌫, ?123, Komma, Punkt) und Enter als Kapseln. Feinjustieren unter *Aussehen → Thema und Grenzen* (aufklappen) mit den drei Eckenradius-Reglern.
+- **Mittel:** 6 dp Eckenradius für alle Tasten, nur ?123 und Enter bleiben Kapseln.
+- **Wie Gboard:** 4 dp, sonst wie Mittel.
+- Die Auswahl erscheint beim Stil „Abgerundet“ mit eingeschalteten Tastenrändern.
+
 ## Deutsche Tastatur und Wischeingabe
 
 ### Umlaute als eigene Tasten
@@ -187,15 +209,22 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist**, d
 
 ### Deutsch und Englisch gemischt
 
-Wer viel Englisch oder englische Fachbegriffe (z. B. aus der IT) schreibt, nimmt Englisch als **Zusatzsprache** der deutschen Tastatur. Das Layout bleibt QWERTZ mit Umlauten, und die Vorschläge und die Wischeingabe kommen aus beiden Wörterbüchern gleichzeitig, ganz ohne Umschalten. Die Leertaste zeigt dann z. B. „de 1, en_US 1“.
+Wer viel Englisch oder englische Fachbegriffe (z. B. aus der IT) schreibt, nimmt Englisch als **Zusatzsprache** der deutschen Tastatur. Das Layout bleibt QWERTZ mit Umlauten, und die Vorschläge und die Wischeingabe kommen aus beiden Wörterbüchern gleichzeitig, ganz ohne Umschalten. Die Leertaste zeigt dann „DE • EN“.
 
 Einrichten:
-1. *Einstellungen → Sprachen & Layouts* → oben auf die Lupe, „Englisch“ suchen und **Englisch (USA)** (oder UK) einschalten. Das Wörterbuch-Fenster, das dabei aufgeht, kannst du schließen. Das Hauptwörterbuch für Englisch (USA) ist schon in der App enthalten.
+1. *Einstellungen → Sprachen & Layouts* → oben auf die Lupe, „Englisch“ suchen und **Englisch (USA)** (oder UK) einschalten. Das Wörterbuch-Fenster, das dabei aufgeht, kannst du schließen.
 2. Zurück, auf **Deutsch** (den Namen, nicht den Schalter) tippen → **Mehrsprachiges Tippen** → Englisch auswählen.
 3. Die eigene englische Tastatur aus Schritt 1 wieder ausschalten, sonst wechselt die Globustaste zwischen zwei Tastaturen. Die Zusatzsprache bleibt erhalten.
-4. Optional: *Sprachen & Layouts → Wörterbücher → Englisch (USA)* → **Emoji: Englisch** herunterladen, für Emoji-Vorschläge zu englischen Wörtern.
+4. **Englisches Wörterbuch laden:** *Sprachen & Layouts → Wörterbücher → Englisch (USA)* antippen, im Fenster nach unten scrollen und bei **„Hauptwörterbuch: Englisch (USA) (legacy)“** auf *Herunterladen* tippen. Ohne dieses Wörterbuch kennt die Tastatur keine englischen Wörter, und die Autokorrektur macht aus „weather“ zum Beispiel „Werther“.
+5. Optional im selben Fenster: **Emoji: Englisch** herunterladen, für Emoji-Vorschläge zu englischen Wörtern.
 
 Die [integrierte Spracheingabe](#integrierte-spracheingabe) erkennt dann ab Android 14 ebenfalls beide Sprachen.
+
+### Autokorrektur
+
+- Ist sie an, ersetzt die Tastatur ein vertipptes Wort durch den ersten Vorschlag, sobald du Leertaste oder ein Satzzeichen tippst („heite“ wird „heute“). Die **Rücktaste direkt danach** macht die Korrektur rückgängig.
+- Einschalten: *Einstellungen → Textkorrektur → Autokorrektur*. Darunter stellst du unter *Aggressivität der Autokorrektur* ein, wie mutig sie korrigiert. Standard ist **Ausgewogen**; **Moderat** korrigiert nur sehr ähnliche Wörter, **Aggressiv** und **Sehr aggressiv** korrigieren mehr und auch in Feldern, in denen Apps keine Korrektur wollen.
+- **Mit Englisch als Zusatzsprache:** Ein richtig geschriebenes englisches Wort bleibt stehen, auch wenn du gerade deutsch schreibst („the weather is good“ wird nicht zu „Werther“ oder „Gold“). Dafür muss das englische Hauptwörterbuch geladen sein (siehe oben, Schritt 4).
 
 ### Leerzeichen vor Satzzeichen
 
@@ -246,10 +275,15 @@ Anpassen unter *Einstellungen → Symbolleiste → Angeheftete Tasten der Symbol
 
 Auf schmalen Bildschirmen (z. B. Galaxy S23 Ultra oder Außendisplay des Fold) passen nicht alle angehefteten Symbole und 3 Vorschläge nebeneinander. GlassType regelt das automatisch:
 
-- **Keine Vorschläge** (z. B. leeres Textfeld): Alle angehefteten Symbole sind zu sehen.
+- **Keine Vorschläge** (z. B. leeres Textfeld): Alle angehefteten Symbole sind zu sehen, ohne Pfeil.
 - **Vorschläge da:** Es bleiben nur so viele Symbole stehen, dass die **Mindestzahl an Vorschlägen** daneben passt, und zwar die **ersten in deiner Reihenfolge**. Bei „Größe der Symbole: Automatisch“ werden die Symbole vorher kleiner, damit möglichst viele Platz haben (siehe unten).
-- **Mindestens sichtbare Vorschläge:** *Einstellungen → Vorschläge → Mindestens sichtbare Vorschläge* (1 bis 6, Standard 3). Mehr Vorschläge lassen weniger Platz für Symbole, weniger Vorschläge mehr. Höchstens so viele, wie unter „Anzahl der Vorschläge“ eingestellt sind. Jeder Vorschlag bekommt mindestens etwa 80 dp Breite, damit auch längere Wörter lesbar bleiben.
-- Ganz rechts erscheint dann ein **Pfeil**:
+- **Mindestens sichtbare Vorschläge:** *Einstellungen → Vorschläge → Mindestens sichtbare Vorschläge* (1 bis 6, Standard 3). Mehr Vorschläge lassen weniger Platz für Symbole, weniger Vorschläge mehr. Höchstens so viele, wie unter „Anzahl der Vorschläge“ eingestellt sind.
+- **Breite der Vorschläge:** *Einstellungen → Vorschläge → Breite der Vorschläge*. So breit ist jeder Vorschlag mindestens:
+  - **Schmal (80 dp):** mehr Symbole bleiben stehen, lange Wörter werden in der Mitte gekürzt („Dow…ads“).
+  - **Mittel (100 dp, Standard):** der Mittelweg.
+  - **Breit (120 dp):** lange Wörter stehen ganz da, dafür wandern beim Tippen mehr Symbole hinter den Pfeil.
+- **Zwischenablage, Screenshot, Einmalcode, Rechenergebnis:** Solche Vorschläge bekommen so viel Platz, wie ihr Text braucht. Ein kurzer Code lässt alle Symbole stehen, ein langer kopierter Text klappt so viele Symbole ein wie nötig. Nach dem Einfügen oder Wegklicken (✕) sind alle Symbole wieder da.
+- Ganz rechts erscheint dann ein **Pfeil**, aber nur wenn Symbole eingeklappt sind oder du sie neben Vorschlägen ausgeklappt hast:
   - `<` = es sind Symbole eingeklappt. **Tippen** klappt sie aus (die Vorschläge werden dann schmaler).
   - `>` = alles ausgeklappt. **Tippen** klappt wieder ein.
   - Ein Tipp gilt, bis du in ein anderes Textfeld wechselst. Danach regelt die Automatik wieder.

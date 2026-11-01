@@ -340,6 +340,24 @@ open class KeyboardView @JvmOverloads constructor(
         if (this is PopupKeysKeyboardView || this is MoreSuggestionsView) 255
         else Settings.getValues().mKeyBackgroundAlpha
 
+    /**
+     * GlassType: corner radius of the "Tastenecken" presets, null for the LeanType shapes.
+     * Like Gboard, only ?123 and Enter stay capsules, Enter keeps its own background.
+     */
+    private fun presetCornerRadiusPx(key: Key): Float? {
+        if (!mColors.hasKeyBorders || mColors.themeStyle != KeyboardTheme.STYLE_ROUNDED) return null
+        if (this is PopupKeysKeyboardView || this is MoreSuggestionsView) return null
+        val radiusDp = when (Settings.getValues().mKeyCornerStyle) {
+            "medium" -> 6f
+            "gboard" -> 4f
+            else -> return null
+        }
+        if (key.hasActionKeyBackground()) return null
+        val capsule = key.code == KeyCode.SYMBOL_ALPHA || key.code == KeyCode.SYMBOL
+            || key.code == KeyCode.ALPHA || key.code == KeyCode.NUMPAD
+        return (if (capsule) CAPSULE_RADIUS_DP else radiusDp) * resources.displayMetrics.density
+    }
+
     protected open fun onDrawKeyBackground(key: Key, canvas: Canvas, background: Drawable) {
         val isHex = keyboard?.isHexagonal == true
         val isWideSpacebar = (key.code == Constants.CODE_SPACE || key.backgroundType == Key.BACKGROUND_TYPE_SPACEBAR) && key.drawWidth > key.height * 1.4f
@@ -426,7 +444,10 @@ open class KeyboardView @JvmOverloads constructor(
             bgX = -padding.left
         }
         
-        if (mColors.hasKeyBorders) {
+        val presetRadiusPx = presetCornerRadiusPx(key)
+        if (presetRadiusPx != null) {
+            mColors.applyKeyBorderRadius(drawBackground, presetRadiusPx)
+        } else if (mColors.hasKeyBorders) {
             val radiusDp = when {
                 key.hasActionKeyBackground() -> Settings.getValues().mKeyBorderRadiusAction
                 key.hasFunctionalBackground() -> Settings.getValues().mKeyBorderRadiusFunctional
@@ -724,6 +745,8 @@ open class KeyboardView @JvmOverloads constructor(
     }
 
     companion object {
+        private const val CAPSULE_RADIUS_DP = 500f
+
         private fun blendAlpha(paint: Paint, alpha: Int) {
             val color = paint.color
             paint.setARGB((paint.alpha * alpha) / Constants.Color.ALPHA_OPAQUE, Color.red(color), Color.green(color), Color.blue(color))

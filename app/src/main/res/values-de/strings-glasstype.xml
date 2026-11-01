@@ -19,6 +19,10 @@
     <string name="toolbar_key_size_auto">Automatisch (je nach Platz)</string>
     <string name="toolbar_key_size_normal">Normal</string>
     <string name="min_visible_suggestions">Mindestens sichtbare Vorschläge</string>
+    <string name="suggestion_min_width">Breite der Vorschläge</string>
+    <string name="suggestion_min_width_narrow">Schmal: mehr Symbole, lange Wörter gekürzt</string>
+    <string name="suggestion_min_width_medium">Mittel (Standard)</string>
+    <string name="suggestion_min_width_wide">Breit: lange Wörter ganz, weniger Symbole</string>
     <string name="min_visible_suggestions_summary">So viele Vorschläge bleiben neben den Symbolen der Symbolleiste immer sichtbar (höchstens die Anzahl der Vorschläge in der Leiste). Symbole, die nicht mehr passen, kommen hinter den Pfeil rechts.</string>
     <string name="toolbar_key_size_compact" formatted="false">Kompakt (85 %)</string>
     <string name="toolbar_key_size_small" formatted="false">Klein (70 %)</string>
@@ -37,6 +41,11 @@
     <string name="voice_system_service_summary">Welche Spracherkennung die integrierte Spracheingabe nutzt. Zum Vergleichen umstellen.</string>
     <string name="voice_system_service_default">Systemstandard</string>
     <string name="voice_system_service_default_named">Systemstandard (%s)</string>
+    <!-- Tastenecken -->
+    <string name="glasstype_key_corner_style">Tastenecken</string>
+    <string name="glasstype_key_corner_round">Rund (Standard)</string>
+    <string name="glasstype_key_corner_medium">Mittel</string>
+    <string name="glasstype_key_corner_gboard">Wie Gboard</string>
     <!-- Über / Updates -->
     <string name="glasstype_slogan">Transparente Tastatur mit Spracheingabe und Wischeingabe</string>
     <string name="version_text_glasstype">Version %1$s · basiert auf LeanType %2$s</string>
@@ -54,6 +63,15 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Größere Tasten: Tastaturgröße 95 % statt 77 %, Schrift 100 % statt 85 %, engere Tastenabstände (gilt, solange du die Werte nicht selbst geändert hast)</item>
+        <item>• Neu: Aussehen → Tastenecken: Rund, Mittel oder Wie Gboard (nur ?123 und Enter als Kapsel)</item>
+        <item>• Leertaste zeigt bei Zusatzsprache „DE • EN“ statt der Testanzeige</item>
+        <item>• Autokorrektur: Standard ist jetzt wirklich „Ausgewogen“; richtig geschriebene englische Wörter bleiben im deutschen Text stehen (englisches Hauptwörterbuch nötig)</item>
+        <item>• Heruntergeladene oder gelöschte Wörterbücher wirken sofort, ohne Neustart</item>
+        <item>• Symbolleiste: Der Pfeil rechts erscheint nur noch, wenn wirklich Symbole eingeklappt sind</item>
+        <item>• Neu: Vorschläge → Breite der Vorschläge (Schmal / Mittel / Breit), Standard Mittel: lange Wörter werden seltener gekürzt</item>
+        <item>• Zwischenablage-, Screenshot-, Code- und Rechenvorschläge bekommen so viel Platz, wie ihr Text braucht, die Symbole klappen dafür ein</item>
+        <item>• Absturz behoben: Mit einer Zusatzsprache (z. B. Englisch) konnte die Tastatur abstürzen, wenn zwei Vorschlagsberechnungen zusammenfielen</item>
         <item>• Tippen: Das Leerzeichen vor einem Satzzeichen wird nur beim ersten Mal entfernt. Setzt du es an derselben Stelle wieder, bleibt es stehen</item>
         <item>• Spracheingabe: Satzzeichen nach einer Sprechpause werden nicht mehr verschluckt, das nächste Wort klebt nicht mehr am vorigen</item>
         <item>• Spracheingabe: durchgehendes Zuhören ohne Neustart nach jeder Sprechpause (Android 13+)</item>

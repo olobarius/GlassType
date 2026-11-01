@@ -135,6 +135,9 @@ interface DictionaryFacilitator {
 
     fun isValidSuggestionWord(word: String): Boolean
 
+    /** GlassType: whether [word] is in the main dictionary of an enabled language other than the currently preferred one */
+    fun isValidMainWordInOtherLanguage(word: String): Boolean = false
+
     fun clearUserHistoryDictionary(context: Context)
 
     fun dump(context: Context): String

@@ -344,6 +344,8 @@ fun downloadDictionary(
             }
         }
         withContext(Dispatchers.Main) {
+            // GlassType: let a running keyboard load the new dictionary right away instead of after a restart
+            if (success) context.sendBroadcast(Intent(helium314.keyboard.dictionarypack.DictionaryPackConstants.NEW_DICTIONARY_INTENT_ACTION))
             onComplete(success)
         }
     }
@@ -503,6 +505,7 @@ fun DownloadableDictionaryRow(locale: Locale, desc: String, link: String, refres
                     onClick = {
                         file?.delete()
                         ctx.prefs().edit().remove("pref_dict_download_link_${type}_${dictLocale}").apply()
+                        ctx.sendBroadcast(Intent(helium314.keyboard.dictionarypack.DictionaryPackConstants.NEW_DICTIONARY_INTENT_ACTION))
                         onRefresh()
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -519,6 +522,7 @@ fun DownloadableDictionaryRow(locale: Locale, desc: String, link: String, refres
                 onClick = {
                     file?.delete()
                     ctx.prefs().edit().remove("pref_dict_download_link_${type}_${dictLocale}").apply()
+                    ctx.sendBroadcast(Intent(helium314.keyboard.dictionarypack.DictionaryPackConstants.NEW_DICTIONARY_INTENT_ACTION))
                     onRefresh()
                 },
                 colors = ButtonDefaults.buttonColors(

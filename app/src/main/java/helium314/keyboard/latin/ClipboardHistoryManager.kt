@@ -708,6 +708,8 @@ class ClipboardHistoryManager(
             latinIME.onTextInput(content.toString())
             AudioAndHapticFeedbackManager.getInstance().performHapticAndAudioFeedback(KeyCode.NOT_SPECIFIED, it, HapticEvent.KEY_PRESS)
             binding.root.isGone = true
+            // GlassType: give the strip back to suggestions and pinned keys
+            removeClipboardSuggestion()
         }
         val closeButton = binding.clipboardSuggestionClose
         closeButton.setImageDrawable(latinIME.mKeyboardSwitcher.keyboard?.mIconsSet?.getIconDrawable(ToolbarKey.CLOSE_HISTORY.name.lowercase()))
