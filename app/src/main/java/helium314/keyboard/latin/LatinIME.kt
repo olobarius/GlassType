@@ -240,13 +240,6 @@ class LatinIME : InputMethodService(),
 
         loadSettings()
         settings.startListener()
-        try {
-            @Suppress("DEPRECATION")
-            ContextCompat.registerReceiver(this, wallpaperChangedReceiver,
-                android.content.IntentFilter(android.content.Intent.ACTION_WALLPAPER_CHANGED), ContextCompat.RECEIVER_EXPORTED)
-        } catch (e: Exception) {
-            Log.w(TAG, "could not register wallpaper receiver: ${e.message}")
-        }
         clipboardHistoryManager.onCreate()
         handler.onCreate()
 
@@ -400,17 +393,7 @@ class LatinIME : InputMethodService(),
 
     val localeAndConfidenceInfo: String? get() = dictionaryFacilitator.localesAndConfidences()
 
-    private val wallpaperChangedReceiver = object : android.content.BroadcastReceiver() {
-        override fun onReceive(context: android.content.Context, intent: android.content.Intent) {
-            helium314.keyboard.latin.utils.KeyboardTransparency.onWallpaperChanged(this@LatinIME)
-            if (helium314.keyboard.latin.utils.KeyboardTransparency.isActive(prefs())) {
-                KeyboardSwitcher.getInstance().setThemeNeedsReload()
-            }
-        }
-    }
-
     override fun onDestroy() {
-        try { unregisterReceiver(wallpaperChangedReceiver) } catch (_: Exception) { }
         if (sInstance === this) sInstance = null
         updateVoiceKeepScreenOn(VoiceInputManager.VoiceState.IDLE)
         if (isShowingOptionDialog()) {

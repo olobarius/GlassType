@@ -5,11 +5,11 @@
 **Android-Tastatur mit einstellbarer Transparenz, integrierter Spracheingabe und „Blick unter die Tastatur“.**
 Basiert auf [LeanType](https://github.com/LeanBitLab/LeanType) (Fork von [HeliBoard](https://github.com/Helium314/HeliBoard) / OpenBoard / AOSP LatinIME) und übernimmt dessen kompletten Funktionsumfang, inklusive Wischeingabe, schwebender Tastatur, Split-Layout für Foldables, Zwischenablage und Emoji-Suche.
 
-*English summary: GlassType is a LeanType/HeliBoard based Android keyboard that adds an adjustable transparent mode (home screen wallpaper shining through, pixel-aligned, or real see-through), built-in voice typing via the system speech recognizer, a hold-to-peek button to look behind the keyboard, and quick toggles for transparency and "keyboard over app" mode.*
+*English summary: GlassType is a LeanType/HeliBoard based Android keyboard that adds an adjustable transparent keyboard (real see-through onto the app behind, no permissions needed), built-in voice typing via the system speech recognizer, a hold-to-peek button to look behind the keyboard, and quick toggles for transparency and "keyboard over app" mode.*
 
 Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.0 und neuer).
 
-> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) getestet und funktionierend: Transparenz („Startbildschirm scheint durch“ und „Echte Durchsicht“), Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen), integrierte Spracheingabe, schwebende Tastatur mit Transparenz, Auge und Verschieben sowie Wischeingabe auf Deutsch (mit Umlauten, geteilt und ungeteilt). Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
+> **Status:** Testversion. Auf einem Galaxy Z Fold 3 (Android 15) und einem Galaxy S23 Ultra (Android 17) getestet und funktionierend: transparente Tastatur, Transparenz-Schnellschalter, Tastatur über der App, Auge (unter die Tastatur schauen), integrierte Spracheingabe, schwebende Tastatur mit Transparenz, Auge und Verschieben sowie Wischeingabe auf Deutsch (mit Umlauten, geteilt und ungeteilt). Fehler bitte als [Issue](https://github.com/olobarius/GlassType/issues) melden.
 
 ---
 
@@ -18,7 +18,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 - [Download und Installation](#download-und-installation)
 - [Ersteinrichtung](#ersteinrichtung)
 - [Neue Funktionen im Überblick](#neue-funktionen-im-überblick)
-- [Transparenz-Modus](#transparenz-modus)
+- [Transparente Tastatur](#transparente-tastatur)
 - [Schnellschalter Transparenz](#schnellschalter-transparenz)
 - [Tastatur über der App (nicht hochschieben)](#tastatur-über-der-app-nicht-hochschieben)
 - [Unter die Tastatur schauen (Auge)](#unter-die-tastatur-schauen-auge)
@@ -48,7 +48,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 2. **Wörterbuch laden:** *Einstellungen → Sprachen & Layouts* → Deutsch (bzw. weitere Sprachen) und das Wörterbuch herunterladen. Ohne Wörterbuch gibt es keine Wortvorschläge und keine Wischeingabe.
 3. **Wischeingabe:** *Einstellungen → Gesten-Tippen → Gesten-Tippen-Bibliothek laden → Bibliothek herunterladen*. Die App startet danach einmal neu. Details unter [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe).
 4. **Mikrofon erlauben:** *Einstellungen → Spracheingabe → Mikrofonberechtigung* antippen und erlauben.
-5. **Transparenz einschalten:** siehe [Transparenz-Modus](#transparenz-modus).
+5. **Transparenz einschalten:** siehe [Transparente Tastatur](#transparente-tastatur).
 
 ---
 
@@ -56,7 +56,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 
 | Funktion | Kurz erklärt | Aktivieren |
 |---|---|---|
-| **Transparenz-Modus** | Startbildschirm-Hintergrund scheint pixelgenau durch die Tastatur, oder echte Durchsicht auf die App dahinter. Deckkraft für Hintergrund und Tasten getrennt einstellbar. | *Einstellungen → Aussehen → Transparenz* |
+| **Transparente Tastatur** | Echte Durchsicht auf die App hinter der Tastatur. Deckkraft für Hintergrund und Tasten getrennt einstellbar. Keine Berechtigungen nötig. | *Einstellungen → Aussehen → Transparenz* |
 | **Schnellschalter Transparenz** | Ein Tipp schaltet die Transparenz an/aus. | Tropfen-Symbol in der Symbolleiste |
 | **Tastatur über der App** | Die angedockte Tastatur schiebt die App nicht hoch, sondern liegt darüber. | Ebenen-Symbol in der Symbolleiste oder *Aussehen → Transparenz* |
 | **Unter die Tastatur schauen** | Auge gedrückt halten: Tastatur verschwindet, darunter Verdecktes wird sichtbar. Loslassen und weitertippen. | Auge-Symbol in der Symbolleiste (und unten in der schwebenden Tastatur) |
@@ -69,39 +69,25 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 
 ---
 
-## Transparenz-Modus
+## Transparente Tastatur
 
-### Was er macht
+### Was sie macht
 
-Es gibt zwei Arten von Transparenz:
+Der Tastaturhintergrund wird wirklich durchsichtig: Man sieht, was die App hinter der Tastatur zeigt. Über dem App-Inhalt liegt die Farbe deines Tastatur-Designs mit einstellbarer Deckkraft, damit die Tasten lesbar bleiben.
 
-| Modus | Wirkung | Gut für |
-|---|---|---|
-| **Startbildschirm scheint durch** | Das Hintergrundbild deines Startbildschirms wird **genau an der Stelle gezeichnet, an der die Tastatur auf dem Bildschirm liegt**, als wäre die Tastatur ein Fenster auf den Desktop. Das funktioniert in jeder App. | Den „Glas-Look“ überall |
-| **Echte Durchsicht** | Der Tastaturhintergrund ist wirklich durchsichtig, man sieht, was die App hinter der Tastatur zeichnet. | Zusammen mit [Tastatur über der App](#tastatur-über-der-app-nicht-hochschieben), um den App-Inhalt durch die Tastatur zu sehen |
-
-Über dem Hintergrund liegt die Farbe deines Tastatur-Designs mit einstellbarer Deckkraft. So bleibt die Schrift lesbar, egal wie bunt das Hintergrundbild ist.
+- Am besten zusammen mit [Tastatur über der App](#tastatur-über-der-app-nicht-hochschieben). Nur dann liegt echter App-Inhalt hinter der Tastatur. Wird die App hochgeschoben, sieht man dahinter meist nur eine einfarbige Fläche.
+- **Keine Berechtigungen nötig.** GlassType liest dafür nichts vom Gerät, weder Hintergrundbild noch Fotos oder Dateien.
 
 ### Aktivieren
 
 1. *Einstellungen → Aussehen*. Ganz oben steht der Bereich **Transparenz**.
-2. **Transparenz-Modus** wählen: *Aus*, *Startbildschirm scheint durch* oder *Echte Durchsicht*.
+2. **Transparente Tastatur** einschalten.
 3. Einstellen:
-   - **Deckkraft Hintergrund** (0–100 %): wie stark die Designfarbe über dem Hintergrund liegt. 0 % = Hintergrund voll sichtbar, 100 % = undurchsichtig. Standard 35 %.
+   - **Deckkraft Hintergrund** (0–100 %): wie stark die Designfarbe über dem App-Inhalt liegt. 0 % = App voll sichtbar, 100 % = undurchsichtig. Standard 35 %.
    - **Deckkraft Tasten** (0–100 %): Deckkraft der Tastenflächen. Standard 55 %. Popups und Vorschlagsfenster bleiben zur besseren Lesbarkeit immer deckend.
-   - **Hintergrundunschärfe** (nur bei „Startbildschirm scheint durch“): weichgezeichneter Hintergrund, ruhigeres Schriftbild.
    - **Tastatur liegt über der App**: siehe unten.
 
-### Zugriff auf das Hintergrundbild
-
-Um das Hintergrundbild lesen zu dürfen, braucht GlassType eine Berechtigung. Wählst du „Startbildschirm scheint durch“ und der Zugriff fehlt, zeigt GlassType einen Dialog:
-
-- **„Zugriff erlauben“** fragt zuerst nach **„Fotos und Videos“**. Bitte **„Alle erlauben“** wählen. Auf Samsung-Geräten (getestet: Galaxy Z Fold 3 mit Android 15) genügt das.
-- Reicht das auf einem Gerät nicht (z. B. reines Android 14+), öffnet GlassType danach die Einstellung **„Zugriff auf alle Dateien“**.
-- GlassType nutzt die Berechtigungen ausschließlich, um das Hintergrundbild zu lesen.
-- **Ohne Berechtigung:** Unter *Aussehen → Transparenz → Hintergrundbild festlegen* dasselbe Bild auswählen, das du als Hintergrund des Startbildschirms nutzt. Es wird genauso bildschirmgenau ausgerichtet.
-
-Wechselst du später dein Hintergrundbild, aktualisiert sich die Tastatur automatisch.
+> Bis Version 0.5.0 gab es zusätzlich den Modus „Startbildschirm scheint durch“. Er brauchte je nach Gerät den Fotozugriff oder sogar „Zugriff auf alle Dateien“ und funktionierte auf Android 17 trotzdem nicht. Er wurde entfernt. Wer ihn eingestellt hatte, bekommt automatisch die echte Transparenz. Die Berechtigung „Zugriff auf alle Dateien“ fordert GlassType nicht mehr an.
 
 ---
 
@@ -109,7 +95,7 @@ Wechselst du später dein Hintergrundbild, aktualisiert sich die Tastatur automa
 
 **Tropfen-Symbol** in der Symbolleiste über der Tastatur:
 
-- Ein Tipp: Transparenz **aus**, nächster Tipp: wieder **an**, und zwar mit dem zuletzt gewählten Modus (Standard: „Startbildschirm scheint durch“).
+- Ein Tipp: Transparenz **an**, nächster Tipp: wieder **aus**.
 - Ist das Symbol hervorgehoben, ist die Transparenz an.
 - Beim Umschalten baut sich die Tastatur einmal kurz neu auf.
 
@@ -121,7 +107,7 @@ Normalerweise schiebt eine angedockte Tastatur die App nach oben bzw. verkleiner
 
 - **Ebenen-Symbol** in der Symbolleiste: Tipp schaltet um, hervorgehoben = Tastatur liegt über der App.
 - Dauerhaft einstellbar unter *Aussehen → Transparenz → Tastatur liegt über der App*.
-- **Tipp:** Zusammen mit **Echte Durchsicht** und niedriger Hintergrund-Deckkraft sieht man den App-Inhalt durch die Tastatur.
+- **Tipp:** Zusammen mit der **transparenten Tastatur** und niedriger Hintergrund-Deckkraft sieht man den App-Inhalt durch die Tastatur.
 - Gilt nur für die angedockte Tastatur. Die schwebende Tastatur liegt ohnehin immer über der App.
 
 So sieht der Unterschied aus (getestet in Samsung Notes auf dem Fold 3):
@@ -172,7 +158,7 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist** (G
 ## Schwebende Tastatur
 
 - Einschalten über das Symbol **„Schwebend“** in der Symbolleiste. Unten an der schwebenden Tastatur: links **Andocken (X)**, daneben das **Auge**, in der Mitte der **Ziehgriff** zum Verschieben, rechts der **Größen-Griff**.
-- **Transparenz** funktioniert auch hier. Bei „Startbildschirm scheint durch“ bleibt das Hintergrundbild beim Verschieben an seiner Bildschirmposition, die Tastatur wirkt wie ein Fenster auf den Desktop.
+- **Transparenz** funktioniert auch hier: Durch die schwebende Tastatur sieht man die App dahinter.
 - Mikrofon, Auge und Transparenz-Schalter sind in der Symbolleiste genauso erreichbar wie angedockt.
 - Fold 3: Unter *Aussehen → Zusammenklappbares und großes Display* gibt es eigene Höhe, Split und Abstände für den aufgeklappten Zustand (aus LeanType).
 
@@ -182,7 +168,7 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist** (G
 
 ### Umlaute als eigene Tasten
 
-- Deutsch nutzt standardmäßig das Layout **QWERTZ+** mit eigenen Tasten für **Ü, Ö, Ä und ß** (rechts neben P, L und M).
+- Deutsch nutzt standardmäßig das Layout **QWERTZ+** mit eigenen Tasten für **Ü, Ö, Ä und ß** (rechts neben P, L und M). Das gilt für die Sprache „Deutsch (Deutschland)“ ebenso wie für „Deutsch“, die Android je nach Gerät automatisch wählt (auf dem S23 Ultra z. B. „Deutsch“).
 - Wer das schlankere Layout ohne Umlauttasten möchte (Umlaute per langem Druck auf U, O, A): *Einstellungen → Sprachen & Layouts → Deutsch* → Layout **QWERTZ**.
 - Bei einer Installation über eine **ältere Testversion** bleibt das bisher gewählte Layout erhalten. Dann einmal wie oben auf QWERTZ+ umstellen.
 
@@ -244,15 +230,13 @@ Anpassen unter *Einstellungen → Symbolleiste → Angeheftete Tasten der Symbol
   - **LeanType** öffnet direkt das Originalprojekt.
 - Die Plugin-Updates (Offline-Sprache, OCR, Übersetzung …) kommen weiterhin von LeanBitLab.
 
-> Für Android ist eine Version neuer, wenn ihr interner Versionscode höher ist. GlassType zählt diesen Code von LeanType aus weiter (0.5.0 = 4301). So bleiben die Einstellungs-Übernahmen aus LeanType gültig und ein Update über ältere Testversionen funktioniert.
+> Für Android ist eine Version neuer, wenn ihr interner Versionscode höher ist. GlassType zählt diesen Code von LeanType aus weiter (0.5.x = 4301). So bleiben die Einstellungs-Übernahmen aus LeanType gültig und ein Update über ältere Testversionen funktioniert.
 
 ---
 
 ## Bekannte Einschränkungen
 
-- **Live-Hintergründe** (animiert) gibt Android nicht an Apps heraus. Dann bitte ein Standbild über „Hintergrundbild festlegen“ wählen.
-- **Fold 3:** Samsung erlaubt getrennte Hintergründe für Außen- und Innendisplay. Android liefert Apps nur einen davon, daher kann der Durchschein-Effekt auf einem der Displays nicht exakt passen. Lösung: ein eigenes Bild festlegen.
-- **Echte Durchsicht** zeigt nur, was die App hinter die Tastatur zeichnet. Ohne „Tastatur über der App“ ist das meist nur eine einfarbige Fläche.
+- Die **transparente Tastatur** zeigt nur, was die App hinter die Tastatur zeichnet. Ohne „Tastatur über der App“ ist das meist nur eine einfarbige Fläche.
 - Bei „Tastatur über der App“ und beim Auge baut die App ihr Layout kurz neu auf. Bei manchen Apps kann das kurz ruckeln.
 - Die optionalen LeanType-Plugins (Whisper, OCR, Übersetzung …) sind mit GlassType nicht getestet.
 - Testversionen sind Debug-Builds (etwas größer und langsamer als ein Release-Build).
@@ -278,7 +262,7 @@ Die wichtigsten Änderungen gegenüber LeanType im Code:
 
 | Datei | Inhalt |
 |---|---|
-| `app/src/main/java/helium314/keyboard/latin/utils/KeyboardTransparency.kt` | Transparenz-Modi, bildschirmgenauer Hintergrund, Schnellschalter |
+| `app/src/main/java/helium314/keyboard/latin/utils/KeyboardTransparency.kt` | Transparente Tastatur (Hintergrund mit Deckkraft), Schnellschalter |
 | `app/src/main/java/helium314/keyboard/latin/KeyboardPeek.kt` | „Unter die Tastatur schauen“ |
 | `app/src/main/java/helium314/keyboard/latin/voice/VoiceInputManager.kt` | Integrierte Spracheingabe (Android `SpeechRecognizer`) |
 | `app/src/main/java/helium314/keyboard/latin/LatinIME.kt` | Insets für Auge und „Tastatur über der App“, transparente Navigationsleiste |

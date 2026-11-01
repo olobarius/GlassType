@@ -2,17 +2,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Transparency -->
     <string name="settings_category_transparency">Transparency</string>
-    <string name="transparency_mode">Transparent mode</string>
-    <string name="transparency_mode_summary">Let the home screen or the app behind shine through the keyboard</string>
-    <string name="transparency_mode_off">Off</string>
-    <string name="transparency_mode_desktop">Home screen shines through (wallpaper, pixel-aligned)</string>
-    <string name="transparency_mode_see_through">Real see-through (app behind the keyboard)</string>
+    <string name="transparency_mode">Transparent keyboard</string>
+    <string name="transparency_mode_summary">The app behind shines through the keyboard. Works best together with \"Keyboard lies over the app\". No permissions needed.</string>
     <string name="background_opacity">Background opacity</string>
     <string name="key_opacity">Key opacity</string>
     <string name="opacity_percent">%d %%</string>
-    <string name="transparency_wallpaper_access_title">Allow wallpaper access</string>
-    <string name="transparency_wallpaper_access_message">To read your wallpaper, GlassType needs the \"Photos and videos\" permission (please choose \"Allow all\"). On devices where that is not enough, \"All files access\" is requested next. Without permission, choose your wallpaper image manually via \"Set background image\" – it will be aligned to the screen the same way.</string>
-    <string name="transparency_wallpaper_access_grant">Grant access</string>
     <!-- Floating keyboard -->
     <string name="floating_keyboard_peek">Hold to hide the keyboard briefly</string>
     <!-- toolbar key name, resolved via ToolbarKey.PEEK -->
@@ -20,7 +14,7 @@
     <string name="overlay" tools:keep="@string/overlay">Keyboard over app (don\'t push up)</string>
     <string name="transparency" tools:keep="@string/transparency">Transparency on/off</string>
     <string name="keyboard_overlay">Keyboard lies over the app</string>
-    <string name="keyboard_overlay_summary">The app is not pushed up by the docked keyboard. Combined with \"Real see-through\" the app content shines through the keyboard. Quick toggle in the toolbar.</string>
+    <string name="keyboard_overlay_summary">The app is not pushed up by the docked keyboard. Combined with the transparent keyboard the app content shines through the keyboard. Quick toggle in the toolbar.</string>
     <!-- Voice -->
     <string name="voice_provider_system">Built-in voice typing (Google / Samsung)</string>
     <string name="voice_provider_system_summary">Uses the speech recognition of your phone directly in the keyboard. Live text while speaking, no plugin needed.</string>
@@ -44,6 +38,9 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Transparency simplified: only real see-through, no permissions needed (\"home screen shines through\" removed)</item>
+        <item>• Umlaut keys also for the language \"German\" without region</item>
+        <item>• Own app icon</item>
         <item>• Own version number and update check for GlassType releases</item>
         <item>• About: GitHub link to GlassType, credits and link to LeanType</item>
         <item>• Number row shown by default</item>

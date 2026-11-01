@@ -2,24 +2,18 @@
 <resources>
     <!-- Transparenz -->
     <string name="settings_category_transparency">Transparenz</string>
-    <string name="transparency_mode">Transparenz-Modus</string>
-    <string name="transparency_mode_summary">Startbildschirm oder App hinter der Tastatur durchscheinen lassen</string>
-    <string name="transparency_mode_off">Aus</string>
-    <string name="transparency_mode_desktop">Startbildschirm scheint durch (Hintergrundbild, pixelgenau)</string>
-    <string name="transparency_mode_see_through">Echte Durchsicht (App hinter der Tastatur)</string>
+    <string name="transparency_mode">Transparente Tastatur</string>
+    <string name="transparency_mode_summary">Die App hinter der Tastatur scheint durch. Am besten zusammen mit „Tastatur liegt über der App“. Keine Berechtigungen nötig.</string>
     <string name="background_opacity">Deckkraft Hintergrund</string>
     <string name="key_opacity">Deckkraft Tasten</string>
     <string name="opacity_percent">%d %%</string>
-    <string name="transparency_wallpaper_access_title">Zugriff auf Hintergrundbild erlauben</string>
-    <string name="transparency_wallpaper_access_message">Um dein Hintergrundbild lesen zu dürfen, braucht GlassType die Berechtigung „Fotos und Videos“ (bitte „Alle erlauben“ wählen). Auf Geräten, die das nicht genügt, folgt danach „Zugriff auf alle Dateien“. Ohne Berechtigung wähle dein Hintergrundbild manuell über „Hintergrundbild festlegen“ – es wird genauso am Bildschirm ausgerichtet.</string>
-    <string name="transparency_wallpaper_access_grant">Zugriff erlauben</string>
     <!-- Schwebende Tastatur -->
     <string name="floating_keyboard_peek">Gedrückt halten, um die Tastatur kurz auszublenden</string>
     <string name="peek">Unter die Tastatur schauen (gedrückt halten)</string>
     <string name="overlay">Tastatur über der App (nicht hochschieben)</string>
     <string name="transparency">Transparenz an/aus</string>
     <string name="keyboard_overlay">Tastatur liegt über der App</string>
-    <string name="keyboard_overlay_summary">Die angedockte Tastatur schiebt die App nicht hoch. Zusammen mit „Echte Durchsicht“ scheint der App-Inhalt durch die Tastatur. Schnellschalter in der Werkzeugleiste.</string>
+    <string name="keyboard_overlay_summary">Die angedockte Tastatur schiebt die App nicht hoch. Zusammen mit der transparenten Tastatur scheint der App-Inhalt durch die Tastatur. Schnellschalter in der Werkzeugleiste.</string>
     <!-- Sprache -->
     <string name="voice_provider_system">Integrierte Spracheingabe (Google / Samsung)</string>
     <string name="voice_provider_system_summary">Nutzt die Spracherkennung deines Handys direkt in der Tastatur. Live-Text beim Sprechen, kein Plugin nötig.</string>
@@ -43,6 +37,9 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Transparenz vereinfacht: nur noch echte Durchsicht, keine Berechtigungen nötig („Startbildschirm scheint durch“ entfernt)</item>
+        <item>• Umlauttasten auch für die Sprache „Deutsch“ ohne Region</item>
+        <item>• Eigenes App-Symbol</item>
         <item>• Eigene Versionsnummer und Update-Prüfung für GlassType-Releases</item>
         <item>• Über: GitHub-Link zu GlassType, Credits und Link zu LeanType</item>
         <item>• Zahlenzeile standardmäßig eingeschaltet</item>

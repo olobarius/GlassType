@@ -153,7 +153,7 @@ private constructor(val themeId: Int, val mStyleId: Int) {
         }
 
         fun getThemeColors(themeName: String, themeStyle: String, context: Context, prefs: SharedPreferences, isNight: Boolean): Colors {
-            val transparentBackground = KeyboardTransparency.createBackground(context, prefs, isNight)
+            val transparentBackground = KeyboardTransparency.createBackground(prefs)
             val backgroundImage = transparentBackground ?: Settings.readUserBackgroundImage(context, isNight)
             val colors = createThemeColors(themeName, themeStyle, context, prefs, isNight, backgroundImage)
             transparentBackground?.setOverlay(colors.get(ColorType.MAIN_BACKGROUND), KeyboardTransparency.backgroundAlpha(prefs))

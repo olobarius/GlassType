@@ -2,13 +2,9 @@
 package helium314.keyboard.settings.screens
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -53,7 +49,6 @@ import androidx.core.content.edit
 import helium314.keyboard.latin.settings.Settings
 import helium314.keyboard.latin.utils.WallpaperFetcher
 import helium314.keyboard.latin.utils.KeyboardTransparency
-import helium314.keyboard.settings.dialogs.ConfirmationDialog
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -80,14 +75,12 @@ fun AppearanceScreen(
     val fineTuneKeyboardLayoutExpanded = prefs.getBoolean(Settings.PREF_EXPAND_FINE_TUNE_KEYBOARD_LAYOUT, Defaults.PREF_EXPAND_FINE_TUNE_KEYBOARD_LAYOUT)
     val fineTuneFoldableExpanded = prefs.getBoolean(Settings.PREF_EXPAND_FINE_TUNE_FOLDABLE, Defaults.PREF_EXPAND_FINE_TUNE_FOLDABLE)
 
-    val transparencyMode = KeyboardTransparency.mode(prefs)
-    val transparencyOn = transparencyMode != KeyboardTransparency.MODE_OFF
-    val desktopMode = transparencyMode == KeyboardTransparency.MODE_DESKTOP
+    val transparencyOn = KeyboardTransparency.isActive(prefs)
 
     val items = remember(
         dayNightMode, themeBordersEnabled, popupOnEnabled, showHintsEnabled, narrowGapsEnabled, splitEnabled,
         fineTuneThemeExpanded, fineTuneKeyPreviewsExpanded, fineTuneKeyboardLayoutExpanded, fineTuneFoldableExpanded,
-        transparencyMode, prefChanged.value
+        transparencyOn, prefChanged.value
     ) {
         listOf(
             // Transparency
@@ -95,8 +88,6 @@ fun AppearanceScreen(
             Settings.PREF_TRANSPARENCY_MODE,
             if (transparencyOn) Settings.PREF_BACKGROUND_OPACITY else null,
             if (transparencyOn) Settings.PREF_KEY_OPACITY else null,
-            if (desktopMode) Settings.PREF_BACKGROUND_BLUR_AMOUNT else null,
-            if (desktopMode) SettingsWithoutKey.BACKGROUND_IMAGE else null,
             Settings.PREF_KEYBOARD_OVERLAY,
 
             // Theme
@@ -107,8 +98,8 @@ fun AppearanceScreen(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                 Settings.PREF_THEME_DAY_NIGHT else null,
             if (dayNightMode) Settings.PREF_THEME_COLORS_NIGHT else null,
-            if (!desktopMode) SettingsWithoutKey.BACKGROUND_IMAGE else null,
-            if (!transparencyOn) Settings.PREF_USE_SYSTEM_WALLPAPER else null,
+            SettingsWithoutKey.BACKGROUND_IMAGE,
+            Settings.PREF_USE_SYSTEM_WALLPAPER,
             Settings.PREF_EXPAND_FINE_TUNE_THEME,
             if (fineTuneThemeExpanded && themeBordersEnabled)
                 Settings.PREF_KEY_BORDER_RADIUS else null,
@@ -118,7 +109,7 @@ fun AppearanceScreen(
                 Settings.PREF_KEY_BORDER_RADIUS_ACTION else null,
             if (fineTuneThemeExpanded) Settings.PREF_NAVBAR_COLOR else null,
             if (fineTuneThemeExpanded) SettingsWithoutKey.BACKGROUND_IMAGE_LANDSCAPE else null,
-            if (fineTuneThemeExpanded && !desktopMode) Settings.PREF_BACKGROUND_BLUR_AMOUNT else null,
+            if (fineTuneThemeExpanded) Settings.PREF_BACKGROUND_BLUR_AMOUNT else null,
             if (fineTuneThemeExpanded) Settings.PREF_ICON_STYLE else null,
             if (fineTuneThemeExpanded) Settings.PREF_CUSTOM_ICON_NAMES else null,
             if (fineTuneThemeExpanded) Settings.PREF_CLEAR_CLIPBOARD_ICON else null,
@@ -182,50 +173,16 @@ fun AppearanceScreen(
 fun createAppearanceSettings(context: Context) = listOf(
     Setting(context, Settings.PREF_TRANSPARENCY_MODE, R.string.transparency_mode, R.string.transparency_mode_summary) { setting ->
         val ctx = LocalContext.current
-        var showAccessDialog by rememberSaveable { mutableStateOf(false) }
-        val openAllFilesAccess = {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                try {
-                    ctx.startActivity(Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                        Uri.parse("package:${ctx.packageName}")))
-                } catch (_: Exception) {
-                    ctx.startActivity(Intent(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-                }
-            }
-        }
-        // photos permission is enough on Samsung, otherwise fall back to "all files access"
-        val photosPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
-            Settings.clearCachedBackgroundImages(ctx)
-            if (KeyboardTransparency.canReadSystemWallpaper(ctx)) KeyboardSwitcher.getInstance().setThemeNeedsReload()
-            else if (!KeyboardTransparency.hasAllFilesAccess()) openAllFilesAccess()
-        }
-        val items = listOf(
-            stringResource(R.string.transparency_mode_off) to KeyboardTransparency.MODE_OFF,
-            stringResource(R.string.transparency_mode_desktop) to KeyboardTransparency.MODE_DESKTOP,
-            stringResource(R.string.transparency_mode_see_through) to KeyboardTransparency.MODE_SEE_THROUGH,
-        )
-        ListPreference(setting, items, Defaults.PREF_TRANSPARENCY_MODE) { mode ->
-            KeyboardTransparency.rememberMode(ctx.prefs(), mode)
-            if (mode == KeyboardTransparency.MODE_DESKTOP && !KeyboardTransparency.canReadSystemWallpaper(ctx))
-                showAccessDialog = true
-            Settings.clearCachedBackgroundImages(ctx)
+        val prefs = ctx.prefs()
+        // stored as string ("off" / "see_through"), shown as switch
+        var on by remember { mutableStateOf(KeyboardTransparency.isActive(prefs)) }
+        fun set(active: Boolean) {
+            on = active
+            KeyboardTransparency.setActive(prefs, active)
             KeyboardSwitcher.getInstance().setThemeNeedsReload()
         }
-        if (showAccessDialog) {
-            ConfirmationDialog(
-                onDismissRequest = { showAccessDialog = false },
-                onConfirmed = {
-                    showAccessDialog = false
-                    photosPermissionLauncher.launch(
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) android.Manifest.permission.READ_MEDIA_IMAGES
-                        else android.Manifest.permission.READ_EXTERNAL_STORAGE
-                    )
-                },
-                title = { Text(stringResource(R.string.transparency_wallpaper_access_title)) },
-                content = { Text(stringResource(R.string.transparency_wallpaper_access_message)) },
-                confirmButtonText = stringResource(R.string.transparency_wallpaper_access_grant),
-                cancelButtonText = stringResource(android.R.string.cancel),
-            )
+        Preference(name = setting.title, description = setting.description, onClick = { set(!on) }) {
+            Switch(checked = on, onCheckedChange = { set(it) })
         }
     },
     Setting(context, Settings.PREF_KEYBOARD_OVERLAY, R.string.keyboard_overlay, R.string.keyboard_overlay_summary) {
