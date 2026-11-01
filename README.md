@@ -62,6 +62,8 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Unter die Tastatur schauen** | Auge gedrückt halten: Tastatur verschwindet, darunter Verdecktes wird sichtbar. Loslassen und weitertippen. | Auge-Symbol in der Symbolleiste (und unten in der schwebenden Tastatur) |
 | **Integrierte Spracheingabe** | Spracherkennung von Google/Samsung direkt in der Tastatur, Live-Text beim Sprechen, kein Plugin nötig. | Mikrofon-Symbol; Standard-Anbieter |
 | **Transparente schwebende Tastatur** | Transparenz und Auge-Knopf funktionieren auch im schwebenden Modus. | Symbol „Schwebend“ in der Symbolleiste |
+| **Platz für Vorschläge** | Auf schmalen Bildschirmen bleiben neben den Vorschlägen nur so viele Symbole, dass 3 Vorschläge passen. Der Pfeil rechts klappt den Rest aus, langes Drücken rastet ein. | Automatisch |
+| **Größe der Symbole** | Symbole der Symbolleiste in Normal, Kompakt (85 %) oder Klein (70 %). | *Einstellungen → Symbolleiste → Größe der Symbole* |
 | **Deutsch mit Umlauttasten** | Eigene Tasten für Ü, Ö, Ä und ß; auf dem aufgeklappten Fold ungeteilt über die ganze Breite. | Standard |
 | **Zahlenzeile** | Eigene Reihe mit 1 bis 0 über den Buchstaben. | Standard; abschaltbar unter *Optionen → Zusätzliche Tasten* |
 | **Geprüfte Wischeingabe-Bibliothek** | Die heruntergeladene Gesten-Bibliothek wird nur mit der bekannten Prüfsumme übernommen. | *Gesten-Tippen → Bibliothek laden* |
@@ -204,7 +206,7 @@ Ohne installiertes deutsches Wörterbuch erkennt die Wischeingabe keine Wörter 
 
 ## Symbolleiste: die neuen Knöpfe
 
-Neu angeheftet (immer sichtbar neben den Vorschlägen): Mikrofon, Auge, Transparenz, Tastatur über der App, Zwischenablage, Textbearbeitung, Schwebend.
+Neu angeheftet (neben den Vorschlägen): Mikrofon, Auge, Transparenz, Tastatur über der App, Zwischenablage, Schwebend, Textbearbeitung.
 
 | Symbol | Name | Bedienung |
 |---|---|---|
@@ -216,6 +218,35 @@ Neu angeheftet (immer sichtbar neben den Vorschlägen): Mikrofon, Auge, Transpar
 Anpassen unter *Einstellungen → Symbolleiste → Angeheftete Tasten der Symbolleiste auswählen* bzw. *Symbolleistentasten wählen*.
 
 > Bei einer Installation über eine **ältere Testversion** werden die neuen Knöpfe nicht automatisch angeheftet. Dann einmal in den genannten Einstellungen anheften (oder App-Daten löschen).
+
+### Schmale Bildschirme: Pfeil rechts
+
+Auf schmalen Bildschirmen (z. B. Galaxy S23 Ultra oder Außendisplay des Fold) passen nicht alle angehefteten Symbole und 3 Vorschläge nebeneinander. GlassType regelt das automatisch:
+
+- **Keine Vorschläge** (z. B. leeres Textfeld): Alle angehefteten Symbole sind zu sehen.
+- **Vorschläge da:** Es bleiben nur so viele Symbole stehen, dass 3 Vorschläge daneben passen, und zwar die **ersten in deiner Reihenfolge**. Auf dem S23 Ultra sind das bei normaler Größe Mikrofon, Auge, Tropfen und Ebenen.
+- Ganz rechts erscheint dann ein **Pfeil**:
+  - `<` = es sind Symbole eingeklappt. **Tippen** klappt sie aus (die Vorschläge werden dann schmaler).
+  - `>` = alles ausgeklappt. **Tippen** klappt wieder ein.
+  - Ein Tipp gilt, bis du in ein anderes Textfeld wechselst. Danach regelt die Automatik wieder.
+- **Einrasten:** Pfeil **lange drücken**. Der aktuelle Zustand (immer ausgeklappt oder immer eingeklappt) bleibt dann dauerhaft, auch nach einem Neustart. Ein **Unterstrich** unter dem Pfeil zeigt das an, wie bei der Feststelltaste. Ein Tipp wechselt zwischen eingerastet ausgeklappt und eingerastet eingeklappt.
+- **Lösen:** Pfeil erneut **lange drücken**. Die Automatik gilt wieder, der Unterstrich verschwindet.
+- Passt alles nebeneinander (z. B. aufgeklapptes Fold), gibt es keinen Pfeil und nichts ändert sich.
+- Der Pfeil **links** öffnet wie bisher die komplette Symbolleiste mit allen Funktionen.
+
+Welche Symbole zuerst kommen, legst du unter *Einstellungen → Symbolleiste → Angeheftete Tasten der Symbolleiste auswählen* fest (Reihenfolge per Ziehen).
+
+### Größe der Symbole
+
+*Einstellungen → Symbolleiste → Größe der Symbole*:
+
+| Stufe | Wirkung | S23 Ultra: Symbole neben 3 Vorschlägen |
+|---|---|---|
+| **Normal** (Standard) | wie bisher | 4 von 7 |
+| **Kompakt (85 %)** | Symbole und Tastenbreite 85 % | 5 von 7 |
+| **Klein (70 %)** | Symbole und Tastenbreite 70 % | alle 7, kein Pfeil |
+
+Es gilt für alle Symbole der Leiste: angeheftete Symbole, die ausgeklappte Symbolleiste und beide Pfeile. Die Höhe der Leiste bleibt gleich, die Tastatur verschiebt sich also nicht.
 
 ---
 
@@ -267,6 +298,7 @@ Die wichtigsten Änderungen gegenüber LeanType im Code:
 | `app/src/main/java/helium314/keyboard/latin/voice/VoiceInputManager.kt` | Integrierte Spracheingabe (Android `SpeechRecognizer`) |
 | `app/src/main/java/helium314/keyboard/latin/LatinIME.kt` | Insets für Auge und „Tastatur über der App“, transparente Navigationsleiste |
 | `app/src/main/java/helium314/keyboard/latin/FloatingKeyboardManager.kt` | Transparenz und Auge in der schwebenden Tastatur |
+| `app/src/main/java/helium314/keyboard/latin/suggestions/PinnedKeysOverflow.kt` | Symbol-Automatik für schmale Bildschirme (Pfeil rechts, Einrasten), Größe der Symbole |
 | `app/src/main/java/helium314/keyboard/settings/screens/AboutScreen.kt`, `UpdatesScreen.kt`, `settings/updates/AppUpdatesManager.kt` | Eigene Version, Credits, Update-Prüfung gegen GlassType-Releases |
 
 ---

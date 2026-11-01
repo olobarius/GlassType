@@ -34,6 +34,7 @@ import helium314.keyboard.latin.BuildConfig
 import helium314.keyboard.latin.R
 import helium314.keyboard.latin.settings.Defaults
 import helium314.keyboard.latin.settings.Settings
+import helium314.keyboard.latin.suggestions.ToolbarKeySize
 import helium314.keyboard.latin.utils.Log
 import helium314.keyboard.latin.utils.ToolbarMode
 import helium314.keyboard.latin.utils.dpToPx
@@ -80,6 +81,7 @@ fun ToolbarScreen(
             Settings.PREF_SPLIT_TOOLBAR,
             Settings.PREF_TOOLBAR_KEYS,
             Settings.PREF_PINNED_TOOLBAR_KEYS,
+            Settings.PREF_TOOLBAR_KEY_SIZE,
             Settings.PREF_CLIPBOARD_TOOLBAR_KEYS,
             Settings.PREF_EXPAND_FINE_TUNE_TOOLBAR,
 
@@ -168,6 +170,16 @@ fun createToolbarSettings(context: Context): List<Setting> {
         Setting(context, Settings.PREF_PINNED_TOOLBAR_KEYS, R.string.pinned_toolbar_keys) {
             val isSplitToolbar = LocalContext.current.prefs().getBoolean(Settings.PREF_SPLIT_TOOLBAR, Defaults.PREF_SPLIT_TOOLBAR)
             ReorderSwitchPreference(it, Defaults.PREF_PINNED_TOOLBAR_KEYS, enabled = !isSplitToolbar, filter = filter)
+        },
+        Setting(context, Settings.PREF_TOOLBAR_KEY_SIZE, R.string.toolbar_key_size) { setting ->
+            val items = listOf(
+                stringResource(R.string.toolbar_key_size_normal) to ToolbarKeySize.NORMAL,
+                stringResource(R.string.toolbar_key_size_compact) to ToolbarKeySize.COMPACT,
+                stringResource(R.string.toolbar_key_size_small) to ToolbarKeySize.SMALL,
+            )
+            ListPreference(setting, items, Defaults.PREF_TOOLBAR_KEY_SIZE) {
+                KeyboardSwitcher.getInstance().setThemeNeedsReload()
+            }
         },
         Setting(context, Settings.PREF_CLIPBOARD_TOOLBAR_KEYS, R.string.clipboard_toolbar_keys) {
             ReorderSwitchPreference(it, Defaults.PREF_CLIPBOARD_TOOLBAR_KEYS, filter)

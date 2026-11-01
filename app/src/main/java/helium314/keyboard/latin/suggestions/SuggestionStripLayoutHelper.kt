@@ -339,7 +339,8 @@ internal class SuggestionStripLayoutHelper(
         suggestedWords: SuggestedWords,
         stripView: ViewGroup,
         placerView: ViewGroup,
-        promptView: View? = null
+        promptView: View? = null,
+        stripWidthOverride: Int = 0 // width the strip will have after the next layout pass, if known
     ): Int {
         if (suggestedWords.isPunctuationSuggestions) {
             return layoutPunctuationsAndReturnStartIndexOfMoreSuggestions(
@@ -369,7 +370,7 @@ internal class SuggestionStripLayoutHelper(
             suggestedWords, maxSuggestions
         )
         val centerWordView = mWordViews[mCenterPositionInStrip]
-        val stripWidth = stripView.width
+        val stripWidth = if (stripWidthOverride > 0) stripWidthOverride else stripView.width
 
         if (promptView != null) {
             val promptLp = LinearLayout.LayoutParams(

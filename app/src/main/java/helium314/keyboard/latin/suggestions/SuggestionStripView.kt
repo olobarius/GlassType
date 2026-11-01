@@ -144,6 +144,10 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private val pinnedKeys: ViewGroup = findViewById(R.id.pinned_keys)
     private val suggestionsStrip: ViewGroup = findViewById(R.id.suggestions_strip)
     private val toolbarExpandKey = findViewById<ImageButton>(R.id.suggestions_strip_toolbar_key)
+    private val stripWrapper: LinearLayout = findViewById(R.id.suggestions_strip_wrapper)
+    private val toolbarKeySizeFactor = ToolbarKeySize.factor(context.prefs())
+    private val pinnedOverflow = PinnedKeysOverflow(context) { refreshPinnedOverflow(relayout = true) }
+    private var lastRtl = false
     private var toolbarRow: LinearLayout? = null
     private var missingDictPromptView: TextView? = null
     private val toolbarArrowIcon = KeyboardIconsSet.instance.getNewDrawable(KeyboardIconsSet.NAME_TOOLBAR_KEY, context)
@@ -184,8 +188,12 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
             return (stripHeight * ratio).toInt()
         }
 
+    /** width of a toolbar key, smaller than [keyDimension] if the user chose smaller toolbar icons */
+    private val keyWidth: Int
+        get() = (keyDimension * toolbarKeySizeFactor).toInt().coerceAtLeast(1)
+
     private val toolbarKeyLayoutParams: LinearLayout.LayoutParams
-        get() = LinearLayout.LayoutParams(keyDimension, keyDimension).apply {
+        get() = LinearLayout.LayoutParams(keyWidth, keyDimension).apply {
             gravity = android.view.Gravity.CENTER_VERTICAL
         }
 
@@ -206,13 +214,9 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         toolbarExpandKey.minimumWidth = 0
         toolbarExpandKey.minimumHeight = 0
         toolbarExpandKey.layoutParams.height = toolbarHeight
-        toolbarExpandKey.layoutParams.width = toolbarHeight // we want it square
+        toolbarExpandKey.layoutParams.width = keyWidth // square, unless smaller toolbar keys are chosen
         toolbarExpandKey.setBackgroundResource(R.drawable.toolbar_key_background)
-        val defaultStripHeight = resources.getDimensionPixelSize(R.dimen.config_suggestions_strip_height).toFloat()
-        val stripHeight = ResourceUtils.getSuggestionsStripHeight(resources).toFloat()
-        val effectiveScale = if (defaultStripHeight > 0f) stripHeight / defaultStripHeight else 1.0f
-        val expandPadding = (9 * effectiveScale).toInt().dpToPx(resources).coerceAtLeast(2)
-        toolbarExpandKey.setPadding(expandPadding, expandPadding, expandPadding, expandPadding)
+        ToolbarKeySize.applyPadding(toolbarExpandKey, toolbarHeight, toolbarKeySizeFactor)
         colors.setColor(toolbarExpandKey, ColorType.TOOL_BAR_EXPAND_KEY)
         colors.setColor(toolbarExpandKey.background, ColorType.TOOL_BAR_EXPAND_KEY_BACKGROUND)
 
@@ -509,6 +513,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     /** Refresh toolbar and suggestions visibility and keys when starting input view. */
     fun onStartInputView() {
         val settingsValues = Settings.getValues()
+        pinnedOverflow.resetTemporary()
         rebuildToolbarKeys()
         updateKeys()
         val split = settingsValues.mSplitToolbar
@@ -547,6 +552,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         clear()
         isExternalSuggestionVisible = false
         setRtl(isRtlLanguage)
+        lastRtl = isRtlLanguage
         suggestedWords = suggestions
 
         val currentLocale = KeyboardSwitcher.getInstance().keyboard?.mId?.mSubtype?.locale
@@ -557,8 +563,10 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
             getMissingDictPromptView(currentLocale, isCompact)
         } else null
 
+        pinnedOverflow.hasSuggestions = isMissingDict || (!suggestions.isEmpty && !suggestions.isPunctuationSuggestions)
+        val stripWidth = refreshPinnedOverflow(relayout = false)
         startIndexOfMoreSuggestions = layoutHelper.layoutAndReturnStartIndexOfMoreSuggestions(
-            context, suggestedWords, suggestionsStrip, this, promptView
+            context, suggestedWords, suggestionsStrip, this, promptView, stripWidth
         )
         updateKeys()
         // Update toolbar visibility state
@@ -966,7 +974,10 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         if (w != oldw && w > 0) {
-            post { applyToolbarKeyLayoutParams(toolbarContainer.isVisible) }
+            post {
+                applyToolbarKeyLayoutParams(toolbarContainer.isVisible)
+                refreshPinnedOverflow(relayout = true)
+            }
         }
     }
 
@@ -1305,6 +1316,35 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         val show = Settings.getValues().mShowsVoiceInputKey
         toolbar.findViewWithTag<View>(ToolbarKey.VOICE)?.isVisible = show
         pinnedKeys.findViewWithTag<View>(ToolbarKey.VOICE)?.isVisible = show
+        refreshPinnedOverflow(relayout = false)
+    }
+
+    /**
+     * GlassType: shows only as many pinned keys as fit next to the suggestions, see [PinnedKeysOverflow].
+     * @return the width the suggestions strip will have, 0 if unknown
+     */
+    private fun refreshPinnedOverflow(relayout: Boolean): Int {
+        if (Settings.getValues().mSplitToolbar || pinnedOverflow.button.parent !== pinnedKeys) return 0
+        val totalWidth = stripWrapper.width
+        if (totalWidth <= 0) return 0
+        val expandKeyWidth = if (toolbarExpandKey.isVisible) {
+            val lp = toolbarExpandKey.layoutParams as? MarginLayoutParams
+            toolbarExpandKey.layoutParams.width + (lp?.marginStart ?: 0) + (lp?.marginEnd ?: 0)
+        } else 0
+        val minSuggestionsWidth = Settings.getValues().mSuggestionsCountInStrip.coerceAtLeast(1) *
+                PinnedKeysOverflow.minSuggestionWidth(resources)
+        val changed = pinnedOverflow.apply(pinnedKeys, totalWidth - expandKeyWidth, keyWidth, minSuggestionsWidth)
+        if (relayout) {
+            if (changed && !isVoiceActive && !isExternalSuggestionVisible && !isShowingEmojiSuggestions)
+                setSuggestions(suggestedWords, lastRtl)
+            return 0
+        }
+        val height = stripWrapper.height.takeIf { it > 0 } ?: ResourceUtils.getSuggestionsStripHeight(resources)
+        stripWrapper.measure(
+            MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+        )
+        return suggestionsStrip.measuredWidth
     }
 
     private fun getLanguageHistory(prefs: SharedPreferences) = helium314.keyboard.latin.utils.TranslationUtils.getLanguageHistory(prefs)
@@ -1654,6 +1694,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 if (key == ToolbarKey.GIF && isPassword) continue
                 val button = createToolbarKey(context, key)
                 button.layoutParams = toolbarKeyLayoutParams
+                ToolbarKeySize.applyPadding(button, keyDimension, toolbarKeySizeFactor)
                 setupKey(button, colors)
                 toolbar.addView(button)
             }
@@ -1665,9 +1706,12 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 if (pinnedKey == ToolbarKey.GIF && isPassword) continue
                 val button = createToolbarKey(context, pinnedKey)
                 button.layoutParams = toolbarKeyLayoutParams
+                ToolbarKeySize.applyPadding(button, keyDimension, toolbarKeySizeFactor)
                 setupKey(button, colors)
                 pinnedKeys.addView(button)
             }
+            if (pinnedKeys.childCount > 0)
+                pinnedOverflow.attach(pinnedKeys, keyWidth, keyDimension, toolbarKeySizeFactor, colors)
         }
         updateVoiceKey()
         if (toolbarContainer.width == 0 || !toolbarContainer.isLaidOut) {
@@ -1680,7 +1724,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private fun applyToolbarKeyLayoutParams(isExpanded: Boolean) {
         val count = toolbar.childCount
         if (count == 0) return
-        val singleKeyWidth = keyDimension
+        val singleKeyWidth = keyWidth
 
         val visibleCount = (0 until count).count {
             val child = toolbar.getChildAt(it)
@@ -1691,7 +1735,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         val isSplit = Settings.getValues().mSplitToolbar
         val hasExpandKey = Settings.getValues().mToolbarMode == ToolbarMode.EXPANDABLE && !isSplit
         val expandKeyWidth = if (hasExpandKey) {
-            if (toolbarExpandKey.width > 0) toolbarExpandKey.width else keyDimension
+            if (toolbarExpandKey.width > 0) toolbarExpandKey.width else keyWidth
         } else 0
 
         val keyboardWidth = ResourceUtils.getKeyboardWidth(context, Settings.getValues())
@@ -1725,7 +1769,7 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
             child.minimumWidth = 0
             child.minimumHeight = 0
             val targetWidth = if (useEqualSpacing) 0 else singleKeyWidth
-            val targetHeight = singleKeyWidth
+            val targetHeight = keyDimension
             val targetWeight = if (useEqualSpacing) 1f else 0f
             val targetGravity = Gravity.CENTER_VERTICAL
 
@@ -1751,12 +1795,8 @@ class SuggestionStripView(context: Context, attrs: AttributeSet?, defStyle: Int)
         toolbarExpandKey.minimumWidth = 0
         toolbarExpandKey.minimumHeight = 0
         toolbarExpandKey.layoutParams.height = toolbarHeight
-        toolbarExpandKey.layoutParams.width = toolbarHeight
-        val defaultStripHeight = resources.getDimensionPixelSize(R.dimen.config_suggestions_strip_height).toFloat()
-        val stripHeight = ResourceUtils.getSuggestionsStripHeight(resources).toFloat()
-        val effectiveScale = if (defaultStripHeight > 0f) stripHeight / defaultStripHeight else 1.0f
-        val expandPadding = (9 * effectiveScale).toInt().dpToPx(resources).coerceAtLeast(2)
-        toolbarExpandKey.setPadding(expandPadding, expandPadding, expandPadding, expandPadding)
+        toolbarExpandKey.layoutParams.width = keyWidth
+        ToolbarKeySize.applyPadding(toolbarExpandKey, toolbarHeight, toolbarKeySizeFactor)
 
         rebuildToolbarKeys()
         requestLayout()

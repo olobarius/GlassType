@@ -25,7 +25,7 @@ android {
         targetSdk = 35
         // GlassType has its own version; versionCode stays close to the LeanType base so upstream migrations keep working
         versionCode = 4301
-        versionName = "0.5.1"
+        versionName = "0.5.2"
         buildConfigField("String", "UPSTREAM_VERSION", "\"4.3.0\"")
 
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

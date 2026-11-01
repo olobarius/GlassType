@@ -314,6 +314,8 @@ class Settings private constructor() : SharedPreferences.OnSharedPreferenceChang
         const val PREF_BACKGROUND_OPACITY = "transparency_background_opacity"
         const val PREF_KEY_OPACITY = "transparency_key_opacity"
         const val PREF_KEYBOARD_OVERLAY = "keyboard_overlay_docked"
+        const val PREF_TOOLBAR_KEY_SIZE = "toolbar_key_size"
+        const val PREF_PINNED_KEYS_OVERFLOW_LOCK = "pinned_keys_overflow_lock"
         const val PREF_USER_COLORS_PREFIX = "user_colors_"
         const val PREF_USER_ALL_COLORS_PREFIX = "user_all_colors_"
         const val PREF_USER_MORE_COLORS_PREFIX = "user_more_colors_"

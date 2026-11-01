@@ -15,6 +15,16 @@
     <string name="transparency" tools:keep="@string/transparency">Transparency on/off</string>
     <string name="keyboard_overlay">Keyboard lies over the app</string>
     <string name="keyboard_overlay_summary">The app is not pushed up by the docked keyboard. Combined with the transparent keyboard the app content shines through the keyboard. Quick toggle in the toolbar.</string>
+    <!-- Toolbar -->
+    <string name="toolbar_key_size">Size of the icons</string>
+    <string name="toolbar_key_size_normal">Normal</string>
+    <string name="toolbar_key_size_compact" formatted="false">Compact (85 %)</string>
+    <string name="toolbar_key_size_small" formatted="false">Small (70 %)</string>
+    <string name="pinned_keys_overflow_expand">Show more icons</string>
+    <string name="pinned_keys_overflow_collapse">Collapse icons</string>
+    <string name="pinned_keys_overflow_locked_expanded">Icons stay expanded</string>
+    <string name="pinned_keys_overflow_locked_collapsed">Icons stay collapsed</string>
+    <string name="pinned_keys_overflow_unlocked">Icons adapt automatically again</string>
     <!-- Voice -->
     <string name="voice_provider_system">Built-in voice typing (Google / Samsung)</string>
     <string name="voice_provider_system_summary">Uses the speech recognition of your phone directly in the keyboard. Live text while speaking, no plugin needed.</string>
@@ -38,6 +48,8 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Narrow screens: next to suggestions only as many icons stay as leave room for 3 suggestions. The arrow on the right expands the rest (long press: lock)</item>
+        <item>• New option \"Size of the icons\" in the toolbar settings: normal, compact, small</item>
         <item>• Transparency simplified: only real see-through, no permissions needed (\"home screen shines through\" removed)</item>
         <item>• Umlaut keys also for the language \"German\" without region</item>
         <item>• Own app icon</item>
