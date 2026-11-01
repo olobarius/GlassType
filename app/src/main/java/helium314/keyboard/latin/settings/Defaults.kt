@@ -76,8 +76,9 @@ object Defaults {
     const val PREF_BACKGROUND_OPACITY = 35
     const val PREF_KEY_OPACITY = 55
     const val PREF_KEYBOARD_OVERLAY = false
-    const val PREF_TOOLBAR_KEY_SIZE = "normal"
+    const val PREF_TOOLBAR_KEY_SIZE = "auto"
     const val PREF_PINNED_KEYS_OVERFLOW_LOCK = "none"
+    const val PREF_MIN_VISIBLE_SUGGESTIONS = 3
     const val PREF_CUSTOM_ICON_NAMES = ""
     const val PREF_TOOLBAR_CUSTOM_KEY_CODES = ""
     const val PREF_AUTO_CAP = true

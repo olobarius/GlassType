@@ -17,7 +17,10 @@
     <string name="keyboard_overlay_summary">The app is not pushed up by the docked keyboard. Combined with the transparent keyboard the app content shines through the keyboard. Quick toggle in the toolbar.</string>
     <!-- Toolbar -->
     <string name="toolbar_key_size">Size of the icons</string>
+    <string name="toolbar_key_size_auto">Automatic (by available space)</string>
     <string name="toolbar_key_size_normal">Normal</string>
+    <string name="min_visible_suggestions">Minimum visible suggestions</string>
+    <string name="min_visible_suggestions_summary">This many suggestions always stay visible next to the toolbar icons (at most the number of suggestions in the strip). Icons that no longer fit move behind the arrow on the right.</string>
     <string name="toolbar_key_size_compact" formatted="false">Compact (85 %)</string>
     <string name="toolbar_key_size_small" formatted="false">Small (70 %)</string>
     <string name="pinned_keys_overflow_expand">Show more icons</string>
@@ -30,6 +33,10 @@
     <string name="voice_provider_system_summary">Uses the speech recognition of your phone directly in the keyboard. Live text while speaking, no plugin needed.</string>
     <string name="voice_system_not_available">No speech recognition service found. Install or enable \"Speech Recognition and Synthesis from Google\" or Samsung voice input.</string>
     <string name="voice_system_busy">Speech recognition is busy, please try again</string>
+    <string name="voice_system_service">Recognition service</string>
+    <string name="voice_system_service_summary">Which speech recognition the built-in voice typing uses. Switch to compare.</string>
+    <string name="voice_system_service_default">System default</string>
+    <string name="voice_system_service_default_named">System default (%s)</string>
     <string name="voice_system_error">Speech recognition error (%d)</string>
     <!-- About / Updates -->
     <string name="glasstype_slogan">Transparent keyboard with voice input and swipe typing</string>
@@ -48,6 +55,12 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Voice input: continuous listening without a restart after every pause (Android 13+)</item>
+        <item>• Voice input: if the keyboard has an additional language (e.g. English), voice input recognizes both languages (Android 14+)</item>
+        <item>• Voice input: selectable recognition service, language is passed with region (e.g. de-DE)</item>
+        <item>• New setting \"Minimum visible suggestions\" (default 3)</item>
+        <item>• Size of the icons: new default \"Automatic\", the icons only shrink when space is short</item>
+        <item>• Suggestions slightly wider on narrow screens, long words are truncated less often</item>
         <item>• Voice input: in some apps (e.g. web apps) dictated words were replaced by the next word. Fixed</item>
         <item>• Very narrow screens (Fold cover display): the arrow on the right always stays fully visible</item>
         <item>• Narrow screens: next to suggestions only as many icons stay as leave room for 3 suggestions. The arrow on the right expands the rest (long press: lock)</item>

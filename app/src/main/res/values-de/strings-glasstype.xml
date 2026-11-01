@@ -16,7 +16,10 @@
     <string name="keyboard_overlay_summary">Die angedockte Tastatur schiebt die App nicht hoch. Zusammen mit der transparenten Tastatur scheint der App-Inhalt durch die Tastatur. Schnellschalter in der Werkzeugleiste.</string>
     <!-- Symbolleiste -->
     <string name="toolbar_key_size">Größe der Symbole</string>
+    <string name="toolbar_key_size_auto">Automatisch (je nach Platz)</string>
     <string name="toolbar_key_size_normal">Normal</string>
+    <string name="min_visible_suggestions">Mindestens sichtbare Vorschläge</string>
+    <string name="min_visible_suggestions_summary">So viele Vorschläge bleiben neben den Symbolen der Symbolleiste immer sichtbar (höchstens die Anzahl der Vorschläge in der Leiste). Symbole, die nicht mehr passen, kommen hinter den Pfeil rechts.</string>
     <string name="toolbar_key_size_compact" formatted="false">Kompakt (85 %)</string>
     <string name="toolbar_key_size_small" formatted="false">Klein (70 %)</string>
     <string name="pinned_keys_overflow_expand">Weitere Symbole einblenden</string>
@@ -30,6 +33,10 @@
     <string name="voice_system_not_available">Kein Spracherkennungsdienst gefunden. Installiere oder aktiviere „Spracherkennung und -synthese von Google“ oder die Samsung-Spracheingabe.</string>
     <string name="voice_system_busy">Spracherkennung ist beschäftigt, bitte erneut versuchen</string>
     <string name="voice_system_error">Fehler bei der Spracherkennung (%d)</string>
+    <string name="voice_system_service">Erkennungsdienst</string>
+    <string name="voice_system_service_summary">Welche Spracherkennung die integrierte Spracheingabe nutzt. Zum Vergleichen umstellen.</string>
+    <string name="voice_system_service_default">Systemstandard</string>
+    <string name="voice_system_service_default_named">Systemstandard (%s)</string>
     <!-- Über / Updates -->
     <string name="glasstype_slogan">Transparente Tastatur mit Spracheingabe und Wischeingabe</string>
     <string name="version_text_glasstype">Version %1$s · basiert auf LeanType %2$s</string>
@@ -47,6 +54,12 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Spracheingabe: durchgehendes Zuhören ohne Neustart nach jeder Sprechpause (Android 13+)</item>
+        <item>• Spracheingabe: Hat die Tastatur eine Zusatzsprache (z. B. Englisch), erkennt die Spracheingabe beide Sprachen (Android 14+)</item>
+        <item>• Spracheingabe: Erkennungsdienst wählbar, Sprache wird mit Region übergeben (z. B. de-DE)</item>
+        <item>• Neue Einstellung „Mindestens sichtbare Vorschläge“ (Standard 3)</item>
+        <item>• Größe der Symbole: neuer Standard „Automatisch“, die Symbole werden nur bei Platzmangel kleiner</item>
+        <item>• Vorschläge auf schmalen Bildschirmen etwas breiter, lange Wörter werden seltener gekürzt</item>
         <item>• Spracheingabe: In manchen Apps (z. B. Web-Apps) wurden diktierte Wörter vom nächsten Wort ersetzt. Behoben</item>
         <item>• Sehr schmale Bildschirme (Fold-Außendisplay): Der Pfeil rechts bleibt immer ganz sichtbar</item>
         <item>• Schmale Bildschirme: Neben den Vorschlägen bleiben nur so viele Symbole, dass 3 Vorschläge passen. Der Pfeil rechts klappt den Rest aus (lange drücken: einrasten)</item>

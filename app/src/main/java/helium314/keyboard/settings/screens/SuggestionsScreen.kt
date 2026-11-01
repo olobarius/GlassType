@@ -79,6 +79,7 @@ fun SuggestionsScreen(
             if (suggestionsEnabled && prefs.getBoolean(Settings.PREF_ALWAYS_SHOW_SUGGESTIONS, Defaults.PREF_ALWAYS_SHOW_SUGGESTIONS))
                 Settings.PREF_ALWAYS_SHOW_SUGGESTIONS_EXCEPT_WEB_TEXT else null,
             if (suggestionsEnabled) Settings.PREF_SUGGESTIONS_COUNT_IN_STRIP else null,
+            if (suggestionsEnabled) Settings.PREF_MIN_VISIBLE_SUGGESTIONS else null,
             if (suggestionsEnabled) Settings.PREF_CENTER_SUGGESTION_TEXT_TO_ENTER else null,
             if (suggestionsEnabled) Settings.PREF_CENTER_TYPED_WORD else null,
             Settings.PREF_SUGGEST_PUNCTUATION,
@@ -144,6 +145,27 @@ fun createSuggestionsSettings(context: Context) = listOf(
             },
             description = { value ->
                 if (value.toInt() == Defaults.PREF_SUGGESTIONS_COUNT_IN_STRIP) {
+                    "${value.toInt()} (${stringResource(R.string.button_default)})"
+                } else {
+                    "${value.toInt()}"
+                }
+            }
+        )
+    },
+    Setting(context, Settings.PREF_MIN_VISIBLE_SUGGESTIONS,
+        R.string.min_visible_suggestions, R.string.min_visible_suggestions_summary
+    ) { setting ->
+        SliderPreference(
+            name = setting.title,
+            key = setting.key,
+            default = Defaults.PREF_MIN_VISIBLE_SUGGESTIONS,
+            range = 1f..6f,
+            stepSize = 1,
+            onConfirmed = {
+                KeyboardSwitcher.getInstance().setThemeNeedsReload()
+            },
+            description = { value ->
+                if (value.toInt() == Defaults.PREF_MIN_VISIBLE_SUGGESTIONS) {
                     "${value.toInt()} (${stringResource(R.string.button_default)})"
                 } else {
                     "${value.toInt()}"

@@ -60,10 +60,11 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Schnellschalter Transparenz** | Ein Tipp schaltet die Transparenz an/aus. | Tropfen-Symbol in der Symbolleiste |
 | **Tastatur über der App** | Die angedockte Tastatur schiebt die App nicht hoch, sondern liegt darüber. | Ebenen-Symbol in der Symbolleiste oder *Aussehen → Transparenz* |
 | **Unter die Tastatur schauen** | Auge gedrückt halten: Tastatur verschwindet, darunter Verdecktes wird sichtbar. Loslassen und weitertippen. | Auge-Symbol in der Symbolleiste (und unten in der schwebenden Tastatur) |
-| **Integrierte Spracheingabe** | Spracherkennung von Google/Samsung direkt in der Tastatur, Live-Text beim Sprechen, kein Plugin nötig. | Mikrofon-Symbol; Standard-Anbieter |
+| **Integrierte Spracheingabe** | Spracherkennung des Handys direkt in der Tastatur, Live-Text beim Sprechen, durchgehendes Zuhören, kein Plugin nötig. Erkennungsdienst wählbar. | Mikrofon-Symbol; Standard-Anbieter |
+| **Deutsch und Englisch gemischt** | Englisch als Zusatzsprache der deutschen Tastatur: Vorschläge aus beiden Wörterbüchern, ohne Umschalten. Die Spracheingabe erkennt dann ebenfalls beide Sprachen (Android 14+). | *Sprachen & Layouts → Deutsch → Mehrsprachiges Tippen* |
 | **Transparente schwebende Tastatur** | Transparenz und Auge-Knopf funktionieren auch im schwebenden Modus. | Symbol „Schwebend“ in der Symbolleiste |
-| **Platz für Vorschläge** | Auf schmalen Bildschirmen bleiben neben den Vorschlägen nur so viele Symbole, dass 3 Vorschläge passen. Der Pfeil rechts klappt den Rest aus, langes Drücken rastet ein. | Automatisch |
-| **Größe der Symbole** | Symbole der Symbolleiste in Normal, Kompakt (85 %) oder Klein (70 %). | *Einstellungen → Symbolleiste → Größe der Symbole* |
+| **Platz für Vorschläge** | Auf schmalen Bildschirmen bleiben neben den Vorschlägen nur so viele Symbole, dass die gewünschte Mindestzahl an Vorschlägen passt (Standard 3). Der Pfeil rechts klappt den Rest aus, langes Drücken rastet ein. | Automatisch; Anzahl unter *Einstellungen → Vorschläge → Mindestens sichtbare Vorschläge* |
+| **Größe der Symbole** | Automatisch (Standard): Die Symbole werden nur kleiner, wenn der Platz knapp ist. Alternativ fest Normal, Kompakt (85 %) oder Klein (70 %). | *Einstellungen → Symbolleiste → Größe der Symbole* |
 | **Deutsch mit Umlauttasten** | Eigene Tasten für Ü, Ö, Ä und ß; auf dem aufgeklappten Fold ungeteilt über die ganze Breite. | Standard |
 | **Zahlenzeile** | Eigene Reihe mit 1 bis 0 über den Buchstaben. | Standard; abschaltbar unter *Optionen → Zusätzliche Tasten* |
 | **Geprüfte Wischeingabe-Bibliothek** | Die heruntergeladene Gesten-Bibliothek wird nur mit der bekannten Prüfsumme übernommen. | *Gesten-Tippen → Bibliothek laden* |
@@ -143,16 +144,18 @@ Details:
 
 ## Integrierte Spracheingabe
 
-GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist** (Google oder Samsung), direkt in der Tastatur. Es wird nicht auf eine andere Tastatur umgeschaltet, und es ist kein Plugin und kein API-Schlüssel nötig.
+GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist**, direkt in der Tastatur. Es wird nicht auf eine andere Tastatur umgeschaltet, und es ist kein Plugin und kein API-Schlüssel nötig.
 
-- **Mikrofon-Symbol** in der Symbolleiste antippen und sprechen. Der Text erscheint **live** beim Sprechen.
-- **Fortlaufendes Diktat:** Nach einer Sprechpause hört GlassType weiter zu, bis du das Mikrofon erneut antippst oder länger nichts sagst.
+- **Mikrofon-Symbol** in der Symbolleiste antippen und sprechen. Der Text erscheint **live** beim Sprechen. Die Erkennung verbessert Wörter noch, während du weitersprichst (mit mehr Satzzusammenhang). GlassType übernimmt diese Korrekturen.
+- **Durchgehendes Zuhören** (Android 13+): Die Erkennung läuft als eine Sitzung durch, auch über Sprechpausen hinweg. Es geht kein Wort zwischen zwei Sätzen verloren, und der Satzzusammenhang bleibt erhalten. Die Sitzung endet, wenn du das Mikrofon erneut antippst oder länger nichts sagst. Wie lange, stellst du unter *Spracheingabe → Stille-Timeout* ein (Standard 5 Sekunden, „Niemals“ = bis du das Mikrofon antippst, höchstens 2 Minuten Stille). Am Anfang wartet die Erkennung ebenfalls so lange auf das erste Wort.
 - Satzanfänge werden automatisch großgeschrieben, Leerzeichen zum vorhandenen Text werden ergänzt.
-- **Sprache:** folgt der aktuellen Tastatursprache. Ändern unter *Einstellungen → Spracheingabe → Spracherkennungssprache*.
+- **Sprache:** folgt der aktuellen Tastatursprache und wird mit Region übergeben (z. B. „de-DE“), womit die Erkennung am besten arbeitet. Ändern unter *Einstellungen → Spracheingabe → Spracherkennungssprache*.
+- **Zwei Sprachen gleichzeitig** (Android 14+): Hat die Tastatur eine Zusatzsprache (siehe [Deutsch und Englisch gemischt](#deutsch-und-englisch-gemischt)) und folgt die Spracherkennung der Tastatursprache, darf die Erkennung automatisch zwischen diesen Sprachen wechseln. So werden z. B. englische Sätze und Fachbegriffe mitten im deutschen Diktat erkannt. Unterstützt der Erkennungsdienst das nicht oder fehlen ihm die Sprachpakete, diktiert GlassType automatisch nur in der Hauptsprache weiter.
+- **Erkennungsdienst:** *Einstellungen → Spracheingabe → Erkennungsdienst*. „Systemstandard“ nutzt den Dienst, der in Android eingestellt ist (auf Samsung-Geräten meist „Spracherkennung und -synthese von Google“). Zum Vergleichen lässt sich jeder andere installierte Dienst wählen, z. B. Android System Intelligence. Die Samsung-eigene Spracherkennung stellt Samsung anderen Apps nicht zur Verfügung, sie taucht deshalb nicht auf.
 - **Anbieter wechseln:** *Einstellungen → Spracheingabe → Spracheingabeanbieter*:
   - *Integrierte Spracheingabe (Google / Samsung)*: Standard
-  - *Offline-Spracheingabe (Plugin)*, *Online-AI-Spracheingabe*, *System- / Drittanbieter-Spracheingabe* (wechselt zur Sprach-Tastatur eines anderen Anbieters): wie in LeanType
-- Voraussetzung: **Mikrofonberechtigung** (*Spracheingabe → Mikrofonberechtigung*) und ein installierter Spracherkennungsdienst. Auf Samsung-Geräten ist meist „Spracherkennung und -synthese von Google“ oder die Samsung-Spracheingabe vorhanden.
+  - *Offline-Spracheingabe (Plugin)*, *Online-AI-Spracheingabe* (KI-Modelle wie Whisper mit eigenem API-Schlüssel, gut bei gemischten Sprachen), *System- / Drittanbieter-Spracheingabe* (wechselt zur Sprach-Tastatur eines anderen Anbieters): wie in LeanType
+- Voraussetzung: **Mikrofonberechtigung** (*Spracheingabe → Mikrofonberechtigung*) und ein installierter Spracherkennungsdienst.
 - In Passwortfeldern ist die Spracheingabe aus Sicherheitsgründen gesperrt.
 
 ---
@@ -179,6 +182,18 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist** (G
 - Über den Buchstaben steht standardmäßig eine eigene **Zahlenzeile (1 bis 0)**. Zahlen tippst du damit direkt, ohne langen Druck oder Wechsel auf ?123.
 - Ausschalten: *Einstellungen → Optionen → Zusätzliche Tasten → Zahlenzeile*. Dann liegen die Zahlen wieder per langem Druck auf Q bis P.
 - Bei einer Installation über eine **ältere Testversion** bleibt die bisherige Einstellung erhalten. Dann die Zahlenzeile dort einmal einschalten.
+
+### Deutsch und Englisch gemischt
+
+Wer viel Englisch oder englische Fachbegriffe (z. B. aus der IT) schreibt, nimmt Englisch als **Zusatzsprache** der deutschen Tastatur. Das Layout bleibt QWERTZ mit Umlauten, und die Vorschläge und die Wischeingabe kommen aus beiden Wörterbüchern gleichzeitig, ganz ohne Umschalten. Die Leertaste zeigt dann z. B. „de 1, en_US 1“.
+
+Einrichten:
+1. *Einstellungen → Sprachen & Layouts* → oben auf die Lupe, „Englisch“ suchen und **Englisch (USA)** (oder UK) einschalten. Das Wörterbuch-Fenster, das dabei aufgeht, kannst du schließen. Das Hauptwörterbuch für Englisch (USA) ist schon in der App enthalten.
+2. Zurück, auf **Deutsch** (den Namen, nicht den Schalter) tippen → **Mehrsprachiges Tippen** → Englisch auswählen.
+3. Die eigene englische Tastatur aus Schritt 1 wieder ausschalten, sonst wechselt die Globustaste zwischen zwei Tastaturen. Die Zusatzsprache bleibt erhalten.
+4. Optional: *Sprachen & Layouts → Wörterbücher → Englisch (USA)* → **Emoji: Englisch** herunterladen, für Emoji-Vorschläge zu englischen Wörtern.
+
+Die [integrierte Spracheingabe](#integrierte-spracheingabe) erkennt dann ab Android 14 ebenfalls beide Sprachen.
 
 ### Ungeteilte Tastatur auf dem Fold
 
@@ -224,7 +239,8 @@ Anpassen unter *Einstellungen → Symbolleiste → Angeheftete Tasten der Symbol
 Auf schmalen Bildschirmen (z. B. Galaxy S23 Ultra oder Außendisplay des Fold) passen nicht alle angehefteten Symbole und 3 Vorschläge nebeneinander. GlassType regelt das automatisch:
 
 - **Keine Vorschläge** (z. B. leeres Textfeld): Alle angehefteten Symbole sind zu sehen.
-- **Vorschläge da:** Es bleiben nur so viele Symbole stehen, dass 3 Vorschläge daneben passen, und zwar die **ersten in deiner Reihenfolge**. Auf dem S23 Ultra sind das bei normaler Größe Mikrofon, Auge, Tropfen und Ebenen.
+- **Vorschläge da:** Es bleiben nur so viele Symbole stehen, dass die **Mindestzahl an Vorschlägen** daneben passt, und zwar die **ersten in deiner Reihenfolge**. Bei „Größe der Symbole: Automatisch“ werden die Symbole vorher kleiner, damit möglichst viele Platz haben (siehe unten).
+- **Mindestens sichtbare Vorschläge:** *Einstellungen → Vorschläge → Mindestens sichtbare Vorschläge* (1 bis 6, Standard 3). Mehr Vorschläge lassen weniger Platz für Symbole, weniger Vorschläge mehr. Höchstens so viele, wie unter „Anzahl der Vorschläge“ eingestellt sind. Jeder Vorschlag bekommt mindestens etwa 80 dp Breite, damit auch längere Wörter lesbar bleiben.
 - Ganz rechts erscheint dann ein **Pfeil**:
   - `<` = es sind Symbole eingeklappt. **Tippen** klappt sie aus (die Vorschläge werden dann schmaler).
   - `>` = alles ausgeklappt. **Tippen** klappt wieder ein.
@@ -240,13 +256,16 @@ Welche Symbole zuerst kommen, legst du unter *Einstellungen → Symbolleiste →
 
 *Einstellungen → Symbolleiste → Größe der Symbole*:
 
-| Stufe | Wirkung | S23 Ultra: Symbole neben 3 Vorschlägen |
-|---|---|---|
-| **Normal** (Standard) | wie bisher | 4 von 7 |
-| **Kompakt (85 %)** | Symbole und Tastenbreite 85 % | 5 von 7 |
-| **Klein (70 %)** | Symbole und Tastenbreite 70 % | alle 7, kein Pfeil |
+| Stufe | Wirkung |
+|---|---|
+| **Automatisch (je nach Platz)** (Standard) | Volle Größe, solange alles passt. Werden Vorschläge angezeigt und die Symbole passen nicht mehr daneben, schrumpfen sie auf 85 % und dann auf 70 %. Erst wenn auch das nicht reicht, kommen Symbole hinter den Pfeil. Ohne Vorschläge und in der ausgeklappten Symbolleiste: volle Größe. |
+| **Normal** | immer volle Größe |
+| **Kompakt (85 %)** | Symbole und Tastenbreite immer 85 % |
+| **Klein (70 %)** | Symbole und Tastenbreite immer 70 % |
 
-Es gilt für alle Symbole der Leiste: angeheftete Symbole, die ausgeklappte Symbolleiste und beide Pfeile. Die Höhe der Leiste bleibt gleich, die Tastatur verschiebt sich also nicht.
+Die festen Stufen gelten für alle Symbole der Leiste: angeheftete Symbole, die ausgeklappte Symbolleiste und beide Pfeile. „Automatisch“ verkleinert nur die Symbole neben den Vorschlägen. Die Höhe der Leiste bleibt immer gleich, die Tastatur verschiebt sich also nicht.
+
+> Wer die Größe in einer älteren Testversion schon einmal selbst gewählt hat, behält diese Einstellung. „Automatisch“ dann einmal selbst auswählen.
 
 ---
 

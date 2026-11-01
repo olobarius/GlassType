@@ -288,6 +288,26 @@ fun VoiceSettingsScreen(
         }
     }
 
+    val systemServiceSetting = remember(context) {
+        val defaultLabel = helium314.keyboard.latin.voice.SystemSpeechOptions.defaultServiceLabel(context)
+        val items = listOf(
+            (if (defaultLabel != null) context.getString(R.string.voice_system_service_default_named, defaultLabel)
+                else context.getString(R.string.voice_system_service_default)) to helium314.keyboard.latin.voice.SystemSpeechOptions.SERVICE_DEFAULT
+        ) + helium314.keyboard.latin.voice.SystemSpeechOptions.installedServices(context)
+        Setting(
+            key = helium314.keyboard.latin.voice.SystemSpeechOptions.PREF_VOICE_SYSTEM_SERVICE,
+            title = context.getString(R.string.voice_system_service),
+            description = context.getString(R.string.voice_system_service_summary)
+        ) {
+            ListPreference(
+                setting = it,
+                items = items,
+                default = helium314.keyboard.latin.voice.SystemSpeechOptions.SERVICE_DEFAULT,
+                icon = R.drawable.sym_keyboard_voice_holo,
+            )
+        }
+    }
+
     val voiceAppItems = remember(context, prefChangeCounter?.value) {
         val pm = context.packageManager
         val imis = mutableMapOf<String, String>()
@@ -611,6 +631,8 @@ fun VoiceSettingsScreen(
                                 icon = R.drawable.sym_keyboard_voice_holo,
                                 onClick = {}
                             )
+                            systemServiceSetting.Preference()
+                            silenceTimeoutSetting.Preference()
                         }
 
                         if (isOfflineVoiceEnabled) {

@@ -302,6 +302,12 @@ class VoiceInputManager(
     private var systemStopRequested = false
     private var systemSessionHadText = false
     private var systemNeedsLeadingSpace = false
+    /** the current segment of a segmented session follows text dictated earlier in the same session */
+    private var systemSegmentContinues = false
+    /** automatic switching between the keyboard languages is requested in the current listening session */
+    private var systemLanguageSwitchActive = false
+    /** the recognizer could not switch languages (models missing), don't request it again */
+    private var systemLanguageSwitchFailed = false
 
     private fun startSystemVoice() {
         if (!SpeechRecognizer.isRecognitionAvailable(ims)) {
@@ -323,7 +329,7 @@ class VoiceInputManager(
         systemNeedsLeadingSpace = before.isNotEmpty() && !before.last().isWhitespace()
 
         val recognizer = try {
-            SpeechRecognizer.createSpeechRecognizer(ims)
+            SystemSpeechOptions.createRecognizer(ims)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to create SpeechRecognizer", e)
             null
@@ -362,9 +368,26 @@ class VoiceInputManager(
                     finishSystemSession()
                 }
             }
+            // segmented session (Android 13+): one continuous session, each finished segment arrives here
+            override fun onSegmentResults(segmentResults: Bundle) {
+                if (activeSessionId != sessionId) return
+                val text = segmentResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull().orEmpty()
+                emitSystemText(text, isFinal = true)
+            }
+            override fun onEndOfSegmentedSession() {
+                if (activeSessionId != sessionId) return
+                if (sessionEmittedText.isNotEmpty()) emitSystemText(sessionEmittedText, isFinal = true)
+                finishSystemSession()
+            }
             override fun onError(error: Int) {
                 if (activeSessionId != sessionId) return
                 Log.w(TAG, "SpeechRecognizer error $error")
+                if (systemLanguageSwitchActive && !systemStopRequested && (error == SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED || error == SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE)) {
+                    // models for automatic language switching missing: continue with the keyboard language only
+                    systemLanguageSwitchFailed = true
+                    listenSystem()
+                    return
+                }
                 val benign = error == SpeechRecognizer.ERROR_NO_MATCH || error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT
                         || (systemStopRequested && error == SpeechRecognizer.ERROR_CLIENT)
                 if (benign) {
@@ -393,7 +416,12 @@ class VoiceInputManager(
 
     private fun listenSystem() {
         val recognizer = systemRecognizer ?: return
-        val languageTag = currentLanguageTag()
+        val rawLanguageTag = currentLanguageTag()
+        val languageTag = if (rawLanguageTag == "auto") rawLanguageTag else SystemSpeechOptions.withRegion(rawLanguageTag)
+        val followsKeyboard = (ims.prefs().getString(VoiceConstants.PREF_VOICE_LANGUAGE, VoiceConstants.VOICE_LANG_FOLLOW_KEYBOARD)
+            ?: VoiceConstants.VOICE_LANG_FOLLOW_KEYBOARD) in listOf(VoiceConstants.VOICE_LANG_FOLLOW_KEYBOARD, "")
+        val switchLanguages = if (followsKeyboard && !systemLanguageSwitchFailed) SystemSpeechOptions.keyboardLanguages() else emptyList()
+        systemLanguageSwitchActive = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && switchLanguages.size > 1
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
@@ -405,8 +433,24 @@ class VoiceInputManager(
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 putExtra(RecognizerIntent.EXTRA_ENABLE_FORMATTING, RecognizerIntent.FORMATTING_OPTIMIZE_QUALITY)
+                // one continuous session without restarts between sentences (no words lost in the gap);
+                // it ends after the silence timeout, recognizers that don't support it ignore this
+                // "never" (0): keep listening until the mic is tapped, limited to 2 minutes of silence
+                val silenceSeconds = ims.prefs().getString(VoiceConstants.PREF_VOICE_SILENCE_TIMEOUT_SECONDS, "5")
+                    ?.toIntOrNull()?.let { if (it <= 0) 120 else it } ?: 5
+                // Google's recognizer reads this as Int (a Long is ignored, and with it the segmented session)
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, silenceSeconds * 1000)
+                putExtra(RecognizerIntent.EXTRA_SEGMENTED_SESSION, RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS)
+            }
+            if (systemLanguageSwitchActive) {
+                // e.g. German keyboard with English as additional language: recognize both
+                val languages = ArrayList(switchLanguages)
+                putExtra(RecognizerIntent.EXTRA_ENABLE_LANGUAGE_SWITCH, RecognizerIntent.LANGUAGE_SWITCH_BALANCED)
+                putStringArrayListExtra(RecognizerIntent.EXTRA_LANGUAGE_SWITCH_ALLOWED_LANGUAGES, languages)
+                putStringArrayListExtra(RecognizerIntent.EXTRA_LANGUAGE_DETECTION_ALLOWED_LANGUAGES, languages)
             }
         }
+        Log.i(TAG, "system recognizer: language $languageTag, switch ${if (systemLanguageSwitchActive) switchLanguages else "off"}")
         try {
             recognizer.startListening(intent)
         } catch (e: Exception) {
@@ -420,12 +464,24 @@ class VoiceInputManager(
 
     private fun emitSystemText(text: String, isFinal: Boolean) {
         if (text.isBlank()) return
+        val segmentStart = sessionEmittedText.isEmpty()
+        if (segmentStart) systemSegmentContinues = systemSessionHadText
+        var target = text.trim()
+        if (systemSegmentContinues) {
+            // new segment after a pause: "Punkt" at its start is punctuation, and punctuation attaches
+            // to the previous segment without the space that was added after it
+            target = SystemSpeechOptions.leadingSpokenPunctuation(target)
+            if (segmentStart && target.first() in ".,!?;:") {
+                val ic = ims.currentInputConnection
+                if (ic?.getTextBeforeCursor(1, 0)?.toString() == " ") ic.deleteSurroundingText(1, 0)
+            }
+        }
         if (systemNeedsLeadingSpace) {
             ims.currentInputConnection?.commitText(" ", 1)
             systemNeedsLeadingSpace = false
         }
         systemSessionHadText = true
-        syncRecognizedText(text, isFinal)
+        syncRecognizedText(target, isFinal)
     }
 
     private fun stopSystemVoice() {
@@ -1029,11 +1085,11 @@ class VoiceInputManager(
         if (trimmed.isEmpty()) return
 
         // Sentence capitalization for the current utterance
-        val fullTargetText = if (needsCapitalStart && trimmed.isNotEmpty()) {
+        val fullTargetText = (if (needsCapitalStart && trimmed.isNotEmpty()) {
             trimmed.replaceFirstChar { if (it.isLowerCase()) it.titlecase(java.util.Locale.ROOT) else it.toString() }
         } else {
             trimmed
-        }
+        }).replace(SENTENCE_START_REGEX) { it.groupValues[1] + it.groupValues[2].uppercase() } // recognizers may continue in lower case after "."
 
         val current = sessionEmittedText
 
@@ -1182,6 +1238,7 @@ class VoiceInputManager(
     companion object {
         private const val TAG = "VoiceInputManager"
         private val PUNCTUATION_REGEX = Regex("[,.?!;:]")
+        private val SENTENCE_START_REGEX = Regex("([.!?]\\s+)(\\p{Ll})")
         private const val SAMPLE_RATE = 16000
         private const val FRAME_SIZE_MS = 30
         private const val FRAME_SIZE_SHORTS = SAMPLE_RATE * FRAME_SIZE_MS / 1000 // 480 shorts

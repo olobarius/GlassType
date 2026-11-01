@@ -173,6 +173,7 @@ fun createToolbarSettings(context: Context): List<Setting> {
         },
         Setting(context, Settings.PREF_TOOLBAR_KEY_SIZE, R.string.toolbar_key_size) { setting ->
             val items = listOf(
+                stringResource(R.string.toolbar_key_size_auto) to ToolbarKeySize.AUTO,
                 stringResource(R.string.toolbar_key_size_normal) to ToolbarKeySize.NORMAL,
                 stringResource(R.string.toolbar_key_size_compact) to ToolbarKeySize.COMPACT,
                 stringResource(R.string.toolbar_key_size_small) to ToolbarKeySize.SMALL,

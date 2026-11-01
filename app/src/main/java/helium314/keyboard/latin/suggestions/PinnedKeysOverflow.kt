@@ -31,16 +31,29 @@ import helium314.keyboard.latin.utils.prefs
 
 /** Size of the toolbar keys: only the key width and the icon shrink, the strip height stays. */
 object ToolbarKeySize {
+    const val AUTO = "auto"
     const val NORMAL = "normal"
     const val COMPACT = "compact"
     const val SMALL = "small"
 
+    /** sizes the automatic mode chooses from, largest first */
+    val AUTO_STEPS = floatArrayOf(1f, 0.85f, 0.7f)
+
+    fun isAuto(prefs: SharedPreferences) =
+        prefs.getString(Settings.PREF_TOOLBAR_KEY_SIZE, Defaults.PREF_TOOLBAR_KEY_SIZE) == AUTO
+
+    /** fixed size factor, 1 for the automatic mode (which starts with the full size) */
     fun factor(prefs: SharedPreferences): Float =
         when (prefs.getString(Settings.PREF_TOOLBAR_KEY_SIZE, Defaults.PREF_TOOLBAR_KEY_SIZE)) {
             COMPACT -> 0.85f
             SMALL -> 0.7f
             else -> 1f
         }
+
+    /** suggestions that stay visible next to the pinned keys, at most the number of suggestions in the strip */
+    fun minVisibleSuggestions(prefs: SharedPreferences): Int =
+        prefs.getInt(Settings.PREF_MIN_VISIBLE_SUGGESTIONS, Defaults.PREF_MIN_VISIBLE_SUGGESTIONS)
+            .coerceAtMost(Settings.getValues().mSuggestionsCountInStrip).coerceAtLeast(1)
 
     /** padding used by createToolbarKey for a square key */
     fun basePadding(res: Resources): Int {
@@ -83,7 +96,8 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
 
     private val isLocked get() = lockMode() != LOCK_NONE
 
-    private val isExpanded: Boolean
+    /** pinned keys have priority over suggestions (no suggestions, or expanded by the user) */
+    val isExpanded: Boolean
         get() = when (lockMode()) {
             LOCK_EXPANDED -> true
             LOCK_COLLAPSED -> false
@@ -150,12 +164,37 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
      * Shows as many pinned keys as fit into [availableWidth] next to [minSuggestionsWidth].
      * @return whether the visibility of any key changed
      */
-    fun apply(pinnedKeys: ViewGroup, availableWidth: Int, keyWidth: Int, minSuggestionsWidth: Int): Boolean {
-        if (button.parent !== pinnedKeys) return false
+    private fun candidates(pinnedKeys: ViewGroup): List<View> {
         val showVoice = Settings.getValues().mShowsVoiceInputKey
-        val candidates = pinnedKeys.children
+        return pinnedKeys.children
             .filter { it !== button && it.tag is ToolbarKey && (it.tag != ToolbarKey.VOICE || showVoice) }
             .toList()
+    }
+
+    /**
+     * Automatic key size: the largest size at which all pinned keys fit (next to the suggestions, or
+     * together with the arrow if the keys have priority), otherwise the smallest size.
+     * [otherWidth] is the width of the other keys in the strip (expand key) at the given size factor.
+     */
+    fun chooseAutoFactor(
+        pinnedKeys: ViewGroup, totalWidth: Int, keyDimension: Int, minSuggestionsWidth: Int, otherWidth: (Float) -> Int
+    ): Float {
+        val count = candidates(pinnedKeys).size
+        if (count == 0 || totalWidth <= 0) return ToolbarKeySize.AUTO_STEPS.first()
+        for (factor in ToolbarKeySize.AUTO_STEPS) {
+            val keyWidth = (keyDimension * factor).toInt().coerceAtLeast(1)
+            val available = totalWidth - otherWidth(factor)
+            val fitsNextToSuggestions = count * keyWidth <= available - minSuggestionsWidth
+            val fits = if (isExpanded) fitsNextToSuggestions || (count + 1) * keyWidth <= available
+                else fitsNextToSuggestions
+            if (fits) return factor
+        }
+        return ToolbarKeySize.AUTO_STEPS.last()
+    }
+
+    fun apply(pinnedKeys: ViewGroup, availableWidth: Int, keyWidth: Int, minSuggestionsWidth: Int): Boolean {
+        if (button.parent !== pinnedKeys) return false
+        val candidates = candidates(pinnedKeys)
         val count = candidates.size
         val free = availableWidth - minSuggestionsWidth
         val fitting = if (availableWidth <= 0 || keyWidth <= 0 || count * keyWidth <= free) count
@@ -199,7 +238,7 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
             val defaultStripHeight = res.getDimensionPixelSize(R.dimen.config_suggestions_strip_height).toFloat()
             val stripHeight = ResourceUtils.getSuggestionsStripHeight(res).toFloat()
             val scale = if (defaultStripHeight > 0f) stripHeight / defaultStripHeight else 1f
-            return (64 * res.displayMetrics.density * scale).toInt()
+            return (80 * res.displayMetrics.density * scale).toInt()
         }
     }
 }
