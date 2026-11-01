@@ -161,7 +161,10 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
         val fitting = if (availableWidth <= 0 || keyWidth <= 0 || count * keyWidth <= free) count
             else ((free - keyWidth) / keyWidth).coerceIn(0, count)
         val overflow = fitting < count
-        val visibleCount = if (!overflow || isExpanded) count else fitting
+        // expanded: as many as fit next to the arrow (on very narrow screens not even all keys fit)
+        val fittingExpanded = if (availableWidth <= 0 || (count + 1) * keyWidth <= availableWidth) count
+            else ((availableWidth - keyWidth) / keyWidth).coerceIn(fitting, count)
+        val visibleCount = if (!overflow) count else if (isExpanded) fittingExpanded else fitting
 
         var changed = false
         candidates.forEachIndexed { index, view ->
@@ -175,7 +178,7 @@ class PinnedKeysOverflow(private val context: Context, private val onStateChange
             button.isVisible = overflow
             changed = true
         }
-        val expanded = visibleCount == count
+        val expanded = !overflow || isExpanded
         val rtl = pinnedKeys.layoutDirection == View.LAYOUT_DIRECTION_RTL
         // the icon is an arrow to the right: ">" collapses, "<" expands
         button.scaleX = (if (expanded) 1f else -1f) * (if (rtl) -1f else 1f)
