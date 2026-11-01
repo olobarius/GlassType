@@ -83,6 +83,8 @@ object Defaults {
     const val PREF_MIN_VISIBLE_SUGGESTIONS = 3
     /** GlassType: minimum width of a suggestion next to the toolbar keys in dp: 80, 100 or 120 */
     const val PREF_SUGGESTION_MIN_WIDTH = 100
+    /** GlassType: with a secondary language, weight the main language higher. 0 off, 1 light, 2 strong */
+    const val PREF_PREFER_MAIN_LANGUAGE = 1
     const val PREF_CUSTOM_ICON_NAMES = ""
     const val PREF_TOOLBAR_CUSTOM_KEY_CODES = ""
     const val PREF_AUTO_CAP = true

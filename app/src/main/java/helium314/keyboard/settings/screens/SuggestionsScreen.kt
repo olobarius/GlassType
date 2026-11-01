@@ -89,6 +89,7 @@ fun SuggestionsScreen(
 
             // Prediction & learning
             R.string.settings_category_prediction,
+            Settings.PREF_PREFER_MAIN_LANGUAGE,
             Settings.PREF_BIGRAM_PREDICTIONS,
             if (bigramPredictionsEnabled) Settings.PREF_SUGGESTION_BALANCE else null,
             Settings.PREF_KEY_USE_PERSONALIZED_DICTS,
@@ -186,6 +187,14 @@ fun createSuggestionsSettings(context: Context) = listOf(
         ListPreference(setting, items, Defaults.PREF_SUGGESTION_MIN_WIDTH) {
             KeyboardSwitcher.getInstance().setThemeNeedsReload()
         }
+    },
+    Setting(context, Settings.PREF_PREFER_MAIN_LANGUAGE, R.string.prefer_main_language) { setting ->
+        val items = listOf(
+            stringResource(R.string.prefer_main_language_off) to 0,
+            stringResource(R.string.prefer_main_language_light) to 1,
+            stringResource(R.string.prefer_main_language_strong) to 2,
+        )
+        ListPreference(setting, items, Defaults.PREF_PREFER_MAIN_LANGUAGE)
     },
     Setting(context, Settings.PREF_KEY_USE_PERSONALIZED_DICTS,
         R.string.use_personalized_dicts, R.string.use_personalized_dicts_summary

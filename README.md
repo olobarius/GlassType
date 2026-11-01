@@ -64,7 +64,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 | **Tastatur über der App** | Die angedockte Tastatur schiebt die App nicht hoch, sondern liegt darüber. | Ebenen-Symbol in der Symbolleiste oder *Aussehen → Transparenz* |
 | **Unter die Tastatur schauen** | Auge gedrückt halten: Tastatur verschwindet, darunter Verdecktes wird sichtbar. Loslassen und weitertippen. | Auge-Symbol in der Symbolleiste (und unten in der schwebenden Tastatur) |
 | **Integrierte Spracheingabe** | Spracherkennung des Handys direkt in der Tastatur, Live-Text beim Sprechen, durchgehendes Zuhören, kein Plugin nötig. Erkennungsdienst wählbar. | Mikrofon-Symbol; Standard-Anbieter |
-| **Deutsch und Englisch gemischt** | Englisch als Zusatzsprache der deutschen Tastatur: Vorschläge aus beiden Wörterbüchern, ohne Umschalten. Die Spracheingabe erkennt dann ebenfalls beide Sprachen (Android 14+). | *Sprachen & Layouts → Deutsch → Mehrsprachiges Tippen* |
+| **Deutsch und Englisch gemischt** | Englisch als Zusatzsprache der deutschen Tastatur: Vorschläge aus beiden Wörterbüchern, ohne Umschalten. Die Spracheingabe erkennt dann ebenfalls beide Sprachen (Android 14+). Deutsch bleibt dabei bevorzugt. | *Sprachen & Layouts → Deutsch → Mehrsprachiges Tippen*; Gewichtung unter *Vorschläge → Hauptsprache bevorzugen* |
 | **Autokorrektur für zwei Sprachen** | Standardstufe „Ausgewogen“. Richtig geschriebene englische Wörter bleiben im deutschen Text stehen. | *Einstellungen → Textkorrektur → Autokorrektur* |
 | **Transparente schwebende Tastatur** | Transparenz und Auge-Knopf funktionieren auch im schwebenden Modus. | Symbol „Schwebend“ in der Symbolleiste |
 | **Platz für Vorschläge** | Auf schmalen Bildschirmen bleiben neben den Vorschlägen nur so viele Symbole, dass die gewünschte Mindestzahl an Vorschlägen passt (Standard 3). Der Pfeil rechts klappt den Rest aus, langes Drücken rastet ein. | Automatisch; Anzahl unter *Einstellungen → Vorschläge → Mindestens sichtbare Vorschläge* |
@@ -219,6 +219,13 @@ Einrichten:
 5. Optional im selben Fenster: **Emoji: Englisch** herunterladen, für Emoji-Vorschläge zu englischen Wörtern.
 
 Die [integrierte Spracheingabe](#integrierte-spracheingabe) erkennt dann ab Android 14 ebenfalls beide Sprachen.
+
+**Welche Sprache gewinnt?** Die Tastatur merkt sich, in welcher Sprache du gerade schreibst, und wertet die andere Sprache etwas ab. Damit nach ein paar englischen Wörtern nicht jedes deutsche Wort zu einem ähnlichen englischen wird (beim Wischen z. B. „hier“ → „hitter“, „sein“ → „son“), gibt es *Einstellungen → Vorschläge → Hauptsprache bevorzugen*:
+- **Aus:** wie bei LeanType. Die Sprache, in der du gerade schreibst, gewinnt.
+- **Leicht (Standard):** Die Hauptsprache (die Sprache der Tastatur, hier Deutsch) wird nie abgewertet. Englische Wörter kommen weiterhin, wenn sie besser passen.
+- **Stark:** Zusätzlich braucht Englisch ein Wort mehr in Folge, bis es voll zählt, und wird beim Wischen stärker abgewertet. Für Leute, die fast nur deutsch schreiben.
+
+Wählst du nach einem falsch erkannten Wort das richtige aus der Vorschlagsleiste, merkt sich GlassType das Wort jetzt bei seiner eigenen Sprache. Beim nächsten Mal gewinnt es deshalb leichter.
 
 ### Autokorrektur
 

@@ -24,6 +24,10 @@
     <string name="suggestion_min_width_narrow">Narrow: more icons, long words shortened</string>
     <string name="suggestion_min_width_medium">Medium (default)</string>
     <string name="suggestion_min_width_wide">Wide: long words in full, fewer icons</string>
+    <string name="prefer_main_language">Prefer main language</string>
+    <string name="prefer_main_language_off">Off: the language you are currently writing in wins</string>
+    <string name="prefer_main_language_light">Light (default): main language is never weighted down</string>
+    <string name="prefer_main_language_strong">Strong: secondary language only with a clearly better match</string>
     <string name="min_visible_suggestions_summary">This many suggestions always stay visible next to the toolbar icons (at most the number of suggestions in the strip). Icons that no longer fit move behind the arrow on the right.</string>
     <string name="toolbar_key_size_compact" formatted="false">Compact (85 %)</string>
     <string name="toolbar_key_size_small" formatted="false">Small (70 %)</string>
@@ -64,6 +68,8 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• New: Suggestions → Prefer main language (default Light): with English as secondary language, swiped German words no longer turn into similar English ones</item>
+        <item>• Two languages: picked words are learned in their own language, the main language always comes first</item>
         <item>• Now based on LeanType 4.3.1: among others a new setting Suggestions → Clear learned words, blocked words are filtered more reliably, smoother keyboard drawing</item>
         <item>• Bigger keys: keyboard size 95 % instead of 77 %, font 100 % instead of 85 %, narrower key gaps (applies unless you changed these values yourself)</item>
         <item>• New: Appearance → Key corners: Round, Medium or Like Gboard (only ?123 and Enter as capsules)</item>

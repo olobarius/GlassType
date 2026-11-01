@@ -23,6 +23,10 @@
     <string name="suggestion_min_width_narrow">Schmal: mehr Symbole, lange Wörter gekürzt</string>
     <string name="suggestion_min_width_medium">Mittel (Standard)</string>
     <string name="suggestion_min_width_wide">Breit: lange Wörter ganz, weniger Symbole</string>
+    <string name="prefer_main_language">Hauptsprache bevorzugen</string>
+    <string name="prefer_main_language_off">Aus: Die Sprache, in der du gerade schreibst, gewinnt</string>
+    <string name="prefer_main_language_light">Leicht (Standard): Hauptsprache wird nie abgewertet</string>
+    <string name="prefer_main_language_strong">Stark: Zusatzsprache nur bei klar besserem Treffer</string>
     <string name="min_visible_suggestions_summary">So viele Vorschläge bleiben neben den Symbolen der Symbolleiste immer sichtbar (höchstens die Anzahl der Vorschläge in der Leiste). Symbole, die nicht mehr passen, kommen hinter den Pfeil rechts.</string>
     <string name="toolbar_key_size_compact" formatted="false">Kompakt (85 %)</string>
     <string name="toolbar_key_size_small" formatted="false">Klein (70 %)</string>
@@ -63,6 +67,8 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Neu: Vorschläge → Hauptsprache bevorzugen (Standard Leicht): Mit Englisch als Zusatzsprache werden deutsche Wörter beim Wischen nicht mehr zu ähnlichen englischen</item>
+        <item>• Zwei Sprachen: Ausgewählte Wörter werden bei ihrer eigenen Sprache gelernt, die Hauptsprache steht immer an erster Stelle</item>
         <item>• Basiert jetzt auf LeanType 4.3.1: u. a. neue Einstellung Vorschläge → Gelernte Wörter löschen, blockierte Wörter werden zuverlässiger ausgefiltert, flüssigeres Zeichnen der Tastatur</item>
         <item>• Größere Tasten: Tastaturgröße 95 % statt 77 %, Schrift 100 % statt 85 %, engere Tastenabstände (gilt, solange du die Werte nicht selbst geändert hast)</item>
         <item>• Neu: Aussehen → Tastenecken: Rund, Mittel oder Wie Gboard (nur ?123 und Enter als Kapsel)</item>

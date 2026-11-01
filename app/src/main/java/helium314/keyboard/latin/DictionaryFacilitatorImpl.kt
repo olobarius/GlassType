@@ -381,9 +381,9 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
         // and appear in no other language model are not considered valid.
         putWordIntoValidSpellingWordCache("addToUserHistory", suggestion)
 
-        val preferredGroup = currentlyPreferredDictionaryGroup
-        val lowerCasedSuggestion = suggestion.lowercase(preferredGroup.locale)
-        val isMainDictWord = preferredGroup.getDict(Dictionary.TYPE_MAIN)?.isValidWord(lowerCasedSuggestion) == true
+        val suggestionGroup = groupForLearning(suggestion)
+        val lowerCasedSuggestion = suggestion.lowercase(suggestionGroup.locale)
+        val isMainDictWord = suggestionGroup.getDict(Dictionary.TYPE_MAIN)?.isValidWord(lowerCasedSuggestion) == true
         val recordAsAutoCap = wasAutoCapitalized || (suggestion != lowerCasedSuggestion && isMainDictWord)
 
         // Record in session boost for personalized ranking across restarts
@@ -400,9 +400,9 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
         for (i in words.indices) {
             val currentWord = words[i]
             val wasCurrentWordAutoCapitalized = (i == 0) && wasAutoCapitalized
-            // add to history for preferred dictionary group, to avoid mixing languages in history
+            // add to history of the word's language, to avoid mixing languages in history
             addWordToUserHistory(
-                preferredGroup, ngramContextForCurrentWord, currentWord,
+                groupForLearning(currentWord), ngramContextForCurrentWord, currentWord,
                 wasCurrentWordAutoCapitalized, timeStampInSeconds.toInt(), blockPotentiallyOffensive
             )
             ngramContextForCurrentWord = ngramContextForCurrentWord.getNextNgramContext(WordInfo(currentWord))
@@ -481,6 +481,20 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
         Dictionary.TYPE_APPS,
         Dictionary.TYPE_USER
     )
+
+    /**
+     * GlassType: the group whose history should learn [word]. LeanType always used the currently preferred group, so
+     * a German word picked while English was preferred ended up (as an unknown word) in the English history.
+     * Now: the preferred group if the word belongs to it or to no language, otherwise the language it belongs to.
+     */
+    private fun groupForLearning(word: String): DictionaryGroup {
+        val preferred = currentlyPreferredDictionaryGroup
+        if (dictionaryGroups.size == 1) return preferred
+        fun belongsTo(group: DictionaryGroup) = isValidWord(word, DICTIONARY_TYPES_EXCLUDING_HISTORY, group)
+            || isValidWord(word.lowercase(group.locale), DICTIONARY_TYPES_EXCLUDING_HISTORY, group)
+        if (belongsTo(preferred)) return preferred
+        return dictionaryGroups.filter { it !== preferred && belongsTo(it) }.maxByOrNull { it.confidence } ?: preferred
+    }
 
     private fun addToPersonalDictionaryIfInvalidButInHistory(word: String, wasAutoCapitalized: Boolean) {
         if (word.length <= 1 || isMalformedWord(word)) return
@@ -575,7 +589,8 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
     override fun unlearnFromUserHistory(word: String, ngramContext: NgramContext, timeStampInSeconds: Long, eventType: Int) {
         // TODO: Decide whether or not to remove the word on EVENT_BACKSPACE.
         if (eventType != Constants.EVENT_BACKSPACE) {
-            currentlyPreferredDictionaryGroup.getSubDict(Dictionary.TYPE_USER_HISTORY)?.removeUnigramEntryDynamically(word)
+            // GlassType: the word may have been learned in another language's history (see groupForLearning)
+            dictionaryGroups.forEach { it.getSubDict(Dictionary.TYPE_USER_HISTORY)?.removeUnigramEntryDynamically(word) }
         }
         sessionWordBoost?.removeWord(word)
 
@@ -704,7 +719,10 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
             }
             Log.i("ScoreAudit", "NgramContext words: $prevWords")
         }
-        val weightForLocale = dictGroup.getWeightForLocale(dictionaryGroups, composedData.mIsBatchMode)
+        val weightForLocale = dictGroup.getWeightForLocale(
+            dictionaryGroups, composedData.mIsBatchMode,
+            isMainLocale = dictGroup === dictionaryGroups.firstOrNull(), preferMainLanguage = Settings.getValues().mPreferMainLanguage
+        )
         for (dictType in DictionaryFacilitator.ALL_DICTIONARY_TYPES) {
             val dictionary = dictGroup.getDict(dictType) ?: continue
             var dictionarySuggestions = dictionary.getSuggestions(composedData, ngramContext, proximityInfoHandle,
@@ -1089,7 +1107,9 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
         }
 
         private fun getUsedLocales(mainLocale: Locale, context: Context): Collection<Locale> {
-            val locales = hashSetOf(mainLocale)
+            // GlassType: keep the insertion order, dictionaryGroups[0] must be the main locale (a HashSet could put a
+            // secondary locale first, which then became mainLocale and won ties)
+            val locales = linkedSetOf(mainLocale)
             // adding secondary locales is a bit tricky since they depend on the subtype
             // but usually this is called with the selected subtype locale
             val selectedSubtype = SubtypeSettings.getSelectedSubtype(context.prefs())
@@ -1230,6 +1250,23 @@ private class DictionaryGroup(
 
     fun getWeightForLocale(groups: List<DictionaryGroup>, isGesturing: Boolean) =
         getWeightForLocale(groups, if (isGesturing) 0.05f else 0.15f)
+
+    /**
+     * GlassType: "prefer main language" ([Settings.PREF_PREFER_MAIN_LANGUAGE]).
+     * Off: as before. Light: the main language is never weighted down. Strong: additionally a secondary language only
+     * gets full weight after one more word in a row than usual, and its gesture penalty is 1.5 times as high.
+     */
+    fun getWeightForLocale(groups: List<DictionaryGroup>, isGesturing: Boolean, isMainLocale: Boolean, preferMainLanguage: Int): Float {
+        if (groups.size == 1 || preferMainLanguage <= PREFER_MAIN_LANGUAGE_OFF) return getWeightForLocale(groups, isGesturing)
+        if (isMainLocale) return 1f
+        if (preferMainLanguage == PREFER_MAIN_LANGUAGE_LIGHT) return getWeightForLocale(groups, isGesturing)
+        val step = if (isGesturing) 0.075f else 0.15f
+        val fullWeightConfidence = MAX_CONFIDENCE + 1
+        if (confidence < MAX_CONFIDENCE) return 1f - step * (MAX_CONFIDENCE - confidence)
+        if (confidence < fullWeightConfidence || groups.any { it !== this && it.confidence >= confidence })
+            return 1f - step / 2f
+        return 1f
+    }
 
     // might need some more tuning
     fun getWeightForLocale(groups: List<DictionaryGroup>, step: Float): Float {
@@ -1507,5 +1544,8 @@ private class DictionaryGroup(
     companion object {
         private val TAG = DictionaryGroup::class.java.simpleName
         const val MAX_CONFIDENCE = 2
+        const val PREFER_MAIN_LANGUAGE_OFF = 0
+        const val PREFER_MAIN_LANGUAGE_LIGHT = 1
+        const val PREFER_MAIN_LANGUAGE_STRONG = 2
     }
 }

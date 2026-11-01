@@ -319,6 +319,7 @@ class Settings private constructor() : SharedPreferences.OnSharedPreferenceChang
         const val PREF_PINNED_KEYS_OVERFLOW_LOCK = "pinned_keys_overflow_lock"
         const val PREF_MIN_VISIBLE_SUGGESTIONS = "min_visible_suggestions"
         const val PREF_SUGGESTION_MIN_WIDTH = "suggestion_min_width"
+        const val PREF_PREFER_MAIN_LANGUAGE = "prefer_main_language"
         const val PREF_USER_COLORS_PREFIX = "user_colors_"
         const val PREF_USER_ALL_COLORS_PREFIX = "user_all_colors_"
         const val PREF_USER_MORE_COLORS_PREFIX = "user_more_colors_"

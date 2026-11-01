@@ -230,6 +230,7 @@ open class SettingsValues(
     val mDisableMultiWordSuggestions: Boolean
     val mPrioritizePersonalSuggestions: Boolean
     val mSuggestionBalance: Int
+    val mPreferMainLanguage: Int
     val mNextWordBoostLevel: Int
     val mNextWordStrictNgram: Boolean
     val mScoreLimitForAutocorrect: Int
@@ -369,6 +370,7 @@ open class SettingsValues(
         mBigramPredictionEnabled = prefs.getBoolean(Settings.PREF_BIGRAM_PREDICTIONS, Defaults.PREF_BIGRAM_PREDICTIONS)
         mPrioritizePersonalSuggestions = prefs.getBoolean(Settings.PREF_PRIORITIZE_PERSONAL_SUGGESTIONS, Defaults.PREF_PRIORITIZE_PERSONAL_SUGGESTIONS)
         mSuggestionBalance = prefs.getInt(Settings.PREF_SUGGESTION_BALANCE, Defaults.PREF_SUGGESTION_BALANCE)
+        mPreferMainLanguage = prefs.getInt(Settings.PREF_PREFER_MAIN_LANGUAGE, Defaults.PREF_PREFER_MAIN_LANGUAGE)
 
         var boostLevel = 500
         try {
