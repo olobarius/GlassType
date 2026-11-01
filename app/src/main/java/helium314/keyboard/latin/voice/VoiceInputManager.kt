@@ -139,6 +139,9 @@ class VoiceInputManager(
 
     fun isRecording(): Boolean = state == VoiceState.RECORDING || state == VoiceState.STARTING_SESSION
 
+    /** whether dictated text may still be written into the editor (cursor moves come from dictation) */
+    fun isWritingText(): Boolean = isRecording() || state == VoiceState.PROCESSING_FINAL
+
     fun canStartVoice(): Boolean {
         val provider = RichInputMethodManager.getInstance().currentVoiceProvider
         val offlineEnabled = provider == VoiceConstants.VOICE_PROVIDER_OFFLINE
@@ -1052,6 +1055,9 @@ class VoiceInputManager(
 
         ic.beginBatchEdit()
         try {
+            // commitText replaces an existing composing region: if the editor or the keyboard marked the last
+            // dictated word as composing (e.g. to offer corrections), that word would vanish
+            ic.finishComposingText()
             if (charsToDelete > 0) {
                 ic.deleteSurroundingText(charsToDelete, 0)
             }

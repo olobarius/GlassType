@@ -1080,6 +1080,9 @@ class LatinIME : InputMethodService(),
         inputLogic.connection.lastCursorAnchorInfo = cursorAnchorInfo
     }
 
+    /** dictation writes into the editor: its cursor moves must not start corrections on the dictated words */
+    fun isDictating() = voiceInputManager?.isWritingText() == true
+
     override fun onUpdateSelection(
         oldSelStart: Int, oldSelEnd: Int,
         newSelStart: Int, newSelEnd: Int,
@@ -2170,7 +2173,8 @@ class LatinIME : InputMethodService(),
                         latinIme.showGesturePreviewAndSetSuggestions(msg.obj as SuggestedWords, msg.arg1 == ARG1_DISMISS_GESTURE_FLOATING_PREVIEW_TEXT)
                     }
                 }
-                MSG_RESUME_SUGGESTIONS -> latinIme.inputLogic.restartSuggestionsOnWordTouchedByCursor(latinIme.settings.current)
+                MSG_RESUME_SUGGESTIONS -> if (!latinIme.isDictating())
+                    latinIme.inputLogic.restartSuggestionsOnWordTouchedByCursor(latinIme.settings.current)
                 MSG_REOPEN_DICTIONARIES -> {
                     postWaitForDictionaryLoad()
                     latinIme.resetDictionaryFacilitatorIfNecessary()
@@ -2234,6 +2238,7 @@ class LatinIME : InputMethodService(),
             val latinIme = ownerInstance ?: return
             if (latinIme.isCursorGestureActive) return
             if (latinIme.keyboardSwitcher.isHandwritingShowing) return
+            if (latinIme.isDictating()) return
             if (CjkInputManager.getInstance(latinIme).isCjkSubtypeActive(latinIme.richImm.currentSubtype)) return
             if (!latinIme.settings.current.needsToLookupSuggestions()) return
             removeMessages(MSG_RESUME_SUGGESTIONS)
