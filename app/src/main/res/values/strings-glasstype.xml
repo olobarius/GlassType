@@ -55,6 +55,8 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Typing: the space before a punctuation mark is only removed the first time. If you put it back at the same place, it stays</item>
+        <item>• Voice input: punctuation after a pause is no longer swallowed, the next word no longer sticks to the previous one</item>
         <item>• Voice input: continuous listening without a restart after every pause (Android 13+)</item>
         <item>• Voice input: if the keyboard has an additional language (e.g. English), voice input recognizes both languages (Android 14+)</item>
         <item>• Voice input: selectable recognition service, language is passed with region (e.g. de-DE)</item>

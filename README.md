@@ -49,6 +49,7 @@ Zielgeräte: Samsung Galaxy Z Fold 3 und Galaxy S23 Ultra (läuft auf Android 6.
 3. **Wischeingabe:** *Einstellungen → Gesten-Tippen → Gesten-Tippen-Bibliothek laden → Bibliothek herunterladen*. Die App startet danach einmal neu. Details unter [Deutsche Tastatur und Wischeingabe](#deutsche-tastatur-und-wischeingabe).
 4. **Mikrofon erlauben:** *Einstellungen → Spracheingabe → Mikrofonberechtigung* antippen und erlauben.
 5. **Transparenz einschalten:** siehe [Transparente Tastatur](#transparente-tastatur).
+6. **Vorschläge in allen Apps:** Manche Apps, vor allem Browser und Web-Apps, verbieten der Tastatur Wortvorschläge. Dann bleibt die Vorschlagsleiste beim Tippen leer. Abhilfe: *Einstellungen → Vorschläge → Immer Vorschläge anzeigen* einschalten und *Nicht immer Vorschläge für Web-Editierfelder anzeigen* ausschalten.
 
 ---
 
@@ -149,6 +150,7 @@ GlassType nutzt die **Spracherkennung, die auf deinem Handy installiert ist**, d
 - **Mikrofon-Symbol** in der Symbolleiste antippen und sprechen. Der Text erscheint **live** beim Sprechen. Die Erkennung verbessert Wörter noch, während du weitersprichst (mit mehr Satzzusammenhang). GlassType übernimmt diese Korrekturen.
 - **Durchgehendes Zuhören** (Android 13+): Die Erkennung läuft als eine Sitzung durch, auch über Sprechpausen hinweg. Es geht kein Wort zwischen zwei Sätzen verloren, und der Satzzusammenhang bleibt erhalten. Die Sitzung endet, wenn du das Mikrofon erneut antippst oder länger nichts sagst. Wie lange, stellst du unter *Spracheingabe → Stille-Timeout* ein (Standard 5 Sekunden, „Niemals“ = bis du das Mikrofon antippst, höchstens 2 Minuten Stille). Am Anfang wartet die Erkennung ebenfalls so lange auf das erste Wort.
 - Satzanfänge werden automatisch großgeschrieben, Leerzeichen zum vorhandenen Text werden ergänzt.
+- **Satzzeichen:** Google setzt Satzzeichen selbst. Kommt ein Satzzeichen erst nach einer Pause an, hängt GlassType es an das vorige Wort und behält es, auch wenn Google es im Endergebnis wieder weglässt. Gesprochenes „Punkt“, „Komma“, „Fragezeichen“, „Ausrufezeichen“ oder „Doppelpunkt“ direkt nach einer Pause wird zum Satzzeichen.
 - **Sprache:** folgt der aktuellen Tastatursprache und wird mit Region übergeben (z. B. „de-DE“), womit die Erkennung am besten arbeitet. Ändern unter *Einstellungen → Spracheingabe → Spracherkennungssprache*.
 - **Zwei Sprachen gleichzeitig** (Android 14+): Hat die Tastatur eine Zusatzsprache (siehe [Deutsch und Englisch gemischt](#deutsch-und-englisch-gemischt)) und folgt die Spracherkennung der Tastatursprache, darf die Erkennung automatisch zwischen diesen Sprachen wechseln. So werden z. B. englische Sätze und Fachbegriffe mitten im deutschen Diktat erkannt. Unterstützt der Erkennungsdienst das nicht oder fehlen ihm die Sprachpakete, diktiert GlassType automatisch nur in der Hauptsprache weiter.
 - **Erkennungsdienst:** *Einstellungen → Spracheingabe → Erkennungsdienst*. „Systemstandard“ nutzt den Dienst, der in Android eingestellt ist (auf Samsung-Geräten meist „Spracherkennung und -synthese von Google“). Zum Vergleichen lässt sich jeder andere installierte Dienst wählen, z. B. Android System Intelligence. Die Samsung-eigene Spracherkennung stellt Samsung anderen Apps nicht zur Verfügung, sie taucht deshalb nicht auf.
@@ -194,6 +196,12 @@ Einrichten:
 4. Optional: *Sprachen & Layouts → Wörterbücher → Englisch (USA)* → **Emoji: Englisch** herunterladen, für Emoji-Vorschläge zu englischen Wörtern.
 
 Die [integrierte Spracheingabe](#integrierte-spracheingabe) erkennt dann ab Android 14 ebenfalls beide Sprachen.
+
+### Leerzeichen vor Satzzeichen
+
+- Tippst du nach einem Wort Leerzeichen und dann `.` `,` `?` `!` `:` `;` oder `)`, rückt das Satzzeichen an das Wort („Hallo .“ wird „Hallo.“).
+- **Absichtlich mit Leerzeichen:** Satzzeichen löschen, an derselben Stelle wieder Leerzeichen und Satzzeichen tippen. Beim zweiten Mal bleibt das Leerzeichen stehen („Hallo .“). An der nächsten Stelle gilt wieder die normale Regel.
+- Ganz abschalten: *Einstellungen → Textkorrektur → Leerzeichen vor Satzzeichen beibehalten*.
 
 ### Ungeteilte Tastatur auf dem Fold
 

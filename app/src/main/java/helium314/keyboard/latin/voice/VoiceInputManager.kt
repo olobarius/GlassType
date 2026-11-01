@@ -304,6 +304,10 @@ class VoiceInputManager(
     private var systemNeedsLeadingSpace = false
     /** the current segment of a segmented session follows text dictated earlier in the same session */
     private var systemSegmentContinues = false
+    /** punctuation the recognizer put at the start of the current segment (belongs to the previous sentence) */
+    private var systemSegmentPunctuation = ""
+    /** the current segment's punctuation is attached to the previous word (separating space removed) */
+    private var systemSegmentAttached = false
     /** automatic switching between the keyboard languages is requested in the current listening session */
     private var systemLanguageSwitchActive = false
     /** the recognizer could not switch languages (models missing), don't request it again */
@@ -464,16 +468,35 @@ class VoiceInputManager(
 
     private fun emitSystemText(text: String, isFinal: Boolean) {
         if (text.isBlank()) return
-        val segmentStart = sessionEmittedText.isEmpty()
-        if (segmentStart) systemSegmentContinues = systemSessionHadText
+        if (sessionEmittedText.isEmpty()) {
+            systemSegmentContinues = systemSessionHadText
+            systemSegmentPunctuation = ""
+            systemSegmentAttached = false
+        }
         var target = text.trim()
         if (systemSegmentContinues) {
             // new segment after a pause: "Punkt" at its start is punctuation, and punctuation attaches
             // to the previous segment without the space that was added after it
             target = SystemSpeechOptions.leadingSpokenPunctuation(target)
-            if (segmentStart && target.first() in ".,!?;:") {
+            val leading = target.takeWhile { it in SEGMENT_PUNCTUATION }
+            if (leading.isNotEmpty()) {
+                systemSegmentPunctuation = leading
+            } else if (systemSegmentPunctuation.isNotEmpty()) {
+                // the recognizer may drop the punctuation again in later results of the segment, keep it
+                target = "$systemSegmentPunctuation $target"
+            }
+            if (systemSegmentPunctuation.isNotEmpty() && !systemSegmentAttached) {
+                // remove what this segment wrote so far and the space before it, the text is written again below
                 val ic = ims.currentInputConnection
-                if (ic?.getTextBeforeCursor(1, 0)?.toString() == " ") ic.deleteSurroundingText(1, 0)
+                if (ic != null) {
+                    val written = sessionEmittedText.length
+                    val before = ic.getTextBeforeCursor(written + 1, 0)?.toString().orEmpty()
+                    val space = if (before.length == written + 1 && before.first() == ' ') 1 else 0
+                    ic.finishComposingText()
+                    if (written + space > 0) ic.deleteSurroundingText(written + space, 0)
+                    sessionEmittedText = ""
+                }
+                systemSegmentAttached = true
             }
         }
         if (systemNeedsLeadingSpace) {
@@ -1239,6 +1262,7 @@ class VoiceInputManager(
         private const val TAG = "VoiceInputManager"
         private val PUNCTUATION_REGEX = Regex("[,.?!;:]")
         private val SENTENCE_START_REGEX = Regex("([.!?]\\s+)(\\p{Ll})")
+        private const val SEGMENT_PUNCTUATION = ".,!?;:"
         private const val SAMPLE_RATE = 16000
         private const val FRAME_SIZE_MS = 30
         private const val FRAME_SIZE_SHORTS = SAMPLE_RATE * FRAME_SIZE_MS / 1000 // 480 shorts

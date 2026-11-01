@@ -54,6 +54,8 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Tippen: Das Leerzeichen vor einem Satzzeichen wird nur beim ersten Mal entfernt. Setzt du es an derselben Stelle wieder, bleibt es stehen</item>
+        <item>• Spracheingabe: Satzzeichen nach einer Sprechpause werden nicht mehr verschluckt, das nächste Wort klebt nicht mehr am vorigen</item>
         <item>• Spracheingabe: durchgehendes Zuhören ohne Neustart nach jeder Sprechpause (Android 13+)</item>
         <item>• Spracheingabe: Hat die Tastatur eine Zusatzsprache (z. B. Englisch), erkennt die Spracheingabe beide Sprachen (Android 14+)</item>
         <item>• Spracheingabe: Erkennungsdienst wählbar, Sprache wird mit Region übergeben (z. B. de-DE)</item>

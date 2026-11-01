@@ -78,6 +78,8 @@ class InputLogic(
     private val mDictionaryFacilitator: DictionaryFacilitator
 ) {
     private var mSpaceState = SpaceState.NONE
+    /** GlassType: position of the last space removed before a punctuation mark, -1 if none */
+    private var lastStrippedSpacePosition = -1
     private var mSuggestedWords: SuggestedWords = SuggestedWords.getEmptyInstance()
     private val mSuggest: Suggest = Suggest(mDictionaryFacilitator)
     private var mEmojiDictionaryFacilitator: SingleDictionaryFacilitator? = null
@@ -139,6 +141,7 @@ class InputLogic(
         mCapsLockFromRecapitalize = false
         mEnteredText = null
         mWordBeingCorrectedByCursor = null
+        lastStrippedSpacePosition = -1
         mConnection.onStartInput()
         if (mWordComposer.getTypedWord().isNotEmpty()) {
             StatsUtils.onWordCommitUserTyped(mWordComposer.getTypedWord(), mWordComposer.isBatchMode())
@@ -1872,7 +1875,15 @@ class InputLogic(
             && inputTransaction.spaceState != SpaceState.NONE
         ) {
             if (mConnection.codePointBeforeCursor == Constants.CODE_SPACE) {
-                mConnection.removeTrailingSpace()
+                // GlassType: strip only once at a position. If the user puts the space back there and types
+                // the punctuation again, the space is intended.
+                val spacePosition = mConnection.expectedSelectionStart - 1
+                if (spacePosition == lastStrippedSpacePosition) {
+                    lastStrippedSpacePosition = -1
+                } else {
+                    mConnection.removeTrailingSpace()
+                    lastStrippedSpacePosition = spacePosition
+                }
             }
         }
 
