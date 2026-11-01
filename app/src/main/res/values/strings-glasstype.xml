@@ -48,6 +48,7 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Very narrow screens (Fold cover display): the arrow on the right always stays fully visible</item>
         <item>• Narrow screens: next to suggestions only as many icons stay as leave room for 3 suggestions. The arrow on the right expands the rest (long press: lock)</item>
         <item>• New option \"Size of the icons\" in the toolbar settings: normal, compact, small</item>
         <item>• Transparency simplified: only real see-through, no permissions needed (\"home screen shines through\" removed)</item>

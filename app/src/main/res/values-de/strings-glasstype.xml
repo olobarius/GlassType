@@ -47,6 +47,7 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Sehr schmale Bildschirme (Fold-Außendisplay): Der Pfeil rechts bleibt immer ganz sichtbar</item>
         <item>• Schmale Bildschirme: Neben den Vorschlägen bleiben nur so viele Symbole, dass 3 Vorschläge passen. Der Pfeil rechts klappt den Rest aus (lange drücken: einrasten)</item>
         <item>• Neue Option „Größe der Symbole“ unter Einstellungen → Symbolleiste: Normal, Kompakt, Klein</item>
         <item>• Transparenz vereinfacht: nur noch echte Durchsicht, keine Berechtigungen nötig („Startbildschirm scheint durch“ entfernt)</item>
