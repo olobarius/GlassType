@@ -259,6 +259,7 @@ Ohne installiertes deutsches Wörterbuch erkennt die Wischeingabe keine Wörter 
 - Finger auf den ersten Buchstaben setzen, ohne abzusetzen über die weiteren Buchstaben gleiten und am letzten loslassen.
 - Mehrere gewischte Wörter hintereinander bekommen **automatisch ein Leerzeichen**. Am Satzanfang und bei Namen (z. B. „Köln“) wird automatisch großgeschrieben.
 - Hat die Tastatur das falsche Wort gewählt, steht das richtige meist in der **Vorschlagsleiste**. Antippen ersetzt das Wort, und GlassType merkt sich die Wahl.
+- **Weitere Vorschläge** (auch beim Tippen): Steht unter dem mittleren Vorschlag „…“, gibt es mehr Wörter, als in die Leiste passen. Auf der Vorschlagsleiste **nach oben wischen** öffnet ein Feld mit bis zu etwa 15 weiteren Wörtern. Antippen wählt ein Wort, langes Drücken entfernt es aus den Vorschlägen.
 - **⌫ direkt nach einem gewischten Wort** löscht das ganze Wort.
 - Nach jedem Wort schlägt die Leiste passende **Folgewörter** vor.
 
