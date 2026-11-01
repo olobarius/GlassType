@@ -1517,7 +1517,8 @@ class LatinIME : InputMethodService(),
             } catch (ignored: NumberFormatException) {}
         }
         
-        if (targetImi.id == richImm.inputMethodInfoOfThisIme.id) {
+        val thisImi = richImm.inputMethodInfoOfThisIme
+        if ((thisImi != null && targetImi.id == thisImi.id) || targetImi.packageName == packageName) {
             if (targetSubtype != null) switchToSubtype(targetSubtype)
         } else if (targetSubtype != null) {
             switchInputMethodAndSubtypeCompat(targetImi, targetSubtype)
@@ -1875,11 +1876,19 @@ class LatinIME : InputMethodService(),
         if (word == null) return
         dictionaryFacilitator.removeWord(word)
         inputLogic.suggest.clearNextWordSuggestionsCache()
+        handler.postUpdateSuggestionStrip(SuggestedWords.INPUT_STYLE_TYPING)
     }
 
     fun reloadBlacklist() {
         dictionaryFacilitator.reloadBlacklist()
         inputLogic.suggest.clearNextWordSuggestionsCache()
+    }
+
+    fun clearUserHistory() {
+        PersonalizationHelper.removeAllUserHistoryDictionaries(this)
+        dictionaryFacilitator.clearUserHistoryDictionary(this)
+        inputLogic.suggest.clearNextWordSuggestionsCache()
+        handler.postUpdateSuggestionStrip(SuggestedWords.INPUT_STYLE_TYPING)
     }
 
     fun getDictionaryFacilitator(): DictionaryFacilitator = dictionaryFacilitator

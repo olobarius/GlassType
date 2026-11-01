@@ -376,6 +376,7 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
         suggestion: String, wasAutoCapitalized: Boolean, ngramContext: NgramContext,
         timeStampInSeconds: Long, blockPotentiallyOffensive: Boolean
     ) {
+        if (isBlacklisted(suggestion)) return
         // Update the spelling cache before learning. Words that are not yet added to user history
         // and appear in no other language model are not considered valid.
         putWordIntoValidSpellingWordCache("addToUserHistory", suggestion)
@@ -646,7 +647,7 @@ class DictionaryFacilitatorImpl : DictionaryFacilitator {
         val suggestionResults = SuggestionResults(
             SuggestedWords.MAX_SUGGESTIONS, ngramContext.isBeginningOfSentenceContext, false
         )
-        waitForOtherDicts?.await(500, TimeUnit.MILLISECONDS)
+        waitForOtherDicts?.await(120, TimeUnit.MILLISECONDS)
 
         suggestionsArray.forEach {
             if (it == null) return@forEach
@@ -1147,7 +1148,7 @@ private class DictionaryGroup(
     val locale: Locale = Locale(""),
     private var mainDict: Dictionary? = null,
     subDicts: Map<String, ExpandableBinaryDictionary> = emptyMap(),
-    context: Context? = null
+    private val context: Context? = null
 ) {
     private val subDicts: ConcurrentHashMap<String, ExpandableBinaryDictionary> = ConcurrentHashMap(subDicts)
 
@@ -1173,6 +1174,20 @@ private class DictionaryGroup(
         getSubDict(Dictionary.TYPE_USER)?.removeUnigramEntryDynamically(word)
         if (word != lowercase) {
             getSubDict(Dictionary.TYPE_USER)?.removeUnigramEntryDynamically(lowercase)
+        }
+
+        context?.let { ctx ->
+            scope.launch {
+                runCatching {
+                    val resolver = ctx.contentResolver
+                    val localeStr = locale.toString()
+                    resolver.delete(
+                        UserDictionary.Words.CONTENT_URI,
+                        "(${UserDictionary.Words.WORD}=? OR ${UserDictionary.Words.WORD}=?) AND (${UserDictionary.Words.LOCALE}=? OR ${UserDictionary.Words.LOCALE} IS NULL)",
+                        arrayOf(word, lowercase, localeStr)
+                    )
+                }
+            }
         }
 
         val appsDict = getSubDict(Dictionary.TYPE_APPS)
@@ -1292,33 +1307,31 @@ private class DictionaryGroup(
     private val blacklist = hashSetOf<String>().apply {
         val file = blacklistFile
         if (file == null) return@apply
-        scope.launch {
-            synchronized(blacklistLock) {
-                try {
-                    val loadedWords = mutableSetOf<String>()
-                    if (file.isFile) {
+        synchronized(blacklistLock) {
+            try {
+                val loadedWords = mutableSetOf<String>()
+                if (file.isFile) {
+                    loadedWords.addAll(
+                        file.readLines()
+                            .map { it.trim().lowercase(locale) }
+                            .filter { it.isNotEmpty() }
+                    )
+                }
+                val langTag = locale.toLanguageTag()
+                if (locale.language.isNotEmpty() && locale.language != langTag) {
+                    val baseFile = File(file.parentFile, "${locale.language}.txt")
+                    if (baseFile.isFile) {
                         loadedWords.addAll(
-                            file.readLines()
+                            baseFile.readLines()
                                 .map { it.trim().lowercase(locale) }
                                 .filter { it.isNotEmpty() }
                         )
                     }
-                    val langTag = locale.toLanguageTag()
-                    if (locale.language.isNotEmpty() && locale.language != langTag) {
-                        val baseFile = File(file.parentFile, "${locale.language}.txt")
-                        if (baseFile.isFile) {
-                            loadedWords.addAll(
-                                baseFile.readLines()
-                                    .map { it.trim().lowercase(locale) }
-                                    .filter { it.isNotEmpty() }
-                            )
-                        }
-                    }
-                    addAll(loadedWords)
-                    rebuildCompiledPatterns(this@apply)
-                } catch (e: IOException) {
-                    Log.e(TAG, "Exception while trying to read blacklist from ${file.name}", e)
                 }
+                addAll(loadedWords)
+                rebuildCompiledPatterns(this@apply)
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception while trying to read blacklist from ${file.name}", e)
             }
         }
     }
@@ -1326,13 +1339,13 @@ private class DictionaryGroup(
     fun isBlacklisted(word: String): Boolean {
         if (word.isBlank()) return false
         val lowercased = word.lowercase(locale)
-        val userDict = getSubDict(Dictionary.TYPE_USER)
-        if (userDict != null && (userDict.isInDictionary(word) || userDict.isInDictionary(lowercased))) {
-            return false
-        }
         val exactWords = compiledExactBlacklist
         if (exactWords.contains(lowercased) || exactWords.contains(word)) {
             return true
+        }
+        val userDict = getSubDict(Dictionary.TYPE_USER)
+        if (userDict != null && (userDict.isInDictionary(word) || userDict.isInDictionary(lowercased))) {
+            return false
         }
         val patterns = compiledBlacklistPatterns
         if (patterns.isEmpty() || lowercased.length > 64) {
@@ -1411,17 +1424,10 @@ private class DictionaryGroup(
 
     fun reloadBlacklist() {
         val file = blacklistFile
-        if (file == null) {
-            synchronized(blacklistLock) {
-                blacklist.clear()
-                rebuildCompiledPatterns()
-            }
-            return
-        }
-        scope.launch {
-            synchronized(blacklistLock) {
+        synchronized(blacklistLock) {
+            blacklist.clear()
+            if (file != null) {
                 try {
-                    blacklist.clear()
                     val loadedWords = mutableSetOf<String>()
                     if (file.isFile) {
                         loadedWords.addAll(
@@ -1442,11 +1448,11 @@ private class DictionaryGroup(
                         }
                     }
                     blacklist.addAll(loadedWords)
-                    rebuildCompiledPatterns()
-                } catch (e: IOException) {
+                } catch (e: Exception) {
                     Log.e(TAG, "Exception while trying to read blacklist from ${file.name}", e)
                 }
             }
+            rebuildCompiledPatterns()
         }
     }
 

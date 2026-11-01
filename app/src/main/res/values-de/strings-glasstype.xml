@@ -63,6 +63,7 @@
     <string name="updates_community_leantype_title">LeanType-Community</string>
     <string name="updates_community_leantype_summary">Offizielle Kanäle von LeanBitLab, den Entwicklern von LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Basiert jetzt auf LeanType 4.3.1: u. a. neue Einstellung Vorschläge → Gelernte Wörter löschen, blockierte Wörter werden zuverlässiger ausgefiltert, flüssigeres Zeichnen der Tastatur</item>
         <item>• Größere Tasten: Tastaturgröße 95 % statt 77 %, Schrift 100 % statt 85 %, engere Tastenabstände (gilt, solange du die Werte nicht selbst geändert hast)</item>
         <item>• Neu: Aussehen → Tastenecken: Rund, Mittel oder Wie Gboard (nur ?123 und Enter als Kapsel)</item>
         <item>• Leertaste zeigt bei Zusatzsprache „DE • EN“ statt der Testanzeige</item>

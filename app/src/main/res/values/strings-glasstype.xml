@@ -64,6 +64,7 @@
     <string name="updates_community_leantype_title">LeanType community</string>
     <string name="updates_community_leantype_summary">Official channels of LeanBitLab, the developers of LeanType</string>
     <string-array name="glasstype_changelog">
+        <item>• Now based on LeanType 4.3.1: among others a new setting Suggestions → Clear learned words, blocked words are filtered more reliably, smoother keyboard drawing</item>
         <item>• Bigger keys: keyboard size 95 % instead of 77 %, font 100 % instead of 85 %, narrower key gaps (applies unless you changed these values yourself)</item>
         <item>• New: Appearance → Key corners: Round, Medium or Like Gboard (only ?123 and Enter as capsules)</item>
         <item>• The space bar shows "DE • EN" with a secondary language instead of the debug info</item>

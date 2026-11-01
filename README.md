@@ -225,6 +225,7 @@ Die [integrierte Spracheingabe](#integrierte-spracheingabe) erkennt dann ab Andr
 - Ist sie an, ersetzt die Tastatur ein vertipptes Wort durch den ersten Vorschlag, sobald du Leertaste oder ein Satzzeichen tippst („heite“ wird „heute“). Die **Rücktaste direkt danach** macht die Korrektur rückgängig.
 - Einschalten: *Einstellungen → Textkorrektur → Autokorrektur*. Darunter stellst du unter *Aggressivität der Autokorrektur* ein, wie mutig sie korrigiert. Standard ist **Ausgewogen**; **Moderat** korrigiert nur sehr ähnliche Wörter, **Aggressiv** und **Sehr aggressiv** korrigieren mehr und auch in Feldern, in denen Apps keine Korrektur wollen.
 - **Mit Englisch als Zusatzsprache:** Ein richtig geschriebenes englisches Wort bleibt stehen, auch wenn du gerade deutsch schreibst („the weather is good“ wird nicht zu „Werther“ oder „Gold“). Dafür muss das englische Hauptwörterbuch geladen sein (siehe oben, Schritt 4).
+- **Gelernte Wörter löschen:** Die Tastatur lernt beim Tippen neue Wörter und typische Wortfolgen. Hat sie sich etwas Falsches gemerkt, löscht *Einstellungen → Vorschläge → Gelernte Wörter löschen* (nach einer Rückfrage) alles Gelernte. Die Wörterbücher und dein persönliches Wörterbuch bleiben erhalten.
 
 ### Leerzeichen vor Satzzeichen
 
@@ -313,7 +314,7 @@ Die festen Stufen gelten für alle Symbole der Leiste: angeheftete Symbole, die 
 
 ## Version, Updates und „Über“
 
-- GlassType hat ab **0.5.0** eine eigene Versionsnummer. Unter *Einstellungen → Über* steht z. B. **„Version 0.5.0 · basiert auf LeanType 4.3.0“**, also die eigene Version und die LeanType-Version, auf der sie aufbaut.
+- GlassType hat ab **0.5.0** eine eigene Versionsnummer. Unter *Einstellungen → Über* steht z. B. **„Version 0.5.8 · basiert auf LeanType 4.3.1“**, also die eigene Version und die LeanType-Version, auf der sie aufbaut.
 - **Updates:** *Einstellungen → Updates → Nach Updates suchen* prüft die [GlassType-Releases](https://github.com/olobarius/GlassType/releases), nicht mehr LeanType. Ist eine neuere Version da, führt der Hinweis zur Release-Seite. Die automatische Prüfung (Schalter und Prüfhäufigkeit) bleibt wie in LeanType.
 - „Was ist neu“ zeigt die Änderungen von GlassType. Die Bereiche zum Unterstützen und zur Community sind als **LeanType** gekennzeichnet und führen zu LeanBitLab, den Entwicklern der Basis.
 - **Über:**
